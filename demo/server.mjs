@@ -954,7 +954,7 @@ function cleanGeneratedCopy(value) {
     .trim();
   if (text.length < 18 || text.length > 400) return '';
   if (/[`*_#<>]/.test(text)) return '';
-  if (/根据你的需求|作为AI|以下是|文案如下|位置去哪都方便|有地理位置[^。！？]{0,30}[、，]|这里有[^。！？]{0,50}从入住到离店/.test(text)) return '';
+  if (/根据你的需求|你补充的|你提供的|用户提供的|作为AI|以下是|文案如下|位置去哪都方便|有地理位置[^。！？]{0,30}[、，]|这里有[^。！？]{0,50}从入住到离店|无论是[^，。！？]{1,24}[，,]\s*(?:都|也)|安排进这次(?:入住|体验)|安排一场轻松的入住/.test(text)) return '';
   return /[。！？!?]$/.test(text) ? text : `${text}。`;
 }
 
@@ -991,7 +991,7 @@ async function generateCopy(req, res) {
     '你是中文酒店短视频口播文案编辑，负责把用户提供的碎片整理成自然、准确、能直接配音的成稿。',
     '请严格只返回 JSON：{"variants":["文案1","文案2","文案3","文案4","文案5"]}，不要 Markdown、编号、引号或解释。',
     '生成 5 条不同写法；每条约 55 至 110 个汉字，分成 2 至 4 句，适合 15 秒左右的酒店短视频口播。',
-    '必须把亮点自然放进句子里，不要把形容词、设施和时间线硬拼在一起。禁止写出类似“这里有地理位置优越、泳池和客房，从入住到离店……”或“位置去哪都方便”的病句；涉及位置时请说“出行方便”或“去周边很方便”。',
+    '必须把亮点自然放进句子里，不要把形容词、设施和时间线硬拼在一起。禁止写出类似“这里有地理位置优越、泳池和客房，从入住到离店……”“你补充的地理位置优越，也被安排进这次体验”或“位置去哪都方便”的病句；涉及位置时请说“出行方便”或“去周边很方便”。',
     '可以调整语序、补充必要的连接词和标点，但不得新增用户没有提供的酒店设施、距离、价格、优惠、交通、服务承诺、品牌或事实。',
     '主题如果是酒店名或地点要原样保留；受众和优惠为空时不要自行补写。语气自然、克制、有画面感，不要浮夸，不要重复同一个句式。',
     JSON.stringify({ topic, highlights, audience, offer, sceneLabels: scenes })
@@ -1024,15 +1024,66 @@ async function generateCopy(req, res) {
     json(res, response.status, { error: message, code: response.status === 403 ? 'TEXT_MODEL_FORBIDDEN' : 'TEXT_MODEL_FAILED' });
     return;
   }
+  let draftVariants;
   try {
     const parsed = extractJsonValue(modelContentText(upstream));
     const rawVariants = Array.isArray(parsed) ? parsed : Array.isArray(parsed?.variants) ? parsed.variants : [];
-    const variants = [...new Set(rawVariants.map(cleanGeneratedCopy).filter(Boolean))].slice(0, 5);
-    if (variants.length < 3) throw new Error('文本模型返回的合格文案少于 3 条，请重试。');
-    while (variants.length < 5) variants.push(variants[variants.length % Math.max(1, variants.length)]);
-    json(res, 200, { variants, source: 'turing-text', model: COMPANY_TEXT_MODEL });
+    draftVariants = [...new Set(rawVariants.map(cleanGeneratedCopy).filter(Boolean))].slice(0, 5);
+    if (draftVariants.length < 3) throw new Error('文本模型返回的合格文案少于 3 条，请重试。');
   } catch (error) {
     json(res, 502, { error: error.message || '文本模型返回内容无法解析，请重试。', code: 'INVALID_COPY_RESULT' });
+    return;
+  }
+
+  const proofreadPrompt = [
+    '你是最后一道中文校对编辑。请把待校对的酒店短视频文案逐条改成自然、准确、能直接配音的中文成稿。',
+    '严格只返回 JSON：{"variants":["文案1","文案2","文案3","文案4","文案5"]}，不要 Markdown、编号、引号或解释。',
+    '保留原文的真实信息和营销重点，但可以彻底重写病句。不得出现“你补充的”“你提供的”“用户提供的”“根据你的需求”等模型口吻。',
+    '不得把形容词和设施硬拼成名词列表；“地理位置优越”要改成完整表达，例如“出行方便”或“去周边很方便”。',
+    '不要写“无论是亲子家庭，都……”这类残缺比较句；直接写“适合亲子家庭”或补齐“无论是……还是……”。',
+    '不要写“把……安排进这次入住/体验”“安排一场轻松的入住”等不自然表达。不要新增输入中没有的设施、距离、价格、优惠、交通、服务承诺或品牌事实。',
+    '输入事实：',
+    JSON.stringify({ topic, highlights, audience, offer, sceneLabels: scenes }),
+    '待校对文案：',
+    JSON.stringify({ variants: draftVariants })
+  ].join('\n');
+
+  let proofreadResponse;
+  try {
+    proofreadResponse = await fetch(`${COMPANY_TEXT_API_BASE_URL}/chat/completions`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: COMPANY_TEXT_MODEL,
+        temperature: 0.15,
+        max_tokens: 1600,
+        messages: [
+          { role: 'system', content: '你只输出经过人工级中文病句校对的酒店短视频文案 JSON。' },
+          { role: 'user', content: proofreadPrompt }
+        ]
+      }),
+      signal: AbortSignal.timeout(60000)
+    });
+  } catch (error) {
+    json(res, 502, { error: error?.name === 'TimeoutError' ? '公司文本模型校对超时，请稍后重试。' : '无法连接公司文本模型进行校对。', code: 'TEXT_MODEL_UNAVAILABLE' });
+    return;
+  }
+
+  const proofreadUpstream = await proofreadResponse.json().catch(() => ({}));
+  if (!proofreadResponse.ok) {
+    const message = proofreadUpstream?.error?.message || proofreadUpstream?.message || proofreadUpstream?.error || `公司文本模型校对接口返回 ${proofreadResponse.status}`;
+    json(res, proofreadResponse.status, { error: message, code: proofreadResponse.status === 403 ? 'TEXT_MODEL_FORBIDDEN' : 'TEXT_MODEL_FAILED' });
+    return;
+  }
+  try {
+    const parsed = extractJsonValue(modelContentText(proofreadUpstream));
+    const rawVariants = Array.isArray(parsed) ? parsed : Array.isArray(parsed?.variants) ? parsed.variants : [];
+    const variants = [...new Set(rawVariants.map(cleanGeneratedCopy).filter(Boolean))].slice(0, 5);
+    if (variants.length < 3) throw new Error('文本模型校对后合格文案少于 3 条，请重试。');
+    while (variants.length < 5) variants.push(variants[variants.length % Math.max(1, variants.length)]);
+    json(res, 200, { variants, source: 'turing-text-proofread', model: COMPANY_TEXT_MODEL });
+  } catch (error) {
+    json(res, 502, { error: error.message || '文本模型校对结果无法解析，请重试。', code: 'INVALID_COPY_RESULT' });
   }
 }
 

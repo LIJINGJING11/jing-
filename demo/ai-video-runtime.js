@@ -657,32 +657,6 @@
     if ($('#aiVideoAssetCount')) $('#aiVideoAssetCount').textContent = `${state.assets.length} / 30`;
   }
 
-  function buildCopyVariants() {
-    if (state.copyMode === 'manual') return [String($('#aiVideoManualCopy')?.value || '').trim()];
-    const clean = (value) => String(value || '').replace(/[\r\n]+/g, ' ').replace(/\s+/g, ' ').replace(/[。！？；;，,、]+$/g, '').trim();
-    const splitList = (value) => [...new Set(String(value || '').split(/[，,、；;|]+/).map(clean).filter(Boolean))];
-    const joinList = (items) => items.length <= 1 ? (items[0] || '') : items.length === 2 ? `${items[0]}和${items[1]}` : `${items.slice(0, -1).join('、')}和${items.at(-1)}`;
-    const topic = clean($('#aiVideoTopic')?.value);
-    const featureItems = splitList($('#aiVideoHighlights')?.value);
-    const sceneLabels = selectedSceneLabels();
-    const features = [...new Set([...featureItems, ...sceneLabels].map(clean).filter(Boolean))];
-    const featureSentence = features.length
-      ? `这里有${joinList(features)}，从入住到离店，每个细节都让人更安心。`
-      : '从入住到离店，每个细节都让人更安心。';
-    const audience = clean($('#aiVideoAudience')?.value);
-    const offer = clean($('#aiVideoOffer')?.value);
-    const audienceLine = audience ? `无论是${audience}，都能在这里找到舒服的入住节奏。` : '适合想住得舒服、玩得轻松的旅人。';
-    const offerLine = offer ? `${offer}，现在就来安排一场轻松的入住吧。` : '收藏这条视频，下一次出发就住这里。';
-    const featureShort = features.length ? joinList(features) : '舒适的空间与贴心服务';
-    return [
-      `${topic}，把旅途里的疲惫交给一间舒服的房间。${featureSentence}${audienceLine}${offerLine}`,
-      `周末想换个地方放松？来住${topic}。${featureSentence}${audienceLine}${offerLine}`,
-      `这次出发，住得舒服也很重要。${topic}把${featureShort}安排得恰到好处。${audienceLine}${offerLine}`,
-      `把假期过成喜欢的样子，住进${topic}。${featureSentence}推开门，就是轻松的开始。${audienceLine}${offerLine}`,
-      `正在计划下一次入住？${topic}值得收藏。${featureSentence}给忙碌的旅程留一段真正放松的时间。${audienceLine}${offerLine}`
-    ];
-  }
-
   async function requestCopyVariants() {
     const endpoint = smartEndpoint('/api/generate-copy');
     if (!endpoint) throw new Error('当前页面由 file:// 直接打开，请通过酒店素材工坊本机服务访问。');
