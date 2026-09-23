@@ -377,7 +377,9 @@
     'city-light': '城市轻快',
     'hotel-ambient': '高级氛围'
   };
-  const captionMotionNames = ['fade', 'typewriter', 'slide-left', 'slide-right', 'slide-up'];
+  // Stable pseudo-random selection keeps preview and exported video in sync
+  // while distributing the allowed caption entrances across segments.
+  const captionMotionNames = ['fade', 'slide-left', 'slide-right', 'slide-up', 'slide-down'];
   const progressOverlay = document.querySelector('#progress-overlay');
   const progressStage = document.querySelector('#progress-stage');
   const progressDetail = document.querySelector('#progress-detail');
@@ -409,15 +411,15 @@
     const ease = (amount) => amount * amount * (3 - 2 * amount);
     const entrance = ease(Math.max(0, Math.min(1, p / .24)));
     const exit = ease(Math.max(0, Math.min(1, (p - .78) / .22)));
-    const opacity = value === 'typewriter' ? 1 : Math.max(0, Math.min(1, entrance * (1 - exit)));
+    const opacity = Math.max(0, Math.min(1, entrance * (1 - exit)));
     const travel = Math.min(1, 26 + textLength * 1.5);
     let offsetX = 0;
     let offsetY = 0;
     if (value === 'slide-left') offsetX = (1 - entrance) * -travel + exit * travel;
     if (value === 'slide-right') offsetX = (1 - entrance) * travel - exit * travel;
     if (value === 'slide-up') offsetY = (1 - entrance) * travel - exit * travel;
-    const reveal = value === 'typewriter' ? Math.max(0, Math.ceil(textLength * Math.min(1, p / .48))) : textLength;
-    return { opacity, offsetX, offsetY, reveal };
+    if (value === 'slide-down') offsetY = (1 - entrance) * -travel + exit * travel;
+    return { opacity, offsetX, offsetY, reveal: textLength };
   }
 
   function captionFitScale(preferredChars = 11) {
@@ -1361,7 +1363,7 @@
     if (!visibleRaw) return;
     const parts = headlineParts(raw, sceneType);
     const unit = Math.min(width, height);
-    let supportSize = Math.round(unit * .064);
+    let supportSize = Math.round(unit * .072);
     const maxWidth = width * .86;
     ctx.font = `800 ${supportSize}px "PingFang SC", sans-serif`;
     const preferredChars = Math.max(10, Math.floor((maxWidth / Math.max(1, supportSize)) * .88));

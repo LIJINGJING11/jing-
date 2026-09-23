@@ -322,7 +322,8 @@ function assHeadlineParts(value, headline = {}) {
   return { lead: clause.slice(0, start).slice(-7), keyword: clause.slice(start, start + size), tail: clause.slice(start + size).slice(0, 7) };
 }
 
-const captionMotionNames = ['fade', 'typewriter', 'slide-left', 'slide-right', 'slide-up'];
+// Stable pseudo-random selection keeps the client preview and ASS render in sync.
+const captionMotionNames = ['fade', 'slide-left', 'slide-right', 'slide-up', 'slide-down'];
 
 function captionMotionFor(text, index = 0, provided = '') {
   const requested = String(provided || '').toLowerCase();
@@ -338,12 +339,12 @@ function captionMotionFor(text, index = 0, provided = '') {
 function buildAssCaptions(edl, segments, width, height) {
   const styleName = String(edl?.subtitleStyle || 'clean-white').toLowerCase();
   const palette = styleName === 'warm-label'
-    ? { accent: '&H00A6E0FF', accentStroke: '&H004DA8E7', body: '&H00FFF5E2', bodyText: '&H00774D25', support: '&H00FFFFFF' }
+    ? { accent: '&H00288BD8', accentStroke: '&H0073BCF1', body: '&H00FFF5E2', bodyText: '&H00774D25', support: '&H00FFFFFF' }
     : styleName === 'soft-blue'
-      ? { accent: '&H00FFEABF', accentStroke: '&H00FFAF5E', body: '&H00E8F4FF', bodyText: '&H00234D70', support: '&H00FFFFFF' }
-      : { accent: '&H00BFEAFF', accentStroke: '&H00FFAF5E', body: '&H00FFFFFF', bodyText: '&H00FFFFFF', support: '&H00FFFFFF' };
-  const fontSize = edl?.ratio === '16:9' ? 42 : 48;
-  const bodySize = edl?.ratio === '16:9' ? 25 : 29;
+      ? { accent: '&H00D18F2F', accentStroke: '&H00F0BA6F', body: '&H00E8F4FF', bodyText: '&H00234D70', support: '&H00FFFFFF' }
+      : { accent: '&H00FFE88C', accentStroke: '&H00CBAE3C', body: '&H00FFFFFF', bodyText: '&H00FFFFFF', support: '&H00FFFFFF' };
+  const fontSize = edl?.ratio === '16:9' ? 52 : 58;
+  const bodySize = edl?.ratio === '16:9' ? 31 : 35;
   const header = [
     '[Script Info]',
     'ScriptType: v4.00+',
@@ -368,10 +369,17 @@ function buildAssCaptions(edl, segments, width, height) {
     const duration = Math.max(.4, Number(segment.duration) || 0);
     const text = String(segment.text || '').trim();
     const lines = wrapSrtText(text, maxChars).split('\n').filter(Boolean).slice(0, 2);
-    return { segment, index, duration, text, lines };
+    const headline = assHeadlineParts(text, segment.headline);
+    return { segment, index, duration, text, lines, headline };
   });
-  const longestLine = Math.max(1, ...prepared.flatMap(({ lines }) => lines.map((line) => [...line].length)));
-  const lineFontSize = Math.max(edl?.ratio === '16:9' ? 30 : 34, Math.round(fontSize * Math.min(1, maxChars / longestLine)));
+  const keywordScale = 1.34;
+  const weightedLineLength = (line, keyword) => {
+    const keywordIndex = keyword ? line.indexOf(keyword) : -1;
+    return [...line].length + (keywordIndex >= 0 ? [...keyword].length * (keywordScale - 1) : 0);
+  };
+  const longestLine = Math.max(1, ...prepared.flatMap(({ lines, headline }) => lines.map((line) => weightedLineLength(line, headline.keyword))));
+  const lineFontSize = Math.max(edl?.ratio === '16:9' ? 36 : 42, Math.round(fontSize * Math.min(1, maxChars / longestLine)));
+  const keywordFontSize = Math.round(lineFontSize * keywordScale);
   const headlineX = Math.round(width / 2);
   const headlineY = Math.round(height * .67);
   const enterMs = 180;
@@ -379,33 +387,32 @@ function buildAssCaptions(edl, segments, width, height) {
   const renderHeadline = (item, start, end, value, motion, withFade = true) => {
     const lines = wrapSrtText(value, maxChars).split('\n').filter(Boolean).slice(0, 2);
     if (!lines.length) return;
-    const styledLines = lines.map((line) => `{\\c${palette.support}\\3c&H00101010&\\bord1\\shad0}${assEscapeText(line)}`);
+    const headline = assHeadlineParts(value, item.headline);
+    const styledLines = lines.map((line) => {
+      const keywordIndex = headline.keyword ? line.indexOf(headline.keyword) : -1;
+      if (keywordIndex < 0) return `{\\c${palette.support}\\3c&H00101010&\\fs${lineFontSize}\\bord1\\shad0}${assEscapeText(line)}`;
+      const lead = line.slice(0, keywordIndex);
+      const keyword = line.slice(keywordIndex, keywordIndex + headline.keyword.length);
+      const tail = line.slice(keywordIndex + headline.keyword.length);
+      return `{\\c${palette.support}\\3c&H00101010&\\fs${lineFontSize}\\bord1\\shad0}${assEscapeText(lead)}{\\c${palette.accent}\\3c${palette.accentStroke}\\fs${keywordFontSize}\\bord1\\shad0}${assEscapeText(keyword)}{\\c${palette.support}\\3c&H00101010&\\fs${lineFontSize}\\bord1\\shad0}${assEscapeText(tail)}`;
+    });
     const travel = Math.round(width * .045);
     const fade = withFade ? `\\fad(${enterMs},${exitMs})` : '';
     let movement = `\\pos(${headlineX},${headlineY})`;
     if (motion === 'slide-left') movement = `\\move(${headlineX - travel},${headlineY},${headlineX},${headlineY},0,${enterMs})`;
     if (motion === 'slide-right') movement = `\\move(${headlineX + travel},${headlineY},${headlineX},${headlineY},0,${enterMs})`;
     if (motion === 'slide-up') movement = `\\move(${headlineX},${headlineY + travel},${headlineX},${headlineY},0,${enterMs})`;
+    if (motion === 'slide-down') movement = `\\move(${headlineX},${headlineY - travel},${headlineX},${headlineY},0,${enterMs})`;
     events.push(`Dialogue: 2,${assTime(start)},${assTime(end)},Headline,,0,0,0,,{\\an5\\q2\\fs${lineFontSize}${movement}${fade}}${styledLines.join('\\N')}`);
   };
-  prepared.forEach(({ segment, index, duration, text, lines }) => {
+  prepared.forEach(({ segment, index, duration, text, lines, headline }) => {
     const start = cursor;
     const end = cursor + duration;
     cursor = end;
     if (!text) return;
     const motion = captionMotionFor(text, index, segment.motion);
-    if (motion === 'typewriter') {
-      const chars = [...text];
-      const steps = Math.min(chars.length, Math.max(2, Math.ceil(chars.length / 2)));
-      for (let step = 0; step < steps; step += 1) {
-        const stepStart = start + duration * step / steps;
-        const stepEnd = start + duration * (step + 1) / steps;
-        renderHeadline(segment, stepStart, stepEnd, chars.slice(0, Math.ceil(chars.length * (step + 1) / steps)).join(''), 'fade', step === 0);
-      }
-    } else {
-      renderHeadline(segment, start, end, text, motion);
-    }
-    const ruleY = Math.round(height * .67 + (lines.length - 1) * lineFontSize * .62 + lineFontSize * .52);
+    renderHeadline({ ...segment, headline }, start, end, text, motion);
+    const ruleY = Math.round(height * .67 + (lines.length - 1) * lineFontSize * .62 + Math.max(lineFontSize, keywordFontSize) * .52);
     const ruleWidth = Math.round(width * .18);
     const ruleX = Math.round(width / 2 - ruleWidth / 2);
     events.push(`Dialogue: 1,${assTime(start)},${assTime(end)},Rule,,0,0,0,,{\\an7\\bord0\\shad0\\fad(${enterMs},${exitMs})\\pos(${ruleX},${ruleY})\\p1\\c${palette.accent}&}m 0 0 l ${ruleWidth} 0 l ${ruleWidth} 3 l 0 3{\\p0}`);
