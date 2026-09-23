@@ -363,9 +363,9 @@
     ballad: { label: 'Ballad · 温和叙述', apiVoice: 'fable', speed: .98 }
   };
   const subtitleStyles = {
-    'clean-white': { label: '白字阴影', background: 'rgba(8, 10, 13, .68)', color: '#fff', accent: '#9cddff', stroke: '#4d9fff', shadow: true },
-    'soft-blue': { label: '浅蓝卡片', background: 'rgba(232, 244, 255, .94)', color: '#234d70', accent: '#bfeaff', stroke: '#5eafff', shadow: false },
-    'warm-label': { label: '暖色标签', background: 'rgba(255, 245, 226, .95)', color: '#774d25', accent: '#ffe0a6', stroke: '#e7a84d', shadow: false }
+    'clean-white': { label: '白字阴影', background: 'rgba(8, 10, 13, .68)', color: '#fff', accent: '#8ce8ff', accentStroke: '#3caecb', stroke: '#4d9fff', shadow: true },
+    'soft-blue': { label: '浅蓝卡片', background: 'rgba(232, 244, 255, .94)', color: '#234d70', accent: '#2f8fd1', accentStroke: '#6fbaf0', stroke: '#5eafff', shadow: false },
+    'warm-label': { label: '暖色标签', background: 'rgba(255, 245, 226, .95)', color: '#774d25', accent: '#d88b28', accentStroke: '#f1bc73', stroke: '#e7a84d', shadow: false }
   };
   const headlineKeywords = [
     '云端夜景', '城市中心', '行政酒廊', '亲子度假', '智能客房', '沉浸体验', '品质升级', '自在旅居',
@@ -1361,15 +1361,15 @@
     if (!visibleRaw) return;
     const parts = headlineParts(raw, sceneType);
     const unit = Math.min(width, height);
-    let supportSize = Math.round(unit * .055);
+    let supportSize = Math.round(unit * .064);
     const maxWidth = width * .86;
     ctx.font = `800 ${supportSize}px "PingFang SC", sans-serif`;
     const preferredChars = Math.max(10, Math.floor((maxWidth / Math.max(1, supportSize)) * .88));
     const lines = splitHeadlineLines(visibleRaw, preferredChars, 2);
     const lineFit = captionFitScale(preferredChars);
-    supportSize = Math.max(22, Math.round(supportSize * lineFit));
-    const keywordSize = supportSize;
-    const lineHeight = Math.round(supportSize * 1.16);
+    supportSize = Math.max(24, Math.round(supportSize * lineFit));
+    const keywordSize = Math.round(supportSize * 1.34);
+    const lineHeight = Math.round(Math.max(supportSize * 1.18, keywordSize * 1.08));
     const scale = .94 + Math.min(1, progress * 5) * .06;
     const centerX = width / 2 + motionState.offsetX; const centerY = height * .68 + motionState.offsetY;
     ctx.save(); ctx.globalAlpha = motionState.opacity; ctx.translate(centerX, centerY); ctx.scale(scale, scale); ctx.textAlign = 'left';
@@ -1388,12 +1388,12 @@
       ctx.font = `800 ${supportSize}px "PingFang SC", sans-serif`;
       const total = leadWidth + keywordWidth + ctx.measureText(tail).width;
       let x = -total / 2;
-      ctx.fillStyle = '#fff'; ctx.strokeText(lead, x, baseline); ctx.fillText(lead, x, baseline); x += leadWidth;
+      ctx.strokeStyle = 'rgba(10,18,28,.72)'; ctx.fillStyle = style.color; ctx.strokeText(lead, x, baseline); ctx.fillText(lead, x, baseline); x += leadWidth;
       if (keyword) {
         ctx.font = `800 ${keywordSize}px "PingFang SC", sans-serif`;
-        ctx.strokeText(keyword, x, baseline); ctx.fillStyle = '#fff'; ctx.fillText(keyword, x, baseline); x += keywordWidth;
+        ctx.strokeStyle = style.accentStroke || style.stroke; ctx.fillStyle = style.accent; ctx.strokeText(keyword, x, baseline); ctx.fillText(keyword, x, baseline); x += keywordWidth;
       }
-      ctx.font = `800 ${supportSize}px "PingFang SC", sans-serif`; ctx.fillStyle = '#fff'; ctx.strokeText(tail, x, baseline); ctx.fillText(tail, x, baseline);
+      ctx.font = `800 ${supportSize}px "PingFang SC", sans-serif`; ctx.strokeStyle = 'rgba(10,18,28,.72)'; ctx.fillStyle = style.color; ctx.strokeText(tail, x, baseline); ctx.fillText(tail, x, baseline);
     });
     ctx.strokeStyle = style.stroke; ctx.globalAlpha = motionState.opacity; ctx.lineWidth = Math.max(1, unit * .0012); ctx.beginPath();
     const ruleY = ((lines.length - 1) / 2) * lineHeight + unit * .028;
