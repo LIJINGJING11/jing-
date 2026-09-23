@@ -7,3 +7,7 @@ tmp/
 # Local application installers
 BootFrame-*.dmg
 BootFrame-*.zip
+
+# Machine-local API/model settings. API keys are kept in macOS Keychain;
+# this file must never be published with the project.
+demo/.runtime-settings.json
