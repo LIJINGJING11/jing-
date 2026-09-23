@@ -1,0 +1,317 @@
+{
+  "source": "/Users/sigurd/Downloads/早餐时光_1920x1080_72DPI.psd",
+  "width": 1920,
+  "height": 1080,
+  "dpi": 72,
+  "topLevelOrder": [
+    "图层 0",
+    "GRP_01_版面元素_严格分层"
+  ],
+  "leafLayerOrder": [
+    "图层 0",
+    "早餐信息底框_原图比例复刻_透明外部",
+    "DEC_02_顶部花纹_ALPHA",
+    "DEC_03_标题分隔线_ALPHA",
+    "植物叶子_原图五叶复刻_透明底 (1)",
+    "ICON_01_供应时间_ALPHA",
+    "ICON_02_用餐地点_ALPHA",
+    "ICON_03_房卡用餐_ALPHA",
+    "TXT_01_主标题_可编辑",
+    "TXT_02_副标题_可编辑",
+    "TXT_03_供应时间_可编辑",
+    "TXT_04_用餐地点_可编辑",
+    "TXT_05_房卡提示_可编辑"
+  ],
+  "assets": [
+    {
+      "key": "breakfast_background",
+      "name": "图层 0",
+      "src": "./assets/psd-breakfast-time-landscape/breakfast_background.png",
+      "x": 46.328125,
+      "y": 50.0,
+      "w": 107.34375,
+      "h": 100.0,
+      "zIndex": 1,
+      "bbox": [
+        -141,
+        0,
+        1920,
+        1080
+      ],
+      "size": [
+        2061,
+        1080
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "breakfast_info_panel",
+      "name": "早餐信息底框_原图比例复刻_透明外部",
+      "src": "./assets/psd-breakfast-time-landscape/breakfast_info_panel.png",
+      "x": 26.5625,
+      "y": 51.20370370370371,
+      "w": 39.895833333333336,
+      "h": 75.55555555555556,
+      "zIndex": 2,
+      "bbox": [
+        127,
+        145,
+        893,
+        961
+      ],
+      "size": [
+        766,
+        816
+      ],
+      "kind": "smartobject"
+    },
+    {
+      "key": "breakfast_top_ornament",
+      "name": "DEC_02_顶部花纹_ALPHA",
+      "src": "./assets/psd-breakfast-time-landscape/breakfast_top_ornament.png",
+      "x": 27.65625,
+      "y": 22.037037037037038,
+      "w": 15.625,
+      "h": 6.481481481481481,
+      "zIndex": 3,
+      "bbox": [
+        381,
+        203,
+        681,
+        273
+      ],
+      "size": [
+        300,
+        70
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "breakfast_divider",
+      "name": "DEC_03_标题分隔线_ALPHA",
+      "src": "./assets/psd-breakfast-time-landscape/breakfast_divider.png",
+      "x": 27.34375,
+      "y": 49.53703703703704,
+      "w": 32.29166666666667,
+      "h": 2.7777777777777777,
+      "zIndex": 4,
+      "bbox": [
+        215,
+        520,
+        835,
+        550
+      ],
+      "size": [
+        620,
+        30
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "breakfast_leaf_decor",
+      "name": "植物叶子_原图五叶复刻_透明底 (1)",
+      "src": "./assets/psd-breakfast-time-landscape/breakfast_leaf_decor.png",
+      "x": 9.6875,
+      "y": 83.7037037037037,
+      "w": 20.104166666666668,
+      "h": 43.51851851851852,
+      "zIndex": 5,
+      "bbox": [
+        -7,
+        669,
+        379,
+        1139
+      ],
+      "size": [
+        386,
+        470
+      ],
+      "kind": "smartobject"
+    },
+    {
+      "key": "breakfast_icon_time",
+      "name": "ICON_01_供应时间_ALPHA",
+      "src": "./assets/psd-breakfast-time-landscape/breakfast_icon_time.png",
+      "x": 13.802083333333334,
+      "y": 60.64814814814815,
+      "w": 4.6875,
+      "h": 8.333333333333332,
+      "zIndex": 6,
+      "bbox": [
+        220,
+        610,
+        310,
+        700
+      ],
+      "size": [
+        90,
+        90
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "breakfast_icon_location",
+      "name": "ICON_02_用餐地点_ALPHA",
+      "src": "./assets/psd-breakfast-time-landscape/breakfast_icon_location.png",
+      "x": 13.802083333333334,
+      "y": 69.9074074074074,
+      "w": 4.6875,
+      "h": 8.333333333333332,
+      "zIndex": 7,
+      "bbox": [
+        220,
+        710,
+        310,
+        800
+      ],
+      "size": [
+        90,
+        90
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "breakfast_icon_card",
+      "name": "ICON_03_房卡用餐_ALPHA",
+      "src": "./assets/psd-breakfast-time-landscape/breakfast_icon_card.png",
+      "x": 13.802083333333334,
+      "y": 79.16666666666666,
+      "w": 4.6875,
+      "h": 8.333333333333332,
+      "zIndex": 8,
+      "bbox": [
+        220,
+        810,
+        310,
+        900
+      ],
+      "size": [
+        90,
+        90
+      ],
+      "kind": "pixel"
+    }
+  ],
+  "text": [
+    {
+      "key": "breakfast_title",
+      "name": "TXT_01_主标题_可编辑",
+      "value": "早餐时光",
+      "x": 27.057291666666668,
+      "y": 32.96296296296296,
+      "w": 20.46875,
+      "h": 8.703703703703704,
+      "fontSize": 100.0,
+      "lineHeight": 1.2,
+      "color": "#846036",
+      "font": 0,
+      "kind": "source-han-sans",
+      "weight": 500,
+      "letterSpacing": "0",
+      "pointText": true,
+      "zIndex": 9,
+      "bbox": [
+        323,
+        309,
+        716,
+        403
+      ]
+    },
+    {
+      "key": "breakfast_subtitle",
+      "name": "TXT_02_副标题_可编辑",
+      "value": "开启元气满满的一天",
+      "x": 27.057291666666668,
+      "y": 41.94444444444444,
+      "w": 20.46875,
+      "h": 3.888888888888889,
+      "fontSize": 44.0,
+      "lineHeight": 1.2,
+      "color": "#687355",
+      "font": 0,
+      "kind": "source-han-sans",
+      "weight": 500,
+      "letterSpacing": "0",
+      "pointText": true,
+      "zIndex": 10,
+      "bbox": [
+        323,
+        432,
+        716,
+        474
+      ]
+    },
+    {
+      "key": "breakfast_time",
+      "name": "TXT_03_供应时间_可编辑",
+      "value": "供应时间  07:00—10:00",
+      "x": 27.083333333333332,
+      "y": 61.25000000000001,
+      "w": 18.541666666666668,
+      "h": 3.0555555555555554,
+      "fontSize": 34.0,
+      "lineHeight": 1.2,
+      "color": "#687355",
+      "font": 0,
+      "kind": "source-han-sans",
+      "weight": 500,
+      "letterSpacing": "0",
+      "pointText": true,
+      "zIndex": 11,
+      "bbox": [
+        342,
+        645,
+        698,
+        678
+      ]
+    },
+    {
+      "key": "breakfast_location",
+      "name": "TXT_04_用餐地点_可编辑",
+      "value": "用餐地点  二楼全日餐厅",
+      "x": 27.057291666666668,
+      "y": 70.50925925925927,
+      "w": 18.385416666666668,
+      "h": 3.0555555555555554,
+      "fontSize": 34.0,
+      "lineHeight": 1.2,
+      "color": "#687355",
+      "font": 0,
+      "kind": "source-han-sans",
+      "weight": 500,
+      "letterSpacing": "0",
+      "pointText": true,
+      "zIndex": 12,
+      "bbox": [
+        343,
+        745,
+        696,
+        778
+      ]
+    },
+    {
+      "key": "breakfast_card_note",
+      "name": "TXT_05_房卡提示_可编辑",
+      "value": "请凭房卡用餐",
+      "x": 23.125,
+      "y": 79.76851851851852,
+      "w": 10.520833333333334,
+      "h": 3.0555555555555554,
+      "fontSize": 34.0,
+      "lineHeight": 1.2,
+      "color": "#687355",
+      "font": 0,
+      "kind": "source-han-sans",
+      "weight": 500,
+      "letterSpacing": "0",
+      "pointText": true,
+      "zIndex": 13,
+      "bbox": [
+        343,
+        845,
+        545,
+        878
+      ]
+    }
+  ]
+}

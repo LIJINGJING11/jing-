@@ -1,0 +1,9 @@
+.DS_Store
+
+# Dependencies and local build caches
+node_modules/
+tmp/
+
+# Local application installers
+BootFrame-*.dmg
+BootFrame-*.zip

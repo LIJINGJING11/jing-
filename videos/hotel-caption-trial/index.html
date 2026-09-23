@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="zh-CN" data-resolution="landscape">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>酒店高级字幕动效小样</title>
+    <script src="vendor/gsap.min.js"></script>
+    <style>
+      :root {
+        --walnut: #211914;
+        --walnut-soft: rgba(33, 25, 20, 0.78);
+        --walnut-mid: rgba(33, 25, 20, 0.56);
+        --walnut-low: rgba(33, 25, 20, 0.14);
+        --walnut-faint: rgba(33, 25, 20, 0.04);
+        --walnut-bottom: rgba(33, 25, 20, 0.36);
+        --ivory: #f7f0e5;
+        --ivory-soft: rgba(247, 240, 229, 0.86);
+        --ivory-muted: rgba(247, 240, 229, 0.74);
+        --ivory-mark: rgba(247, 240, 229, 0.9);
+        --champagne: #d9bd8c;
+        --champagne-soft: rgba(217, 189, 140, 0.12);
+        --ghost: rgba(67, 44, 28, 0.48);
+        --shadow: rgba(20, 15, 12, 0.3);
+        --font-display: "Songti SC", "Songti TC", "STSong", serif;
+        --font-support: "Hiragino Sans GB", "PingFang SC", "STHeiti", sans-serif;
+      }
+
+      /* Keep the intended macOS Chinese typefaces deterministic in local Chrome. */
+      @font-face { font-family: "Songti SC"; src: local("Songti SC"); }
+      @font-face { font-family: "Songti TC"; src: local("Songti TC"); }
+      @font-face { font-family: "STSong"; src: local("STSong"); }
+      @font-face { font-family: "Hiragino Sans GB"; src: local("Hiragino Sans GB"); }
+      @font-face { font-family: "PingFang SC"; src: local("PingFang SC"); }
+      @font-face { font-family: "STHeiti"; src: local("STHeiti"); }
+
+      * { box-sizing: border-box; }
+
+      html,
+      body {
+        width: 1920px;
+        height: 1080px;
+        margin: 0;
+        overflow: hidden;
+        background: var(--walnut);
+      }
+
+      #stage {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--walnut);
+        color: var(--ivory);
+        font-family: var(--font-support);
+      }
+
+      /* The whole visual is one full-duration clip; scenes are timeline-driven groups inside it. */
+      .clip {
+        position: absolute;
+      }
+
+      #hotel-caption-layer {
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+
+      #room {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transform-origin: 50% 50%;
+      }
+
+      #scrim {
+        position: absolute;
+        inset: 0;
+        background:
+          linear-gradient(90deg, var(--walnut-soft) 0%, var(--walnut-mid) 31%, var(--walnut-low) 66%, var(--walnut-faint) 100%),
+          linear-gradient(0deg, var(--walnut-bottom) 0%, transparent 40%);
+        pointer-events: none;
+      }
+
+      .scene-group {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+
+      .scene-content {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        padding: 120px 160px 120px 196px;
+      }
+
+      .kicker {
+        margin: 0 0 34px;
+        color: var(--champagne);
+        font-family: var(--font-support);
+        font-size: 20px;
+        font-weight: 400;
+        letter-spacing: 0.28em;
+        line-height: 1.4;
+        text-transform: uppercase;
+      }
+
+      .lead {
+        margin: 0 0 7px;
+        color: var(--ivory-soft);
+        font-family: var(--font-display);
+        font-size: 59px;
+        font-weight: 400;
+        letter-spacing: 0.12em;
+        line-height: 1.35;
+      }
+
+      .hero-wrap {
+        position: relative;
+        margin: 0;
+        padding: 0 16px 18px 0;
+        font-family: var(--font-display);
+        font-size: 166px;
+        font-weight: 400;
+        letter-spacing: 0.1em;
+        line-height: 1.16;
+        white-space: nowrap;
+      }
+
+      .hero-ghost {
+        position: absolute;
+        inset: 0 0 18px 0;
+        z-index: 0;
+        color: var(--ghost);
+        transform: translate(9px, 13px);
+        pointer-events: none;
+      }
+
+      /* Equivalent to catalog caption-gradient-fill, with the gradient-fill behavior kept local. */
+      .hero-word {
+        position: relative;
+        z-index: 1;
+        display: inline-block;
+        background: linear-gradient(112deg, var(--ivory) 12%, var(--champagne) 55%, var(--ivory) 92%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+        text-shadow: 0 10px 32px var(--shadow);
+      }
+
+      .hero-word .char {
+        display: inline-block;
+        transform-origin: 50% 100%;
+        background: inherit;
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .foot {
+        margin: 25px 0 0;
+        color: var(--ivory-muted);
+        font-family: var(--font-support);
+        font-size: 25px;
+        font-weight: 300;
+        letter-spacing: 0.12em;
+        line-height: 1.6;
+      }
+
+      .rule {
+        width: 88px;
+        height: 1px;
+        margin-top: 38px;
+        background: linear-gradient(90deg, var(--champagne), var(--champagne-soft));
+        transform-origin: left center;
+      }
+
+      #scene-b .hero-wrap { font-size: 148px; }
+      #scene-b .hero-word {
+        background-image: linear-gradient(112deg, var(--ivory) 10%, var(--champagne) 55%, var(--ivory) 92%);
+      }
+
+      #brand-mark {
+        position: absolute;
+        right: 104px;
+        bottom: 80px;
+        color: var(--ivory-mark);
+        font-family: var(--font-support);
+        font-size: 16px;
+        font-weight: 400;
+        letter-spacing: 0.24em;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="stage"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="8.4"
+      data-fps="30"
+      data-width="1920"
+      data-height="1080"
+    >
+      <div
+        id="hotel-caption-layer"
+        class="clip"
+        data-start="0"
+        data-duration="8.4"
+        data-track-index="0"
+      >
+        <img id="room" data-layout-allow-overflow src="assets/hotel-room.png" alt="" />
+        <div id="scrim" aria-hidden="true"></div>
+
+        <section id="scene-a" class="group scene-group" data-layout-allow-overlap data-layout-allow-overflow aria-label="第一组字幕">
+          <div class="scene-content">
+            <p id="a-kicker" class="kicker">A QUIET STAY · JIADING</p>
+            <p id="a-lead" class="lead" data-layout-allow-overlap>把城市留在窗外</p>
+            <h1 id="a-hero" class="hero-wrap" aria-label="慢下来">
+              <span class="hero-ghost" data-layout-ignore aria-hidden="true">慢下来</span>
+              <span class="hero-word" aria-hidden="true"><span class="char">慢</span><span class="char">下</span><span class="char">来</span></span>
+            </h1>
+            <p id="a-foot" class="foot" data-layout-allow-overlap>让休憩成为此行的风景</p>
+            <div id="a-rule" class="rule" aria-hidden="true"></div>
+          </div>
+        </section>
+
+        <section id="scene-b" class="group scene-group" data-layout-allow-overlap aria-label="第二组字幕">
+          <div class="scene-content">
+            <p id="b-kicker" class="kicker">A BETTER NIGHT</p>
+            <p id="b-lead" class="lead" data-layout-allow-overlap>把每个夜晚</p>
+            <h2 id="b-hero" class="hero-wrap" aria-label="留给好眠">
+              <span class="hero-ghost" data-layout-ignore aria-hidden="true">留给好眠</span>
+              <span class="hero-word" aria-hidden="true"><span class="char">留</span><span class="char">给</span><span class="char">好</span><span class="char">眠</span></span>
+            </h2>
+            <p id="b-foot" class="foot" data-layout-allow-overlap>停留，也是一种抵达</p>
+            <div id="b-rule" class="rule" aria-hidden="true"></div>
+          </div>
+        </section>
+
+        <div id="brand-mark" aria-hidden="true">HOTEL · STAY IN YOUR OWN RHYTHM</div>
+      </div>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      const entrance = { immediateRender: false };
+
+      // Slow push-in and scrim are the single full-duration visual treatment.
+      tl.fromTo("#room", { scale: 1.025 }, { scale: 1.055, duration: 8.4, ease: "sine.inOut", ...entrance }, 0);
+      tl.fromTo("#scrim", { opacity: 0.72 }, { opacity: 1, duration: 0.9, ease: "sine.out", ...entrance }, 0);
+
+      // Explicit resting baselines keep seeks before each scene's first beat deterministic.
+      tl.set("#scene-a", { autoAlpha: 0, y: 0 }, 0);
+      tl.set("#scene-b", { autoAlpha: 0, y: 0 }, 0);
+
+      // Scene A: editorial hierarchy + a restrained baseline fold on the hero characters.
+      tl.to("#scene-a", { autoAlpha: 1, duration: 0.22, ease: "sine.out" }, 0.12);
+      tl.fromTo("#a-kicker", { autoAlpha: 0, y: 15 }, { autoAlpha: 1, y: 0, duration: 0.48, ease: "power2.out", ...entrance }, 0.26);
+      tl.fromTo("#a-lead", { autoAlpha: 0, y: 25 }, { autoAlpha: 1, y: 0, duration: 0.58, ease: "power3.out", ...entrance }, 0.5);
+      tl.fromTo(
+        "#a-hero .char",
+        { autoAlpha: 0, y: 30, scaleY: 0.96 },
+        { autoAlpha: 1, y: 0, scaleY: 1, duration: 0.72, stagger: 0.085, ease: "power3.out", ...entrance },
+        0.94,
+      );
+      tl.fromTo("#a-foot", { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.5, ease: "sine.out", ...entrance }, 1.52);
+      tl.fromTo("#a-rule", { autoAlpha: 0, scaleX: 0 }, { autoAlpha: 1, scaleX: 1, duration: 0.65, ease: "power2.out", ...entrance }, 1.76);
+
+      // Restrained crossfade between the two breath groups.
+      tl.to("#scene-a", { y: -12, autoAlpha: 0, duration: 0.4, ease: "power2.in" }, 3.82);
+      tl.to("#scene-b", { autoAlpha: 1, y: 0, duration: 0.32, ease: "power2.out" }, 4.05);
+
+      // Scene B: catalog-style editorial emphasis with a clean character cascade.
+      tl.fromTo("#b-kicker", { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.42, ease: "sine.out", ...entrance }, 4.46);
+      tl.fromTo("#b-lead", { autoAlpha: 0, y: 22 }, { autoAlpha: 1, y: 0, duration: 0.52, ease: "power3.out", ...entrance }, 4.72);
+      tl.fromTo(
+        "#b-hero .char",
+        { autoAlpha: 0, y: 26, scaleY: 0.96 },
+        { autoAlpha: 1, y: 0, scaleY: 1, duration: 0.64, stagger: 0.075, ease: "power3.out", ...entrance },
+        5.12,
+      );
+      tl.fromTo("#b-foot", { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.48, ease: "sine.out", ...entrance }, 5.82);
+      tl.fromTo("#b-rule", { autoAlpha: 0, scaleX: 0 }, { autoAlpha: 1, scaleX: 1, duration: 0.62, ease: "power2.out", ...entrance }, 6.04);
+      tl.fromTo("#brand-mark", { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.55, ease: "power2.out", ...entrance }, 6.52);
+      tl.to("#scene-b", { autoAlpha: 0, duration: 0.18, ease: "sine.in" }, 8.12);
+
+      window.__timelines.main = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>

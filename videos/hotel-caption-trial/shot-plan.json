@@ -1,0 +1,50 @@
+{
+  "category": "kinetic-type",
+  "duration_s": 8.4,
+  "fps": 30,
+  "canvas": {
+    "w": 1920,
+    "h": 1080,
+    "aspect": "16:9"
+  },
+  "style": "A restrained, premium hotel film with editorial Chinese typography, inspired by the two Xiaohongshu subtitle references. Use the existing hotel-room still as a recognizable, softly scrimmed full-frame backdrop with a very slow push-in; no new external assets or narration. Keep generous negative space and protect the bed and room center. Walnut, warm ivory, and champagne gold only. One dominant motion idea: the first hero phrase folds gently on its baseline, then the second caption arrives in a clean character cascade, joined by one restrained crossfade.",
+  "palette": [
+    "#211914",
+    "#F7F0E5",
+    "#D9BD8C"
+  ],
+  "font": "Songti SC",
+  "beats": [36, 78, 126, 180, 228],
+  "export": "mp4",
+  "asset_needs": [],
+  "content": {
+    "scenes": [
+      {
+        "id": "outside-city",
+        "start": 0.0,
+        "end": 4.2,
+        "text": "把城市留在窗外\n慢下来\n让休憩成为此行的风景",
+        "emphasis_words": [
+          "慢下来",
+          "此行的风景"
+        ],
+        "emotion": "宁静、释然；Hook → Build → Resolve",
+        "motion": "将三行排在房间较暗的留白侧，保持不遮挡床与空间中心。首行轻柔淡入并上浮；“慢下来”作为主标题，以基线为轴做小角度、低速的透视折入，中文字逐字错开约0.08秒；末行随后柔和显现。香槟金仅用于细线或少量重点字。落稳后留出清晰阅读停顿。",
+        "beats": [12, 42, 84, 114]
+      },
+      {
+        "id": "night-of-rest",
+        "start": 4.2,
+        "end": 8.4,
+        "text": "把每个夜晚\n留给好眠\n停留，也是一种抵达",
+        "emphasis_words": [
+          "留给好眠",
+          "一种抵达"
+        ],
+        "emotion": "安心、安定；Hook → Build → Resolve",
+        "motion": "与上一组文字做一次克制的柔和交叉淡化；三行以清晰级联依次进入，“留给好眠”保持最大字号并逐字轻柔显现，末行作为安静的收束句落定。保持暖象牙色为主、香槟金为点缀，末尾留出可读停顿并自然淡出。",
+        "beats": [138, 174, 210, 237]
+      }
+    ]
+  }
+}
