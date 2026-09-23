@@ -94,6 +94,10 @@ let COMPANY_IMAGE_QUALITY = process.env.COMPANY_IMAGE_QUALITY || PERSISTED_CONFI
 let COMPANY_VIDEO_API_BASE_URL = (process.env.COMPANY_VIDEO_API_BASE_URL || PERSISTED_CONFIG.videoApiBaseUrl || 'https://live-turing.cn.llm.tcljd.com/api/v1').replace(/\/+$/, '');
 let COMPANY_VIDEO_MODEL = process.env.COMPANY_VIDEO_MODEL || PERSISTED_CONFIG.videoModel || 'doubao-seedance-2-5-260628';
 let COMPANY_AUDIO_MODEL = process.env.COMPANY_AUDIO_MODEL || PERSISTED_CONFIG.audioModel || 'turing/tts-1';
+// Text generation uses the Turing chat-completions gateway, separate from the
+// image gateway so a text request cannot accidentally hit an image endpoint.
+let COMPANY_TEXT_API_BASE_URL = (process.env.COMPANY_TEXT_API_BASE_URL || PERSISTED_CONFIG.textApiBaseUrl || 'https://live-turing.cn.llm.tcljd.com/api/v1').replace(/\/+$/, '');
+let COMPANY_TEXT_MODEL = process.env.COMPANY_TEXT_MODEL || PERSISTED_CONFIG.textModel || 'turing/deepseek-v3-2';
 // Lightweight vision model used for automatic scene labels and smart EDL.
 // It accepts image_url inputs on the company gateway and is fast enough to
 // tag a batch of hotel thumbnails during upload.
@@ -921,6 +925,117 @@ function extractJsonObject(value) {
   return JSON.parse(fenced.slice(first, last + 1));
 }
 
+function modelContentText(payload) {
+  const content = payload?.choices?.[0]?.message?.content ?? payload?.output_text ?? payload?.output ?? '';
+  if (Array.isArray(content)) return content.map(item => typeof item === 'string' ? item : item?.text || '').join('');
+  return String(content || '');
+}
+
+function extractJsonValue(value) {
+  const text = String(value || '').trim();
+  const fenced = text.match(/```(?:json)?\s*([\s\S]*?)\s*```/i)?.[1]?.trim() || text;
+  try { return JSON.parse(fenced); } catch { /* try the first JSON object/array below */ }
+  const objectStart = fenced.indexOf('{');
+  const arrayStart = fenced.indexOf('[');
+  const starts = [objectStart, arrayStart].filter(index => index >= 0);
+  if (!starts.length) throw new Error('文本模型没有返回有效的 JSON');
+  const start = Math.min(...starts);
+  const end = Math.max(fenced.lastIndexOf('}'), fenced.lastIndexOf(']'));
+  if (end <= start) throw new Error('文本模型没有返回完整的 JSON');
+  return JSON.parse(fenced.slice(start, end + 1));
+}
+
+function cleanGeneratedCopy(value) {
+  const text = String(value || '')
+    .replace(/[\r\n]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .replace(/^\s*(?:文案|版本|方案)\s*[：:]\s*/i, '')
+    .replace(/^["“”「」]+|["“”「」]+$/g, '')
+    .trim();
+  if (text.length < 18 || text.length > 400) return '';
+  if (/[`*_#<>]/.test(text)) return '';
+  if (/根据你的需求|作为AI|以下是|文案如下|位置去哪都方便|有地理位置[^。！？]{0,30}[、，]|这里有[^。！？]{0,50}从入住到离店/.test(text)) return '';
+  return /[。！？!?]$/.test(text) ? text : `${text}。`;
+}
+
+async function generateCopy(req, res) {
+  let payload;
+  try {
+    const raw = await readRequestBody(req);
+    payload = JSON.parse(raw.toString('utf8') || '{}');
+  } catch (error) {
+    json(res, 400, { error: error.message || '文案请求不是有效的 JSON' });
+    return;
+  }
+
+  const apiKey = sharedApiKey();
+  if (!apiKey) {
+    json(res, 503, { error: '公司文本模型未配置 API Key，请先在「配置 API」中保存公司 Key。', code: 'TEXT_MODEL_NOT_CONFIGURED' });
+    return;
+  }
+  const topic = String(payload.topic || '').trim().slice(0, 120);
+  const highlights = Array.isArray(payload.highlights)
+    ? payload.highlights.map(item => String(item || '').trim()).filter(Boolean).slice(0, 12)
+    : [];
+  const audience = String(payload.audience || '').trim().slice(0, 80);
+  const offer = String(payload.offer || '').trim().slice(0, 120);
+  const scenes = Array.isArray(payload.sceneLabels)
+    ? payload.sceneLabels.map(item => String(item || '').trim()).filter(Boolean).slice(0, 8)
+    : [];
+  if (!topic || !highlights.length) {
+    json(res, 400, { error: '请先填写酒店主题和至少一个亮点。' });
+    return;
+  }
+
+  const prompt = [
+    '你是中文酒店短视频口播文案编辑，负责把用户提供的碎片整理成自然、准确、能直接配音的成稿。',
+    '请严格只返回 JSON：{"variants":["文案1","文案2","文案3","文案4","文案5"]}，不要 Markdown、编号、引号或解释。',
+    '生成 5 条不同写法；每条约 55 至 110 个汉字，分成 2 至 4 句，适合 15 秒左右的酒店短视频口播。',
+    '必须把亮点自然放进句子里，不要把形容词、设施和时间线硬拼在一起。禁止写出类似“这里有地理位置优越、泳池和客房，从入住到离店……”或“位置去哪都方便”的病句；涉及位置时请说“出行方便”或“去周边很方便”。',
+    '可以调整语序、补充必要的连接词和标点，但不得新增用户没有提供的酒店设施、距离、价格、优惠、交通、服务承诺、品牌或事实。',
+    '主题如果是酒店名或地点要原样保留；受众和优惠为空时不要自行补写。语气自然、克制、有画面感，不要浮夸，不要重复同一个句式。',
+    JSON.stringify({ topic, highlights, audience, offer, sceneLabels: scenes })
+  ].join('\n');
+
+  let response;
+  try {
+    response = await fetch(`${COMPANY_TEXT_API_BASE_URL}/chat/completions`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: COMPANY_TEXT_MODEL,
+        temperature: 0.45,
+        max_tokens: 1200,
+        messages: [
+          { role: 'system', content: '你只输出经过中文病句检查的酒店短视频文案 JSON。' },
+          { role: 'user', content: prompt }
+        ]
+      }),
+      signal: AbortSignal.timeout(60000)
+    });
+  } catch (error) {
+    json(res, 502, { error: error?.name === 'TimeoutError' ? '公司文本模型响应超时，请稍后重试。' : '无法连接公司文本模型。', code: 'TEXT_MODEL_UNAVAILABLE' });
+    return;
+  }
+
+  const upstream = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    const message = upstream?.error?.message || upstream?.message || upstream?.error || `公司文本模型接口返回 ${response.status}`;
+    json(res, response.status, { error: message, code: response.status === 403 ? 'TEXT_MODEL_FORBIDDEN' : 'TEXT_MODEL_FAILED' });
+    return;
+  }
+  try {
+    const parsed = extractJsonValue(modelContentText(upstream));
+    const rawVariants = Array.isArray(parsed) ? parsed : Array.isArray(parsed?.variants) ? parsed.variants : [];
+    const variants = [...new Set(rawVariants.map(cleanGeneratedCopy).filter(Boolean))].slice(0, 5);
+    if (variants.length < 3) throw new Error('文本模型返回的合格文案少于 3 条，请重试。');
+    while (variants.length < 5) variants.push(variants[variants.length % Math.max(1, variants.length)]);
+    json(res, 200, { variants, source: 'turing-text', model: COMPANY_TEXT_MODEL });
+  } catch (error) {
+    json(res, 502, { error: error.message || '文本模型返回内容无法解析，请重试。', code: 'INVALID_COPY_RESULT' });
+  }
+}
+
 async function analyzeAssetTags(req, res) {
   let payload;
   try {
@@ -1654,6 +1769,8 @@ function configStatus() {
     videoApiBaseUrl: COMPANY_VIDEO_API_BASE_URL,
     videoModel: COMPANY_VIDEO_MODEL,
     audioModel: COMPANY_AUDIO_MODEL,
+    textApiBaseUrl: COMPANY_TEXT_API_BASE_URL,
+    textModel: COMPANY_TEXT_MODEL,
     editModel: COMPANY_EDIT_MODEL,
     asrModel: COMPANY_ASR_MODEL,
     actorAuthorization: provider === 'company' ? COMPANY_ACTOR_AUTHORIZATION : '',
@@ -1720,6 +1837,8 @@ async function configureModel(req, res) {
     const nextVideoBaseUrl = validHttpUrl(payload.videoApiBaseUrl, COMPANY_VIDEO_API_BASE_URL);
     const nextVideoModel = cleanConfigText(payload.videoModel, COMPANY_VIDEO_MODEL, 120);
     const nextAudioModel = cleanConfigText(payload.audioModel, COMPANY_AUDIO_MODEL, 120);
+    const nextTextBaseUrl = validHttpUrl(payload.textApiBaseUrl, COMPANY_TEXT_API_BASE_URL);
+    const nextTextModel = cleanConfigText(payload.textModel, COMPANY_TEXT_MODEL, 120);
     const nextEditModel = cleanConfigText(payload.editModel, COMPANY_EDIT_MODEL, 120);
     const nextAsrModel = cleanConfigText(payload.asrModel, COMPANY_ASR_MODEL, 120);
     if (provider === 'company') {
@@ -1747,6 +1866,8 @@ async function configureModel(req, res) {
     COMPANY_VIDEO_API_BASE_URL = nextVideoBaseUrl;
     COMPANY_VIDEO_MODEL = nextVideoModel;
     COMPANY_AUDIO_MODEL = nextAudioModel;
+    COMPANY_TEXT_API_BASE_URL = nextTextBaseUrl;
+    COMPANY_TEXT_MODEL = nextTextModel;
     COMPANY_EDIT_MODEL = nextEditModel;
     COMPANY_ASR_MODEL = nextAsrModel;
     MODEL_PROVIDER = provider;
@@ -1760,6 +1881,8 @@ async function configureModel(req, res) {
       videoModel: COMPANY_VIDEO_MODEL,
       videoApiBaseUrl: COMPANY_VIDEO_API_BASE_URL,
       audioModel: COMPANY_AUDIO_MODEL,
+      textModel: COMPANY_TEXT_MODEL,
+      textApiBaseUrl: COMPANY_TEXT_API_BASE_URL,
       editModel: COMPANY_EDIT_MODEL,
       asrModel: COMPANY_ASR_MODEL,
       actorAuthorization: COMPANY_ACTOR_AUTHORIZATION,
@@ -1867,6 +1990,10 @@ const server = createServer(async (req, res) => {
     }
     if (req.method === 'POST' && url.pathname === '/api/generate-audio') {
       await generateAudio(req, res);
+      return;
+    }
+    if (req.method === 'POST' && url.pathname === '/api/generate-copy') {
+      await generateCopy(req, res);
       return;
     }
     if (req.method === 'GET') {

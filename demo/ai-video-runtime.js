@@ -683,6 +683,50 @@
     ];
   }
 
+  async function requestCopyVariants() {
+    const endpoint = smartEndpoint('/api/generate-copy');
+    if (!endpoint) throw new Error('当前页面由 file:// 直接打开，请通过酒店素材工坊本机服务访问。');
+    const splitList = (value) => [...new Set(String(value || '').split(/[，,、；;|]+/).map((item) => item.replace(/\s+/g, ' ').trim()).filter(Boolean))];
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        topic: String($('#aiVideoTopic')?.value || '').trim(),
+        highlights: splitList($('#aiVideoHighlights')?.value),
+        audience: String($('#aiVideoAudience')?.value || '').trim(),
+        offer: String($('#aiVideoOffer')?.value || '').trim(),
+        sceneLabels: selectedSceneLabels()
+      })
+    });
+    const payload = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(payload?.error || `公司文本模型返回 ${response.status}`);
+    const variants = Array.isArray(payload?.variants) ? payload.variants.map((item) => String(item || '').trim()).filter(Boolean) : [];
+    if (variants.length < 3) throw new Error('公司文本模型返回的合格文案不足，请重新生成。');
+    return variants.slice(0, 5);
+  }
+
+  async function generateCopyOptions() {
+    invalidateSeedanceResult();
+    const button = $('#aiVideoGenerateCopy');
+    if (!button) return;
+    button.disabled = true;
+    button.textContent = '正在调用公司文本模型…';
+    setStatus('正在调用公司 Turing 文本模型，检查病句并生成 5 条口播文案…');
+    try {
+      const variants = await requestCopyVariants();
+      state.copyOptions = variants.map((text, index) => ({ text, selected: index === 0 }));
+      syncSelectedCopy();
+      renderCopy();
+      button.textContent = '✦ 重新生成 5 条文案';
+      setStatus('已使用公司 Turing 文本模型生成文案；请选一条确认后再生成视频。', 'ready');
+    } catch (error) {
+      setStatus(`公司文本模型生成失败：${error?.message || '请检查文本模型配置后重试。'}`, 'error');
+    } finally {
+      button.disabled = false;
+      if (button.textContent === '正在调用公司文本模型…') button.textContent = '✦ 重新生成 5 条文案';
+    }
+  }
+
   function renderCopy() {
     const list = $('#aiVideoCopyList');
     if (!list) return;
@@ -1811,7 +1855,7 @@
       state.musicTrack = event.target.value;
       setStatus(`已选择${musicTracks[state.musicTrack] || '背景音乐'}。`, 'ready');
     });
-    $('#aiVideoGenerateCopy')?.addEventListener('click', () => { invalidateSeedanceResult(); const button = $('#aiVideoGenerateCopy'); button.disabled = true; button.textContent = '正在生成…'; window.setTimeout(() => { state.copyOptions = buildCopyVariants().map((text, index) => ({ text, selected: index === 0 })); syncSelectedCopy(); renderCopy(); button.textContent = '✦ 重新生成 5 条文案'; setStatus('已生成 5 条文案，选择一条并确认后即可生成视频。', 'ready'); }, 520); });
+    $('#aiVideoGenerateCopy')?.addEventListener('click', generateCopyOptions);
     $('#aiVideoUseCopy')?.addEventListener('click', generateVideo); $('#aiVideoGenerateVideo')?.addEventListener('click', generateVideo); $('#aiVideoExportButton')?.addEventListener('click', exportVideo);
     $('#aiVideoEditButton')?.addEventListener('click', () => { const controls = $('#aiVideoEditorControls'); controls.hidden = !controls.hidden; if (!controls.hidden) { $('#aiVideoEditCopy').value = state.copy; $('#aiVideoEditDuration').value = String(state.duration); controls.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); } });
     $('#aiVideoApplyEdit')?.addEventListener('click', () => { const nextDuration = Number($('#aiVideoEditDuration').value) || state.duration; const nextCopy = $('#aiVideoEditCopy').value.trim() || state.copy; invalidateSeedanceResult(); rescaleSegments(state.duration, nextDuration); if (nextCopy !== state.copy && state.segments.length) { const parts = nextCopy.split(/[。！？]/).map((item) => item.trim()).filter(Boolean); state.segments.forEach((segment, index) => { if (parts[index]) segment.text = parts[index]; }); } state.copy = nextCopy; state.duration = nextDuration; $('#aiVideoResultPanel').hidden = true; setStatus('文案或时长已修改，请重新生成，让 Turing 配音与成片保持一致。', 'ready'); });
