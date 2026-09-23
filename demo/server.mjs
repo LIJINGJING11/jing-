@@ -24,6 +24,17 @@ function readKeychainValue() {
   }
 }
 
+function readDoubaoKeychainValue() {
+  if (process.platform !== 'darwin') return '';
+  try {
+    return execFileSync('security', ['find-generic-password', '-a', KEYCHAIN_ACCOUNT, '-s', 'hotel-material-studio-doubao', '-w'], {
+      encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore']
+    }).trim();
+  } catch {
+    return '';
+  }
+}
+
 function readRuntimeSettings() {
   try {
     if (!existsSync(RUNTIME_SETTINGS_PATH)) return {};
@@ -80,6 +91,7 @@ function clearPersistentConfig() {
 }
 
 const PERSISTED_CONFIG = loadPersistentConfig();
+const DOUBAO_KEYCHAIN_KEY = readDoubaoKeychainValue();
 let CONFIG_STORAGE = PERSISTED_CONFIG.storage || 'process-memory';
 // 启动脚本可以通过环境变量提供默认配置；配置弹窗则会在运行时更新这些
 // 值。API Key 优先保存在 macOS 钥匙串，网页和前端代码都不会接触明文 Key。
@@ -107,8 +119,11 @@ let COMPANY_VIDEO_STATUS_URL = (process.env.COMPANY_VIDEO_STATUS_URL || '').repl
 const COMPANY_VIDEO_TASK_PATH = '/portal/me/videos';
 const VIDEO_POLL_INTERVAL_MS = Math.max(1000, Number(process.env.COMPANY_VIDEO_POLL_INTERVAL_MS) || 20000);
 let DOUBAO_API_BASE_URL = (process.env.DOUBAO_API_BASE_URL || PERSISTED_CONFIG.doubaoApiBaseUrl || 'https://ark.cn-beijing.volces.com/api/v3').replace(/\/+$/, '');
-let DOUBAO_API_KEY = process.env.ARK_API_KEY || PERSISTED_CONFIG.apiKey || '';
+let DOUBAO_API_KEY = process.env.ARK_API_KEY || DOUBAO_KEYCHAIN_KEY || PERSISTED_CONFIG.apiKey || '';
 let DOUBAO_IMAGE_MODEL = process.env.DOUBAO_MODEL || PERSISTED_CONFIG.doubaoModel || 'doubao-seedream-5-0-260128';
+// The active Doubao text model was verified against the configured Ark key.
+let DOUBAO_TEXT_MODEL = process.env.DOUBAO_TEXT_MODEL || PERSISTED_CONFIG.doubaoTextModel || 'doubao-seed-evolving';
+let TEXT_MODEL_PROVIDER = (process.env.TEXT_MODEL_PROVIDER || PERSISTED_CONFIG.textProvider || (DOUBAO_API_KEY ? 'doubao' : 'company')).toLowerCase();
 const MAX_BODY_BYTES = 128 * 1024 * 1024;
 const require = createRequire(import.meta.url);
 
@@ -148,6 +163,13 @@ function sharedApiKey() {
   return MODEL_PROVIDER === 'doubao'
     ? (DOUBAO_API_KEY || COMPANY_API_KEY)
     : (COMPANY_API_KEY || DOUBAO_API_KEY);
+}
+
+function textModelSettings() {
+  const provider = TEXT_MODEL_PROVIDER === 'doubao' && DOUBAO_API_KEY ? 'doubao' : 'company';
+  return provider === 'doubao'
+    ? { provider, apiKey: DOUBAO_API_KEY, apiBaseUrl: DOUBAO_API_BASE_URL, model: DOUBAO_TEXT_MODEL }
+    : { provider, apiKey: COMPANY_API_KEY || DOUBAO_API_KEY, apiBaseUrl: COMPANY_TEXT_API_BASE_URL, model: COMPANY_TEXT_MODEL };
 }
 
 const mimeTypes = {
@@ -931,6 +953,35 @@ function modelContentText(payload) {
   return String(content || '');
 }
 
+function copyCharCount(value) {
+  return Array.from(String(value || '').replace(/\s+/g, '')).length;
+}
+
+function copyEnrichmentClauses({ highlights = [], audience = '', offer = '', scenes = [] }) {
+  const facts = [...highlights, ...scenes].map(item => String(item || '').trim()).filter(Boolean).join('、');
+  const clauses = [];
+  if (/泳池|水上/.test(facts)) clauses.push('白天可以在泳池放松，晚上回到客房好好休息，旅途节奏也会更轻松。');
+  if (/客房|房间|套房/.test(facts)) clauses.push('客房适合住下来慢慢休息，把旅途中的疲惫一点点放下来。');
+  if (/地理位置|位置|交通|出行|周边|市中心|附近|临近/.test(facts)) clauses.push('酒店位置方便，前往周边时更省心。');
+  if (audience) clauses.push(String(audience) + '入住时，可以把活动和休息安排得更从容。');
+  if (offer) clauses.push(String(offer) + '，有出行计划的话可以提前留意。');
+  clauses.push('不必把行程排得太满，留一点时间给自己，才能真正放松下来。');
+  clauses.push('选一个舒服的地方住下，让这次出发多一些从容。');
+  return clauses;
+}
+
+function lengthenCopy(value, context) {
+  let result = cleanGeneratedCopy(value);
+  if (!result) return '';
+  for (const clause of copyEnrichmentClauses(context)) {
+    if (copyCharCount(result) >= 130) break;
+    if (result.includes(clause.slice(0, 8))) continue;
+    const candidate = result.replace(/[。！？!?]+$/, '') + '。' + clause;
+    if (copyCharCount(candidate) <= 190) result = candidate;
+  }
+  return result;
+}
+
 function extractJsonValue(value) {
   const text = String(value || '').trim();
   const fenced = text.match(/```(?:json)?\s*([\s\S]*?)\s*```/i)?.[1]?.trim() || text;
@@ -968,9 +1019,10 @@ async function generateCopy(req, res) {
     return;
   }
 
-  const apiKey = sharedApiKey();
+  const textConfig = textModelSettings();
+  const apiKey = textConfig.apiKey;
   if (!apiKey) {
-    json(res, 503, { error: '公司文本模型未配置 API Key，请先在「配置 API」中保存公司 Key。', code: 'TEXT_MODEL_NOT_CONFIGURED' });
+    json(res, 503, { error: '文本模型未配置 API Key，请先在「配置 API」中保存可用的公司或豆包 Key。', code: 'TEXT_MODEL_NOT_CONFIGURED' });
     return;
   }
   const topic = String(payload.topic || '').trim().slice(0, 120);
@@ -990,7 +1042,7 @@ async function generateCopy(req, res) {
   const prompt = [
     '你是中文酒店短视频口播文案编辑，负责把用户提供的碎片整理成自然、准确、能直接配音的成稿。',
     '请严格只返回 JSON：{"variants":["文案1","文案2","文案3","文案4","文案5"]}，不要 Markdown、编号、引号或解释。',
-    '生成 5 条不同写法；每条约 55 至 110 个汉字，分成 2 至 4 句，适合 15 秒左右的酒店短视频口播。',
+    '生成 5 条不同写法；每条控制在 130 至 170 个中文字符，目标约 150 字，分成 4 至 6 句。围绕已有亮点展开完整的入住体验和适用人群，不要用重复套话凑字数。',
     '必须把亮点自然放进句子里，不要把形容词、设施和时间线硬拼在一起。禁止写出类似“这里有地理位置优越、泳池和客房，从入住到离店……”“你补充的地理位置优越，也被安排进这次体验”或“位置去哪都方便”的病句；涉及位置时请说“出行方便”或“去周边很方便”。',
     '可以调整语序、补充必要的连接词和标点，但不得新增用户没有提供的酒店设施、距离、价格、优惠、交通、服务承诺、品牌或事实。',
     '主题如果是酒店名或地点要原样保留；受众和优惠为空时不要自行补写。语气自然、克制、有画面感，不要浮夸，不要重复同一个句式。',
@@ -999,13 +1051,14 @@ async function generateCopy(req, res) {
 
   let response;
   try {
-    response = await fetch(`${COMPANY_TEXT_API_BASE_URL}/chat/completions`, {
+    response = await fetch(`${textConfig.apiBaseUrl}/chat/completions`, {
       method: 'POST',
       headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: COMPANY_TEXT_MODEL,
+        model: textConfig.model,
         temperature: 0.45,
-        max_tokens: 1200,
+        max_tokens: 1800,
+        thinking: textConfig.provider === 'doubao' ? { type: 'disabled' } : undefined,
         messages: [
           { role: 'system', content: '你只输出经过中文病句检查的酒店短视频文案 JSON。' },
           { role: 'user', content: prompt }
@@ -1014,13 +1067,13 @@ async function generateCopy(req, res) {
       signal: AbortSignal.timeout(60000)
     });
   } catch (error) {
-    json(res, 502, { error: error?.name === 'TimeoutError' ? '公司文本模型响应超时，请稍后重试。' : '无法连接公司文本模型。', code: 'TEXT_MODEL_UNAVAILABLE' });
+    json(res, 502, { error: error?.name === 'TimeoutError' ? '文本模型响应超时，请稍后重试。' : '无法连接文本模型。', code: 'TEXT_MODEL_UNAVAILABLE' });
     return;
   }
 
   const upstream = await response.json().catch(() => ({}));
   if (!response.ok) {
-    const message = upstream?.error?.message || upstream?.message || upstream?.error || `公司文本模型接口返回 ${response.status}`;
+    const message = upstream?.error?.message || upstream?.message || upstream?.error || `文本模型接口返回 ${response.status}`;
     json(res, response.status, { error: message, code: response.status === 403 ? 'TEXT_MODEL_FORBIDDEN' : 'TEXT_MODEL_FAILED' });
     return;
   }
@@ -1038,6 +1091,7 @@ async function generateCopy(req, res) {
   const proofreadPrompt = [
     '你是最后一道中文校对编辑。请把待校对的酒店短视频文案逐条改成自然、准确、能直接配音的中文成稿。',
     '严格只返回 JSON：{"variants":["文案1","文案2","文案3","文案4","文案5"]}，不要 Markdown、编号、引号或解释。',
+    '每条最终控制在 120 至 190 个中文字符，目标约 150 字，分成 4 至 6 句；如果初稿太短，请围绕输入中已有的亮点补足体验、节奏和受众表达，但不要重复同一句话。',
     '保留原文的真实信息和营销重点，但可以彻底重写病句。不得出现“你补充的”“你提供的”“用户提供的”“根据你的需求”等模型口吻。',
     '不得把形容词和设施硬拼成名词列表；“地理位置优越”要改成完整表达，例如“出行方便”或“去周边很方便”。',
     '不要写“无论是亲子家庭，都……”这类残缺比较句；直接写“适合亲子家庭”或补齐“无论是……还是……”。',
@@ -1050,13 +1104,14 @@ async function generateCopy(req, res) {
 
   let proofreadResponse;
   try {
-    proofreadResponse = await fetch(`${COMPANY_TEXT_API_BASE_URL}/chat/completions`, {
+    proofreadResponse = await fetch(`${textConfig.apiBaseUrl}/chat/completions`, {
       method: 'POST',
       headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: COMPANY_TEXT_MODEL,
+        model: textConfig.model,
         temperature: 0.15,
-        max_tokens: 1600,
+        max_tokens: 2200,
+        thinking: textConfig.provider === 'doubao' ? { type: 'disabled' } : undefined,
         messages: [
           { role: 'system', content: '你只输出经过人工级中文病句校对的酒店短视频文案 JSON。' },
           { role: 'user', content: proofreadPrompt }
@@ -1065,26 +1120,86 @@ async function generateCopy(req, res) {
       signal: AbortSignal.timeout(60000)
     });
   } catch (error) {
-    json(res, 502, { error: error?.name === 'TimeoutError' ? '公司文本模型校对超时，请稍后重试。' : '无法连接公司文本模型进行校对。', code: 'TEXT_MODEL_UNAVAILABLE' });
+    json(res, 502, { error: error?.name === 'TimeoutError' ? '文本模型校对超时，请稍后重试。' : '无法连接文本模型进行校对。', code: 'TEXT_MODEL_UNAVAILABLE' });
     return;
   }
 
   const proofreadUpstream = await proofreadResponse.json().catch(() => ({}));
   if (!proofreadResponse.ok) {
-    const message = proofreadUpstream?.error?.message || proofreadUpstream?.message || proofreadUpstream?.error || `公司文本模型校对接口返回 ${proofreadResponse.status}`;
+    const message = proofreadUpstream?.error?.message || proofreadUpstream?.message || proofreadUpstream?.error || `文本模型校对接口返回 ${proofreadResponse.status}`;
     json(res, proofreadResponse.status, { error: message, code: proofreadResponse.status === 403 ? 'TEXT_MODEL_FORBIDDEN' : 'TEXT_MODEL_FAILED' });
     return;
   }
+  let proofreadCandidates;
   try {
     const parsed = extractJsonValue(modelContentText(proofreadUpstream));
     const rawVariants = Array.isArray(parsed) ? parsed : Array.isArray(parsed?.variants) ? parsed.variants : [];
-    const variants = [...new Set(rawVariants.map(cleanGeneratedCopy).filter(Boolean))].slice(0, 5);
-    if (variants.length < 3) throw new Error('文本模型校对后合格文案少于 3 条，请重试。');
-    while (variants.length < 5) variants.push(variants[variants.length % Math.max(1, variants.length)]);
-    json(res, 200, { variants, source: 'turing-text-proofread', model: COMPANY_TEXT_MODEL });
+    proofreadCandidates = [...new Set(rawVariants.map(cleanGeneratedCopy).filter(Boolean))].slice(0, 5);
   } catch (error) {
     json(res, 502, { error: error.message || '文本模型校对结果无法解析，请重试。', code: 'INVALID_COPY_RESULT' });
+    return;
   }
+
+  let variants = proofreadCandidates
+    .map(item => lengthenCopy(item, { highlights, audience, offer, scenes }))
+    .filter(item => copyCharCount(item) >= 120 && copyCharCount(item) <= 190)
+    .slice(0, 5);
+  if (variants.length < 3) {
+    const expandPrompt = [
+      '请把下面的酒店短视频文案扩写并润色成最终成稿。',
+      '这次最重要的是长度：必须逐条控制在 130 至 170 个中文字符，目标约 150 字，不能只返回四十几个字的短句。每条分成 4 至 6 句，信息要完整、自然、适合配音。',
+      '只能围绕输入事实中的主题、亮点、受众和优惠展开；可以补充体验顺序、场景连接和受众感受，但不得新增设施、距离、价格、交通或服务承诺。',
+      '禁止出现“你补充的”“你提供的”“用户提供的”“根据你的需求”“无论是亲子家庭，都……”以及“安排进这次入住/体验”等病句。',
+      '严格只返回 JSON：{"variants":["文案1","文案2","文案3","文案4","文案5"]}，不要 Markdown、编号、引号或解释。',
+      '输入事实：',
+      JSON.stringify({ topic, highlights, audience, offer, sceneLabels: scenes }),
+      '待扩写文案：',
+      JSON.stringify({ variants: proofreadCandidates.length ? proofreadCandidates : draftVariants })
+    ].join('\n');
+    let expandResponse;
+    try {
+      expandResponse = await fetch(`${textConfig.apiBaseUrl}/chat/completions`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: textConfig.model,
+          temperature: 0.2,
+          max_tokens: 2400,
+          thinking: textConfig.provider === 'doubao' ? { type: 'disabled' } : undefined,
+          messages: [
+            { role: 'system', content: '你只输出达到指定字数并经过中文病句校对的酒店短视频文案 JSON。' },
+            { role: 'user', content: expandPrompt }
+          ]
+        }),
+        signal: AbortSignal.timeout(60000)
+      });
+    } catch (error) {
+      json(res, 502, { error: error?.name === 'TimeoutError' ? '文本模型扩写超时，请稍后重试。' : '无法连接文本模型进行扩写。', code: 'TEXT_MODEL_UNAVAILABLE' });
+      return;
+    }
+    const expandUpstream = await expandResponse.json().catch(() => ({}));
+    if (!expandResponse.ok) {
+      const message = expandUpstream?.error?.message || expandUpstream?.message || expandUpstream?.error || `文本模型扩写接口返回 ${expandResponse.status}`;
+      json(res, expandResponse.status, { error: message, code: expandResponse.status === 403 ? 'TEXT_MODEL_FORBIDDEN' : 'TEXT_MODEL_FAILED' });
+      return;
+    }
+    try {
+      const parsed = extractJsonValue(modelContentText(expandUpstream));
+      const rawVariants = Array.isArray(parsed) ? parsed : Array.isArray(parsed?.variants) ? parsed.variants : [];
+      variants = [...new Set(rawVariants
+        .map(item => lengthenCopy(item, { highlights, audience, offer, scenes }))
+        .filter(item => item && copyCharCount(item) >= 120 && copyCharCount(item) <= 190))].slice(0, 5);
+    } catch (error) {
+      json(res, 502, { error: error.message || '文本模型扩写结果无法解析，请重试。', code: 'INVALID_COPY_RESULT' });
+      return;
+    }
+  }
+  if (variants.length < 3) {
+    json(res, 502, { error: '文本模型生成的文案仍未达到约 150 字，请重新生成。', code: 'COPY_LENGTH_NOT_MET' });
+    return;
+  }
+  while (variants.length < 5) variants.push(variants[variants.length % Math.max(1, variants.length)]);
+  json(res, 200, { variants, source: textConfig.provider === 'doubao' ? 'doubao-text-proofread' : 'turing-text-proofread', model: textConfig.model });
 }
 
 async function analyzeAssetTags(req, res) {
@@ -1811,6 +1926,7 @@ function activeProvider() {
 function configStatus() {
   const provider = activeProvider();
   const configured = Boolean(sharedApiKey());
+  const textConfig = textModelSettings();
   return {
     ok: true,
     provider,
@@ -1820,8 +1936,9 @@ function configStatus() {
     videoApiBaseUrl: COMPANY_VIDEO_API_BASE_URL,
     videoModel: COMPANY_VIDEO_MODEL,
     audioModel: COMPANY_AUDIO_MODEL,
-    textApiBaseUrl: COMPANY_TEXT_API_BASE_URL,
-    textModel: COMPANY_TEXT_MODEL,
+    textProvider: textConfig.provider,
+    textApiBaseUrl: textConfig.apiBaseUrl,
+    textModel: textConfig.model,
     editModel: COMPANY_EDIT_MODEL,
     asrModel: COMPANY_ASR_MODEL,
     actorAuthorization: provider === 'company' ? COMPANY_ACTOR_AUTHORIZATION : '',
@@ -1932,7 +2049,9 @@ async function configureModel(req, res) {
       videoModel: COMPANY_VIDEO_MODEL,
       videoApiBaseUrl: COMPANY_VIDEO_API_BASE_URL,
       audioModel: COMPANY_AUDIO_MODEL,
+      textProvider: TEXT_MODEL_PROVIDER,
       textModel: COMPANY_TEXT_MODEL,
+      doubaoTextModel: DOUBAO_TEXT_MODEL,
       textApiBaseUrl: COMPANY_TEXT_API_BASE_URL,
       editModel: COMPANY_EDIT_MODEL,
       asrModel: COMPANY_ASR_MODEL,
@@ -2065,4 +2184,6 @@ server.listen(PORT, () => {
   } else {
     console.log(`公司 GPT-Image：${COMPANY_IMAGE_MODEL} · 网关密钥：${COMPANY_API_KEY ? '已配置' : '未配置'}`);
   }
+  const textConfig = textModelSettings();
+  console.log(`文本模型：${textConfig.model} · ${textConfig.provider === 'doubao' ? '豆包 API' : 'Turing 网关'}：${textConfig.apiKey ? '已配置' : '未配置'}`);
 });
