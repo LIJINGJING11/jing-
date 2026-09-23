@@ -657,6 +657,22 @@
     if ($('#aiVideoAssetCount')) $('#aiVideoAssetCount').textContent = `${state.assets.length} / 30`;
   }
 
+  function sanitizeCopyVariant(value) {
+    const text = String(value || '').replace(/[\r\n]+/g, ' ').replace(/\s+/g, ' ').trim();
+    const count = Array.from(text.replace(/\s+/g, '')).length;
+    if (count < 120 || count > 190) return '';
+    if (/你补充的|你提供的|用户提供的|根据你的需求|位置去哪都方便|安排进这次(?:入住|体验)|安排一场轻松的入住|这里有[^。！？]{0,50}从入住到离店|无论是[^，。！？]{1,24}[，,]\s*(?:都|也)/.test(text)) return '';
+    return text;
+  }
+
+  function clearCopyOptions() {
+    state.copyOptions = [];
+    state.copy = '';
+    const list = $('#aiVideoCopyList');
+    if (list) list.innerHTML = '';
+    if ($('#aiVideoCopyCount')) $('#aiVideoCopyCount').textContent = '正在生成…';
+  }
+
   async function requestCopyVariants() {
     const endpoint = smartEndpoint('/api/generate-copy');
     if (!endpoint) throw new Error('当前页面由 file:// 直接打开，请通过酒店素材工坊本机服务访问。');
@@ -673,9 +689,9 @@
       })
     });
     const payload = await response.json().catch(() => ({}));
-    if (!response.ok) throw new Error(payload?.error || `公司文本模型返回 ${response.status}`);
-    const variants = Array.isArray(payload?.variants) ? payload.variants.map((item) => String(item || '').trim()).filter(Boolean) : [];
-    if (variants.length < 3) throw new Error('公司文本模型返回的合格文案不足，请重新生成。');
+    if (!response.ok) throw new Error(payload?.error || `文本模型返回 ${response.status}`);
+    const variants = Array.isArray(payload?.variants) ? payload.variants.map(sanitizeCopyVariant).filter(Boolean) : [];
+    if (variants.length < 3) throw new Error('文本模型返回的合格文案不足，请重新生成。');
     return variants.slice(0, 5);
   }
 
@@ -683,21 +699,22 @@
     invalidateSeedanceResult();
     const button = $('#aiVideoGenerateCopy');
     if (!button) return;
+    clearCopyOptions();
     button.disabled = true;
-    button.textContent = '正在调用公司文本模型…';
-    setStatus('正在调用公司 Turing 文本模型，检查病句并生成 5 条口播文案…');
+    button.textContent = '正在调用文本模型…';
+    setStatus('正在调用豆包文本模型，检查病句并生成约 150 字口播文案…');
     try {
       const variants = await requestCopyVariants();
       state.copyOptions = variants.map((text, index) => ({ text, selected: index === 0 }));
       syncSelectedCopy();
       renderCopy();
       button.textContent = '✦ 重新生成 5 条文案';
-      setStatus('已使用公司 Turing 文本模型生成文案；请选一条确认后再生成视频。', 'ready');
+      setStatus('已使用豆包文本模型生成约 150 字文案；请选一条确认后再生成视频。', 'ready');
     } catch (error) {
-      setStatus(`公司文本模型生成失败：${error?.message || '请检查文本模型配置后重试。'}`, 'error');
+      setStatus(`文本模型生成失败：${error?.message || '请检查文本模型配置后重试。'}`, 'error');
     } finally {
       button.disabled = false;
-      if (button.textContent === '正在调用公司文本模型…') button.textContent = '✦ 重新生成 5 条文案';
+      if (button.textContent === '正在调用文本模型…') button.textContent = '✦ 重新生成 5 条文案';
     }
   }
 
