@@ -8,6 +8,9 @@ tmp/
 BootFrame-*.dmg
 BootFrame-*.zip
 
+# Large local demo exports; keep these outside GitHub
+酒店素材工坊-领导演示版-*.zip
+
 # Machine-local API/model settings. API keys are kept in macOS Keychain;
 # this file must never be published with the project.
 demo/.runtime-settings.json

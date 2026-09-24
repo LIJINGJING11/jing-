@@ -9,7 +9,7 @@
     if (location.protocol === 'file:') location.replace('http://localhost:4174/');
   </script>
   <title>酒店素材工坊｜本地酒店内容工具</title>
-  <link rel="stylesheet" href="./styles.css?v=smart-edl-20260923-15" />
+  <link rel="stylesheet" href="./styles.css?v=leader-demo-20260924-01" />
 </head>
 <body>
   <div class="app-shell">
@@ -73,6 +73,30 @@
           <h1>选择你要使用的工具</h1>
           <p>常用处理随手可用，进阶创作按需展开。选择一个功能，上传素材，即可得到符合要求的文件。</p>
         </div>
+        <section class="leader-demo-strip" aria-label="领导演示路径">
+          <div class="leader-demo-copy">
+            <div class="leader-demo-kicker"><span>LEADER DEMO</span><small id="demoConnectionState">本机模型服务检查中…</small></div>
+            <h2>从一张客房图，到可发布内容</h2>
+            <p>用同一套素材走完模板运营图、AI 海报和 AI 自动成片，模型配置会自动应用到对应能力。</p>
+            <div class="leader-demo-actions">
+              <button type="button" data-demo-action="templates">打开模板运营图 <b>→</b></button>
+              <button type="button" data-demo-action="ai-video">体验 AI 自动成片 <b>→</b></button>
+              <button type="button" class="leader-demo-config" data-demo-action="config">查看模型连接</button>
+            </div>
+          </div>
+          <div class="leader-demo-side">
+            <div class="leader-demo-metrics" aria-label="Demo 能力概览">
+              <span><strong>12</strong><small>处理工具</small></span>
+              <span><strong>26</strong><small>运营模板</small></span>
+              <span><strong>3</strong><small>模型链路</small></span>
+            </div>
+            <ol class="leader-demo-steps">
+              <li><i>01</i><span>选模板</span></li>
+              <li><i>02</i><span>改内容</span></li>
+              <li><i>03</i><span>导出发布</span></li>
+            </ol>
+          </div>
+        </section>
         <div class="tool-toolbar" role="toolbar" aria-label="工具分类">
           <div class="tool-filter-group" role="group" aria-label="筛选工具">
             <button class="tool-filter is-active" type="button" data-tool-filter="all" aria-pressed="true">全部工具 <span>12</span></button>
@@ -565,7 +589,7 @@
   </div>
   <script src="./psd-mid-autumn.js?v=mid-autumn-20260916"></script>
   <script src="./psd-new-year.js?v=new-year-20260923"></script>
-  <script src="./app.js?v=smart-edl-20260923-09"></script>
+  <script src="./app.js?v=leader-demo-20260924-01"></script>
   <script src="./tools-runtime.js?v=watermark-company-model-20260907-01"></script>
   <script src="./ai-video-runtime.js?v=smart-edl-20260923-16"></script>
 </body>

@@ -398,6 +398,11 @@ function syncApiConfigButton(){
   button.classList.toggle('is-configured',Boolean(apiConfigState.configured));
   status.textContent=apiConfigState.configured?'已配置':'未配置';
   button.title=apiConfigState.configured?`图片、视频与音频共用 API Key · 点击查看配置`:'配置图片、视频与音频共用的 API Key';
+  const connectionState=$('#demoConnectionState');
+  if(connectionState){
+    connectionState.textContent=apiConfigState.configured?`模型已连接 · ${apiConfigState.model||'当前配置'}`:'本地预览可用 · 尚未连接模型';
+    connectionState.classList.toggle('is-connected',Boolean(apiConfigState.configured));
+  }
   syncPrivacyForApi();
 }
 function syncApiConfigFields(){
@@ -1293,6 +1298,12 @@ function bindWorkspaceNavigation(){
   }));
   $$('[data-tool]').forEach(button=>button.addEventListener('click',()=>selectTool(button.dataset.tool)));
   $$('[data-tool-filter]').forEach(button=>button.addEventListener('click',()=>filterToolGroups(button.dataset.toolFilter)));
+  $$('[data-demo-action]').forEach(button=>button.addEventListener('click',()=>{
+    const action=button.dataset.demoAction;
+    if(action==='config'){openApiConfig();return}
+    if(action==='ai-video'&&typeof window.openLocalTool==='function'){window.openLocalTool('ai-video');return}
+    showWorkspace(action==='templates'?'templates':'tools');
+  }));
 }
 function scheduleCurrentTemplateCoverSync(){
   // Generator mode intentionally produces a separate, single flattened
