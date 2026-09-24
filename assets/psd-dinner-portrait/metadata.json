@@ -1,0 +1,736 @@
+{
+  "source": "/Users/sigurd/Downloads/TCL-Hotel-Dinner-Layered-72DPI.psd",
+  "width": 941,
+  "height": 1672,
+  "dpi": 72,
+  "topLevelOrder": [
+    "01_背景_餐厅无字修复图",
+    "WechatIMG5619 1",
+    "矩形 1",
+    "背景_金边蒙层_透明",
+    "02_主标题_TCL酒店",
+    "03_主标题_自助晚餐",
+    "04_副标题_品味精致_尊享美味",
+    "05_装饰_副标题左线",
+    "06_装饰_副标题右线",
+    "07_LOGO_TCL",
+    "09_图形_环境图标圆环",
+    "10_图形_菜品图标圆环",
+    "11_图形_品质图标圆环",
+    "12_图标_环境雅致_沙发落地灯",
+    "13_图标_菜品丰富_餐罩",
+    "14_图标_品质优选_钻石",
+    "15_分隔线_卖点左",
+    "16_分隔线_卖点右",
+    "17_卖点文字_环境雅致",
+    "18_卖点文字_菜品丰富",
+    "19_卖点文字_品质优选",
+    "20_边框_底部联系信息",
+    "21_图形_电话圆环",
+    "22_图形_定位圆环",
+    "23_图标_电话",
+    "24_图标_地址定位",
+    "25_联系文字_预约热线",
+    "26_联系文字_电话号码",
+    "27_联系文字_地址标签",
+    "28_联系文字_详细地址"
+  ],
+  "leafLayerOrder": [
+    "01_背景_餐厅无字修复图",
+    "WechatIMG5619 1",
+    "矩形 1",
+    "背景_金边蒙层_透明",
+    "02_主标题_TCL酒店",
+    "03_主标题_自助晚餐",
+    "04_副标题_品味精致_尊享美味",
+    "05_装饰_副标题左线",
+    "06_装饰_副标题右线",
+    "07_LOGO_TCL",
+    "09_图形_环境图标圆环",
+    "10_图形_菜品图标圆环",
+    "11_图形_品质图标圆环",
+    "12_图标_环境雅致_沙发落地灯",
+    "13_图标_菜品丰富_餐罩",
+    "14_图标_品质优选_钻石",
+    "15_分隔线_卖点左",
+    "16_分隔线_卖点右",
+    "17_卖点文字_环境雅致",
+    "18_卖点文字_菜品丰富",
+    "19_卖点文字_品质优选",
+    "20_边框_底部联系信息",
+    "21_图形_电话圆环",
+    "22_图形_定位圆环",
+    "23_图标_电话",
+    "24_图标_地址定位",
+    "25_联系文字_预约热线",
+    "26_联系文字_电话号码",
+    "27_联系文字_地址标签",
+    "28_联系文字_详细地址"
+  ],
+  "hiddenLayers": [
+    "01_背景_餐厅无字修复图"
+  ],
+  "assets": [
+    {
+      "key": "dinner_scene",
+      "name": "WechatIMG5619 1",
+      "src": "./assets/psd-dinner-portrait/dinner_scene.png",
+      "x": 50.05313496280552,
+      "y": 50.0,
+      "w": 100.31880977683316,
+      "h": 100.0,
+      "zIndex": 1,
+      "bbox": [
+        -1,
+        0,
+        943,
+        1672
+      ],
+      "size": [
+        944,
+        1672
+      ],
+      "kind": "smartobject"
+    },
+    {
+      "key": "dinner_lower_panel",
+      "name": "矩形 1",
+      "src": "./assets/psd-dinner-portrait/dinner_lower_panel.png",
+      "x": 50.0,
+      "y": 67.43421052631578,
+      "w": 101.91285866099892,
+      "h": 65.49043062200957,
+      "zIndex": 2,
+      "bbox": [
+        -9,
+        580,
+        950,
+        1675
+      ],
+      "size": [
+        959,
+        1095
+      ],
+      "kind": "shape"
+    },
+    {
+      "key": "dinner_gold_frame",
+      "name": "背景_金边蒙层_透明",
+      "src": "./assets/psd-dinner-portrait/dinner_gold_frame.png",
+      "x": 50.0,
+      "y": 15.340909090909092,
+      "w": 100.0,
+      "h": 30.681818181818183,
+      "zIndex": 3,
+      "bbox": [
+        0,
+        0,
+        941,
+        513
+      ],
+      "size": [
+        941,
+        513
+      ],
+      "kind": "smartobject"
+    },
+    {
+      "key": "dinner_subtitle_rule_left",
+      "name": "05_装饰_副标题左线",
+      "src": "./assets/psd-dinner-portrait/dinner_subtitle_rule_left.png",
+      "x": 10.680127523910734,
+      "y": 24.70095693779904,
+      "w": 4.569606801275238,
+      "h": 0.11961722488038277,
+      "zIndex": 7,
+      "bbox": [
+        79,
+        412,
+        122,
+        414
+      ],
+      "size": [
+        43,
+        2
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "dinner_subtitle_rule_right",
+      "name": "06_装饰_副标题右线",
+      "src": "./assets/psd-dinner-portrait/dinner_subtitle_rule_right.png",
+      "x": 54.250797024442086,
+      "y": 24.70095693779904,
+      "w": 4.569606801275238,
+      "h": 0.11961722488038277,
+      "zIndex": 8,
+      "bbox": [
+        489,
+        412,
+        532,
+        414
+      ],
+      "size": [
+        43,
+        2
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "dinner_logo",
+      "name": "07_LOGO_TCL",
+      "src": "./assets/psd-dinner-portrait/dinner_logo.png",
+      "x": 88.1509032943677,
+      "y": 4.605263157894736,
+      "w": 14.984059511158343,
+      "h": 2.751196172248804,
+      "zIndex": 9,
+      "bbox": [
+        759,
+        54,
+        900,
+        100
+      ],
+      "size": [
+        141,
+        46
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "dinner_icon_ring_environment",
+      "name": "09_图形_环境图标圆环",
+      "src": "./assets/psd-dinner-portrait/dinner_icon_ring_environment.png",
+      "x": 23.379383634431456,
+      "y": 85.46650717703349,
+      "w": 8.501594048884167,
+      "h": 4.784688995215311,
+      "zIndex": 10,
+      "bbox": [
+        180,
+        1389,
+        260,
+        1469
+      ],
+      "size": [
+        80,
+        80
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "dinner_icon_ring_dishes",
+      "name": "10_图形_菜品图标圆环",
+      "src": "./assets/psd-dinner-portrait/dinner_icon_ring_dishes.png",
+      "x": 47.92773645058448,
+      "y": 85.46650717703349,
+      "w": 8.501594048884167,
+      "h": 4.784688995215311,
+      "zIndex": 11,
+      "bbox": [
+        411,
+        1389,
+        491,
+        1469
+      ],
+      "size": [
+        80,
+        80
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "dinner_icon_ring_quality",
+      "name": "11_图形_品质图标圆环",
+      "src": "./assets/psd-dinner-portrait/dinner_icon_ring_quality.png",
+      "x": 72.4760892667375,
+      "y": 85.46650717703349,
+      "w": 8.501594048884167,
+      "h": 4.784688995215311,
+      "zIndex": 12,
+      "bbox": [
+        642,
+        1389,
+        722,
+        1469
+      ],
+      "size": [
+        80,
+        80
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "dinner_icon_environment",
+      "name": "12_图标_环境雅致_沙发落地灯",
+      "src": "./assets/psd-dinner-portrait/dinner_icon_environment.png",
+      "x": 23.43251859723698,
+      "y": 85.31698564593302,
+      "w": 4.782146652497343,
+      "h": 2.3325358851674642,
+      "zIndex": 13,
+      "bbox": [
+        198,
+        1407,
+        243,
+        1446
+      ],
+      "size": [
+        45,
+        39
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "dinner_icon_dishes",
+      "name": "13_图标_菜品丰富_餐罩",
+      "src": "./assets/psd-dinner-portrait/dinner_icon_dishes.png",
+      "x": 47.92773645058448,
+      "y": 85.16746411483254,
+      "w": 4.888416578108395,
+      "h": 2.15311004784689,
+      "zIndex": 14,
+      "bbox": [
+        428,
+        1406,
+        474,
+        1442
+      ],
+      "size": [
+        46,
+        36
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "dinner_icon_quality",
+      "name": "14_图标_品质优选_钻石",
+      "src": "./assets/psd-dinner-portrait/dinner_icon_quality.png",
+      "x": 72.4760892667375,
+      "y": 85.3767942583732,
+      "w": 5.100956429330499,
+      "h": 2.5717703349282295,
+      "zIndex": 15,
+      "bbox": [
+        658,
+        1406,
+        706,
+        1449
+      ],
+      "size": [
+        48,
+        43
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "dinner_feature_rule_left",
+      "name": "15_分隔线_卖点左",
+      "src": "./assets/psd-dinner-portrait/dinner_feature_rule_left.png",
+      "x": 35.28161530286929,
+      "y": 87.14114832535886,
+      "w": 0.21253985122210414,
+      "h": 5.741626794258373,
+      "zIndex": 16,
+      "bbox": [
+        331,
+        1409,
+        333,
+        1505
+      ],
+      "size": [
+        2,
+        96
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "dinner_feature_rule_right",
+      "name": "16_分隔线_卖点右",
+      "src": "./assets/psd-dinner-portrait/dinner_feature_rule_right.png",
+      "x": 60.786397449521786,
+      "y": 87.14114832535886,
+      "w": 0.21253985122210414,
+      "h": 5.741626794258373,
+      "zIndex": 17,
+      "bbox": [
+        571,
+        1409,
+        573,
+        1505
+      ],
+      "size": [
+        2,
+        96
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "dinner_contact_frame",
+      "name": "20_边框_底部联系信息",
+      "src": "./assets/psd-dinner-portrait/dinner_contact_frame.png",
+      "x": 49.89373007438895,
+      "y": 94.46770334928229,
+      "w": 88.73538788522848,
+      "h": 5.322966507177034,
+      "zIndex": 21,
+      "bbox": [
+        52,
+        1535,
+        887,
+        1624
+      ],
+      "size": [
+        835,
+        89
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "dinner_phone_ring",
+      "name": "21_图形_电话圆环",
+      "src": "./assets/psd-dinner-portrait/dinner_phone_ring.png",
+      "x": 11.158342189160468,
+      "y": 94.4377990430622,
+      "w": 4.250797024442083,
+      "h": 2.3923444976076556,
+      "zIndex": 22,
+      "bbox": [
+        85,
+        1559,
+        125,
+        1599
+      ],
+      "size": [
+        40,
+        40
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "dinner_location_ring",
+      "name": "22_图形_定位圆环",
+      "src": "./assets/psd-dinner-portrait/dinner_location_ring.png",
+      "x": 59.723698193411266,
+      "y": 94.4377990430622,
+      "w": 4.250797024442083,
+      "h": 2.3923444976076556,
+      "zIndex": 23,
+      "bbox": [
+        542,
+        1559,
+        582,
+        1599
+      ],
+      "size": [
+        40,
+        40
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "dinner_phone_icon",
+      "name": "23_图标_电话",
+      "src": "./assets/psd-dinner-portrait/dinner_phone_icon.png",
+      "x": 11.105207226354942,
+      "y": 94.46770334928229,
+      "w": 2.869287991498406,
+      "h": 1.255980861244019,
+      "zIndex": 24,
+      "bbox": [
+        91,
+        1569,
+        118,
+        1590
+      ],
+      "size": [
+        27,
+        21
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "dinner_location_icon",
+      "name": "24_图标_地址定位",
+      "src": "./assets/psd-dinner-portrait/dinner_location_icon.png",
+      "x": 59.723698193411266,
+      "y": 94.377990430622,
+      "w": 2.1253985122210417,
+      "h": 1.674641148325359,
+      "zIndex": 25,
+      "bbox": [
+        552,
+        1564,
+        572,
+        1592
+      ],
+      "size": [
+        20,
+        28
+      ],
+      "kind": "pixel"
+    }
+  ],
+  "text": [
+    {
+      "key": "dinner_title_brand",
+      "name": "02_主标题_TCL酒店",
+      "value": "TCL酒店",
+      "x": 32.35919234856536,
+      "y": 11.094497607655503,
+      "w": 49.41551540913922,
+      "h": 6.758373205741627,
+      "fontSize": 119.0,
+      "lineHeight": 1.2,
+      "color": "#FFFBEA",
+      "font": 0,
+      "fontName": "'SourceHanSerifSC-SemiBold'",
+      "kind": "serif",
+      "fontStyle": "normal",
+      "weight": 600,
+      "letterSpacing": "0.000em",
+      "pointText": true,
+      "zIndex": 4,
+      "bbox": [
+        72,
+        129,
+        537,
+        242
+      ]
+    },
+    {
+      "key": "dinner_title_dinner",
+      "name": "03_主标题_自助晚餐",
+      "value": "自助晚餐",
+      "x": 34.05951115834219,
+      "y": 18.899521531100476,
+      "w": 48.777895855472906,
+      "h": 6.698564593301436,
+      "fontSize": 116.0,
+      "lineHeight": 1.2,
+      "color": "#FFFBEA",
+      "font": 0,
+      "fontName": "'SourceHanSerifSC-SemiBold'",
+      "kind": "serif",
+      "fontStyle": "normal",
+      "weight": 600,
+      "letterSpacing": "0.000em",
+      "pointText": true,
+      "zIndex": 5,
+      "bbox": [
+        91,
+        260,
+        550,
+        372
+      ]
+    },
+    {
+      "key": "dinner_subtitle",
+      "name": "04_副标题_品味精致_尊享美味",
+      "value": "品味精致  尊享美味",
+      "x": 32.51859723698193,
+      "y": 24.671052631578945,
+      "w": 35.494155154091395,
+      "h": 1.9736842105263157,
+      "fontSize": 33.0,
+      "lineHeight": 1.2,
+      "color": "#FFFBEA",
+      "font": 0,
+      "fontName": "'SourceHanSerifSC-Regular'",
+      "kind": "serif",
+      "fontStyle": "normal",
+      "weight": 400,
+      "letterSpacing": "0.000em",
+      "pointText": true,
+      "zIndex": 6,
+      "bbox": [
+        139,
+        396,
+        473,
+        429
+      ]
+    },
+    {
+      "key": "dinner_feature_environment",
+      "name": "17_卖点文字_环境雅致",
+      "value": "环境雅致",
+      "x": 23.273113708820404,
+      "y": 89.32416267942584,
+      "w": 13.177470775770455,
+      "h": 1.8540669856459329,
+      "fontSize": 31.0,
+      "lineHeight": 1.2,
+      "color": "#DFB67E",
+      "font": 0,
+      "fontName": "'SourceHanSerifSC-Regular'",
+      "kind": "serif",
+      "fontStyle": "normal",
+      "weight": 400,
+      "letterSpacing": "0.000em",
+      "pointText": true,
+      "zIndex": 18,
+      "bbox": [
+        157,
+        1478,
+        281,
+        1509
+      ]
+    },
+    {
+      "key": "dinner_feature_dishes",
+      "name": "18_卖点文字_菜品丰富",
+      "value": "菜品丰富",
+      "x": 48.14027630180659,
+      "y": 89.32416267942584,
+      "w": 13.177470775770455,
+      "h": 1.8540669856459329,
+      "fontSize": 31.0,
+      "lineHeight": 1.2,
+      "color": "#DFB67E",
+      "font": 0,
+      "fontName": "'SourceHanSerifSC-Regular'",
+      "kind": "serif",
+      "fontStyle": "normal",
+      "weight": 400,
+      "letterSpacing": "0.000em",
+      "pointText": true,
+      "zIndex": 19,
+      "bbox": [
+        391,
+        1478,
+        515,
+        1509
+      ]
+    },
+    {
+      "key": "dinner_feature_quality",
+      "name": "19_卖点文字_品质优选",
+      "value": "品质优选",
+      "x": 72.8480340063762,
+      "y": 89.32416267942584,
+      "w": 13.071200850159407,
+      "h": 1.8540669856459329,
+      "fontSize": 31.0,
+      "lineHeight": 1.2,
+      "color": "#DFB67E",
+      "font": 0,
+      "fontName": "'SourceHanSerifSC-Regular'",
+      "kind": "serif",
+      "fontStyle": "normal",
+      "weight": 400,
+      "letterSpacing": "0.000em",
+      "pointText": true,
+      "zIndex": 20,
+      "bbox": [
+        624,
+        1478,
+        747,
+        1509
+      ]
+    },
+    {
+      "key": "dinner_contact_hotline_label",
+      "name": "25_联系文字_预约热线",
+      "value": "预约热线：",
+      "x": 19.872476089266737,
+      "y": 94.49760765550239,
+      "w": 10.839532412327312,
+      "h": 1.555023923444976,
+      "fontSize": 26.0,
+      "lineHeight": 1.2,
+      "color": "#DFB67E",
+      "font": 0,
+      "fontName": "'SourceHanSerifSC-Regular'",
+      "kind": "serif",
+      "fontStyle": "normal",
+      "weight": 400,
+      "letterSpacing": "0.000em",
+      "pointText": true,
+      "zIndex": 26,
+      "bbox": [
+        136,
+        1567,
+        238,
+        1593
+      ]
+    },
+    {
+      "key": "dinner_contact_hotline",
+      "name": "26_联系文字_电话号码",
+      "value": "0512-56303777",
+      "x": 40.11689691817216,
+      "y": 94.4078947368421,
+      "w": 25.185972369819343,
+      "h": 1.4952153110047848,
+      "fontSize": 33.0,
+      "lineHeight": 1.2,
+      "color": "#DFB67E",
+      "font": 0,
+      "fontName": "'SourceHanSerifSC-SemiBold'",
+      "kind": "serif",
+      "fontStyle": "normal",
+      "weight": 600,
+      "letterSpacing": "0.000em",
+      "pointText": true,
+      "zIndex": 27,
+      "bbox": [
+        259,
+        1566,
+        496,
+        1591
+      ]
+    },
+    {
+      "key": "dinner_contact_address_label",
+      "name": "27_联系文字_地址标签",
+      "value": "地址：",
+      "x": 65.62167906482466,
+      "y": 94.46770334928229,
+      "w": 5.207226354941551,
+      "h": 1.4952153110047848,
+      "fontSize": 26.0,
+      "lineHeight": 1.2,
+      "color": "#DFB67E",
+      "font": 0,
+      "fontName": "'SourceHanSerifSC-Regular'",
+      "kind": "serif",
+      "fontStyle": "normal",
+      "weight": 400,
+      "letterSpacing": "0.000em",
+      "pointText": true,
+      "zIndex": 28,
+      "bbox": [
+        593,
+        1567,
+        642,
+        1592
+      ]
+    },
+    {
+      "key": "dinner_contact_address",
+      "name": "28_联系文字_详细地址",
+      "value": "暨阳西路320号",
+      "x": 80.28692879914983,
+      "y": 94.49760765550239,
+      "w": 18.597236981934113,
+      "h": 1.555023923444976,
+      "fontSize": 26.0,
+      "lineHeight": 1.2,
+      "color": "#DFB67E",
+      "font": 0,
+      "fontName": "'SourceHanSerifSC-Regular'",
+      "kind": "serif",
+      "fontStyle": "normal",
+      "weight": 400,
+      "letterSpacing": "0.000em",
+      "pointText": true,
+      "zIndex": 29,
+      "bbox": [
+        668,
+        1567,
+        843,
+        1593
+      ]
+    }
+  ]
+}

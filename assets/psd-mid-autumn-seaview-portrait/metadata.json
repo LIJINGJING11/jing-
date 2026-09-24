@@ -1,0 +1,1828 @@
+{
+  "source": "/Users/sigurd/Downloads/中秋海景酒店_72DPI_分层.psd",
+  "width": 2048,
+  "height": 3072,
+  "dpi": 72,
+  "topLevelOrder": [
+    "01_背景酒店图片",
+    "02_上下蒙层与金色边线",
+    "03_底部山水装饰",
+    "04_月亮桂花玉兔",
+    "05_飘落花瓣",
+    "06_金色云纹与分隔线",
+    "07_印章底形",
+    "08_价格牌与权益边框",
+    "09_地址电话小图标",
+    "10_主标题_可编辑文字",
+    "11_侧边文案_可编辑文字",
+    "12_价格权益联系_可编辑文字"
+  ],
+  "leafLayerOrder": [
+    "背景_海景酒店_完整无字底图",
+    "上部_深蓝渐变蒙层",
+    "下部_深蓝弧形蒙层",
+    "下部_弧形金色描边",
+    "下部_星点微光纹理",
+    "山水_后层远山",
+    "山水_中层山峦",
+    "山水_前景波浪",
+    "山水_右侧金色流光",
+    "月亮_圆月及柔光",
+    "桂花枝_左上",
+    "桂花枝_右上",
+    "桂花枝_左下",
+    "玉兔_右下",
+    "花瓣_01",
+    "花瓣_02",
+    "花瓣_03",
+    "花瓣_04",
+    "花瓣_05",
+    "花瓣_06",
+    "云纹_左侧",
+    "云纹_右侧",
+    "副标题_左金线",
+    "副标题_右金线",
+    "左侧英文下方短线",
+    "中秋_红色椭圆印章底",
+    "右侧_小方印外框",
+    "价格牌_暖金底",
+    "价格牌_外轮廓金边",
+    "价格牌_内轮廓金边",
+    "权益栏_半透明底",
+    "权益栏_圆角金边",
+    "权益栏_左花纹",
+    "权益栏_右花纹",
+    "图标_地址定位",
+    "图标_预订电话",
+    "地址电话_竖分隔线",
+    "底部口号_左短线",
+    "底部口号_右短线",
+    "主标题_第一行_月",
+    "主标题_第一行_满",
+    "主标题_第一行_中",
+    "主标题_第一行_秋",
+    "主标题_第二行_悦",
+    "主标题_第二行_享",
+    "主标题_第二行_海",
+    "主标题_第二行_景",
+    "副标题_团圆佳节",
+    "英文_MID-AUTUMN",
+    "英文_FESTIVAL",
+    "左侧文案_月光所至",
+    "左侧文案_皆是美好",
+    "中秋印章_01_中",
+    "中秋印章_02_秋",
+    "右侧诗句_海上生明月_01_海",
+    "右侧诗句_海上生明月_02_上",
+    "右侧诗句_海上生明月_03_生",
+    "右侧诗句_海上生明月_04_明",
+    "右侧诗句_海上生明月_05_月",
+    "右侧诗句_天涯共此时_01_天",
+    "右侧诗句_天涯共此时_02_涯",
+    "右侧诗句_天涯共此时_03_共",
+    "右侧诗句_天涯共此时_04_此",
+    "右侧诗句_天涯共此时_05_时",
+    "小方印_团圆",
+    "价格标签_限时",
+    "价格标签_特惠",
+    "价格_人民币符号",
+    "价格_699",
+    "价格_起每晚",
+    "权益_含双人早餐",
+    "权益_入住即享欢迎水果",
+    "权益_分隔符",
+    "联系_酒店地址",
+    "联系_预订电话",
+    "底部口号_月下相聚海景同享"
+  ],
+  "hiddenLayers": [
+    "mid_autumn_06"
+  ],
+  "assets": [
+    {
+      "key": "mid_autumn_01",
+      "name": "背景_海景酒店_完整无字底图",
+      "x": 50.0,
+      "y": 50.0,
+      "w": 100.0,
+      "h": 100.0,
+      "bbox": [
+        0,
+        0,
+        2048,
+        3072
+      ],
+      "zIndex": 1,
+      "src": "./assets/psd-mid-autumn-seaview-portrait/mid_autumn_01.png",
+      "size": [
+        2048,
+        3072
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "mid_autumn_02",
+      "name": "上部_深蓝渐变蒙层",
+      "x": 50.0,
+      "y": 17.317708333333336,
+      "w": 100.0,
+      "h": 34.63541666666667,
+      "bbox": [
+        0,
+        0,
+        2048,
+        1064
+      ],
+      "zIndex": 2,
+      "src": "./assets/psd-mid-autumn-seaview-portrait/mid_autumn_02.png",
+      "size": [
+        2048,
+        1064
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "mid_autumn_03",
+      "name": "下部_深蓝弧形蒙层",
+      "x": 50.0,
+      "y": 87.51627604166666,
+      "w": 100.0,
+      "h": 24.967447916666664,
+      "bbox": [
+        0,
+        2305,
+        2048,
+        3072
+      ],
+      "zIndex": 3,
+      "src": "./assets/psd-mid-autumn-seaview-portrait/mid_autumn_03.png",
+      "size": [
+        2048,
+        767
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "mid_autumn_04",
+      "name": "下部_弧形金色描边",
+      "x": 50.0,
+      "y": 80.59895833333334,
+      "w": 100.0,
+      "h": 11.588541666666668,
+      "bbox": [
+        0,
+        2298,
+        2048,
+        2654
+      ],
+      "zIndex": 4,
+      "src": "./assets/psd-mid-autumn-seaview-portrait/mid_autumn_04.png",
+      "size": [
+        2048,
+        356
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "mid_autumn_05",
+      "name": "下部_星点微光纹理",
+      "x": 49.8291015625,
+      "y": 84.19596354166666,
+      "w": 99.462890625,
+      "h": 11.23046875,
+      "bbox": [
+        2,
+        2414,
+        2039,
+        2759
+      ],
+      "zIndex": 5,
+      "src": "./assets/psd-mid-autumn-seaview-portrait/mid_autumn_05.png",
+      "size": [
+        2037,
+        345
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "mid_autumn_07",
+      "name": "山水_中层山峦",
+      "x": 50.0,
+      "y": 95.458984375,
+      "w": 100.0,
+      "h": 9.08203125,
+      "bbox": [
+        0,
+        2793,
+        2048,
+        3072
+      ],
+      "zIndex": 7,
+      "src": "./assets/psd-mid-autumn-seaview-portrait/mid_autumn_07.png",
+      "size": [
+        2048,
+        279
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "mid_autumn_08",
+      "name": "山水_前景波浪",
+      "x": 50.0,
+      "y": 97.57486979166666,
+      "w": 100.0,
+      "h": 4.850260416666666,
+      "bbox": [
+        0,
+        2923,
+        2048,
+        3072
+      ],
+      "zIndex": 8,
+      "src": "./assets/psd-mid-autumn-seaview-portrait/mid_autumn_08.png",
+      "size": [
+        2048,
+        149
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "mid_autumn_09",
+      "name": "山水_右侧金色流光",
+      "x": 65.8447265625,
+      "y": 96.90755208333334,
+      "w": 68.310546875,
+      "h": 6.184895833333334,
+      "bbox": [
+        649,
+        2882,
+        2048,
+        3072
+      ],
+      "zIndex": 9,
+      "src": "./assets/psd-mid-autumn-seaview-portrait/mid_autumn_09.png",
+      "size": [
+        1399,
+        190
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "mid_autumn_10",
+      "name": "月亮_圆月及柔光",
+      "x": 85.888671875,
+      "y": 1.5950520833333333,
+      "w": 39.94140625,
+      "h": 27.018229166666668,
+      "bbox": [
+        1350,
+        -366,
+        2168,
+        464
+      ],
+      "zIndex": 10,
+      "src": "./assets/psd-mid-autumn-seaview-portrait/mid_autumn_10.png",
+      "size": [
+        818,
+        830
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "mid_autumn_11",
+      "name": "桂花枝_左上",
+      "x": 13.9404296875,
+      "y": 4.036458333333334,
+      "w": 27.880859375,
+      "h": 8.072916666666668,
+      "bbox": [
+        0,
+        0,
+        571,
+        248
+      ],
+      "zIndex": 11,
+      "src": "./assets/psd-mid-autumn-seaview-portrait/mid_autumn_11.png",
+      "size": [
+        571,
+        248
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "mid_autumn_12",
+      "name": "桂花枝_右上",
+      "x": 91.845703125,
+      "y": 9.114583333333332,
+      "w": 16.30859375,
+      "h": 11.1328125,
+      "bbox": [
+        1714,
+        109,
+        2048,
+        451
+      ],
+      "zIndex": 12,
+      "src": "./assets/psd-mid-autumn-seaview-portrait/mid_autumn_12.png",
+      "size": [
+        334,
+        342
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "mid_autumn_13",
+      "name": "桂花枝_左下",
+      "x": 6.8359375,
+      "y": 80.98958333333334,
+      "w": 13.671875,
+      "h": 10.3515625,
+      "bbox": [
+        0,
+        2329,
+        280,
+        2647
+      ],
+      "zIndex": 13,
+      "src": "./assets/psd-mid-autumn-seaview-portrait/mid_autumn_13.png",
+      "size": [
+        280,
+        318
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "mid_autumn_14",
+      "name": "玉兔_右下",
+      "x": 91.357421875,
+      "y": 89.453125,
+      "w": 6.73828125,
+      "h": 7.356770833333333,
+      "bbox": [
+        1802,
+        2635,
+        1940,
+        2861
+      ],
+      "zIndex": 14,
+      "src": "./assets/psd-mid-autumn-seaview-portrait/mid_autumn_14.png",
+      "size": [
+        138,
+        226
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "mid_autumn_15",
+      "name": "花瓣_01",
+      "x": 27.1728515625,
+      "y": 8.154296875,
+      "w": 1.318359375,
+      "h": 0.8138020833333334,
+      "bbox": [
+        543,
+        238,
+        570,
+        263
+      ],
+      "zIndex": 15,
+      "src": "./assets/psd-mid-autumn-seaview-portrait/mid_autumn_15.png",
+      "size": [
+        27,
+        25
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "mid_autumn_16",
+      "name": "花瓣_02",
+      "x": 22.4853515625,
+      "y": 10.660807291666668,
+      "w": 1.220703125,
+      "h": 0.5533854166666667,
+      "bbox": [
+        448,
+        319,
+        473,
+        336
+      ],
+      "zIndex": 16,
+      "src": "./assets/psd-mid-autumn-seaview-portrait/mid_autumn_16.png",
+      "size": [
+        25,
+        17
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "mid_autumn_17",
+      "name": "花瓣_03",
+      "x": 26.611328125,
+      "y": 22.688802083333336,
+      "w": 2.1484375,
+      "h": 0.9765625,
+      "bbox": [
+        523,
+        682,
+        567,
+        712
+      ],
+      "zIndex": 17,
+      "src": "./assets/psd-mid-autumn-seaview-portrait/mid_autumn_17.png",
+      "size": [
+        44,
+        30
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "mid_autumn_18",
+      "name": "花瓣_04",
+      "x": 87.353515625,
+      "y": 16.520182291666664,
+      "w": 1.3671875,
+      "h": 1.0091145833333335,
+      "bbox": [
+        1775,
+        492,
+        1803,
+        523
+      ],
+      "zIndex": 18,
+      "src": "./assets/psd-mid-autumn-seaview-portrait/mid_autumn_18.png",
+      "size": [
+        28,
+        31
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "mid_autumn_19",
+      "name": "花瓣_05",
+      "x": 13.9404296875,
+      "y": 82.89388020833334,
+      "w": 2.294921875,
+      "h": 1.0091145833333335,
+      "bbox": [
+        262,
+        2531,
+        309,
+        2562
+      ],
+      "zIndex": 19,
+      "src": "./assets/psd-mid-autumn-seaview-portrait/mid_autumn_19.png",
+      "size": [
+        47,
+        31
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "mid_autumn_20",
+      "name": "花瓣_06",
+      "x": 87.5,
+      "y": 76.69270833333334,
+      "w": 1.953125,
+      "h": 1.171875,
+      "bbox": [
+        1772,
+        2338,
+        1812,
+        2374
+      ],
+      "zIndex": 20,
+      "src": "./assets/psd-mid-autumn-seaview-portrait/mid_autumn_20.png",
+      "size": [
+        40,
+        36
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "mid_autumn_21",
+      "name": "云纹_左侧",
+      "x": 20.5810546875,
+      "y": 15.91796875,
+      "w": 12.548828125,
+      "h": 4.557291666666666,
+      "bbox": [
+        293,
+        419,
+        550,
+        559
+      ],
+      "zIndex": 21,
+      "src": "./assets/psd-mid-autumn-seaview-portrait/mid_autumn_21.png",
+      "size": [
+        257,
+        140
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "mid_autumn_22",
+      "name": "云纹_右侧",
+      "x": 80.224609375,
+      "y": 23.844401041666664,
+      "w": 14.16015625,
+      "h": 6.608072916666667,
+      "bbox": [
+        1498,
+        631,
+        1788,
+        834
+      ],
+      "zIndex": 22,
+      "src": "./assets/psd-mid-autumn-seaview-portrait/mid_autumn_22.png",
+      "size": [
+        290,
+        203
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "mid_autumn_23",
+      "name": "副标题_左金线",
+      "x": 26.318359375,
+      "y": 27.652994791666668,
+      "w": 11.03515625,
+      "h": 0.09765625,
+      "bbox": [
+        426,
+        848,
+        652,
+        851
+      ],
+      "zIndex": 23,
+      "src": "./assets/psd-mid-autumn-seaview-portrait/mid_autumn_23.png",
+      "size": [
+        226,
+        3
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "mid_autumn_24",
+      "name": "副标题_右金线",
+      "x": 73.6328125,
+      "y": 27.652994791666668,
+      "w": 9.375,
+      "h": 0.09765625,
+      "bbox": [
+        1412,
+        848,
+        1604,
+        851
+      ],
+      "zIndex": 24,
+      "src": "./assets/psd-mid-autumn-seaview-portrait/mid_autumn_24.png",
+      "size": [
+        192,
+        3
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "mid_autumn_25",
+      "name": "左侧英文下方短线",
+      "x": 7.32421875,
+      "y": 11.653645833333332,
+      "w": 3.3203125,
+      "h": 0.06510416666666666,
+      "bbox": [
+        116,
+        357,
+        184,
+        359
+      ],
+      "zIndex": 25,
+      "src": "./assets/psd-mid-autumn-seaview-portrait/mid_autumn_25.png",
+      "size": [
+        68,
+        2
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "mid_autumn_26",
+      "name": "中秋_红色椭圆印章底",
+      "x": 74.12109375,
+      "y": 15.4296875,
+      "w": 3.515625,
+      "h": 4.166666666666666,
+      "bbox": [
+        1482,
+        410,
+        1554,
+        538
+      ],
+      "zIndex": 26,
+      "src": "./assets/psd-mid-autumn-seaview-portrait/mid_autumn_26.png",
+      "size": [
+        72,
+        128
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "mid_autumn_27",
+      "name": "右侧_小方印外框",
+      "x": 91.357421875,
+      "y": 27.115885416666668,
+      "w": 1.66015625,
+      "h": 1.2369791666666665,
+      "bbox": [
+        1854,
+        814,
+        1888,
+        852
+      ],
+      "zIndex": 27,
+      "src": "./assets/psd-mid-autumn-seaview-portrait/mid_autumn_27.png",
+      "size": [
+        34,
+        38
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "mid_autumn_28",
+      "name": "价格牌_暖金底",
+      "x": 49.90234375,
+      "y": 74.54427083333334,
+      "w": 49.609375,
+      "h": 7.877604166666667,
+      "bbox": [
+        514,
+        2169,
+        1530,
+        2411
+      ],
+      "zIndex": 28,
+      "src": "./assets/psd-mid-autumn-seaview-portrait/mid_autumn_28.png",
+      "size": [
+        1016,
+        242
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "mid_autumn_29",
+      "name": "价格牌_外轮廓金边",
+      "x": 49.8291015625,
+      "y": 74.44661458333334,
+      "w": 49.462890625,
+      "h": 7.682291666666667,
+      "bbox": [
+        514,
+        2169,
+        1527,
+        2405
+      ],
+      "zIndex": 29,
+      "src": "./assets/psd-mid-autumn-seaview-portrait/mid_autumn_29.png",
+      "size": [
+        1013,
+        236
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "mid_autumn_30",
+      "name": "价格牌_内轮廓金边",
+      "x": 49.6826171875,
+      "y": 74.44661458333334,
+      "w": 48.486328125,
+      "h": 6.8359375,
+      "bbox": [
+        521,
+        2182,
+        1514,
+        2392
+      ],
+      "zIndex": 30,
+      "src": "./assets/psd-mid-autumn-seaview-portrait/mid_autumn_30.png",
+      "size": [
+        993,
+        210
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "mid_autumn_31",
+      "name": "权益栏_半透明底",
+      "x": 49.951171875,
+      "y": 80.92447916666666,
+      "w": 48.92578125,
+      "h": 3.2552083333333335,
+      "bbox": [
+        522,
+        2436,
+        1524,
+        2536
+      ],
+      "zIndex": 31,
+      "src": "./assets/psd-mid-autumn-seaview-portrait/mid_autumn_31.png",
+      "size": [
+        1002,
+        100
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "mid_autumn_32",
+      "name": "权益栏_圆角金边",
+      "x": 49.951171875,
+      "y": 80.92447916666666,
+      "w": 49.12109375,
+      "h": 3.3854166666666665,
+      "bbox": [
+        520,
+        2434,
+        1526,
+        2538
+      ],
+      "zIndex": 32,
+      "src": "./assets/psd-mid-autumn-seaview-portrait/mid_autumn_32.png",
+      "size": [
+        1006,
+        104
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "mid_autumn_33",
+      "name": "权益栏_左花纹",
+      "x": 28.7109375,
+      "y": 80.98958333333334,
+      "w": 1.953125,
+      "h": 1.3020833333333335,
+      "bbox": [
+        568,
+        2468,
+        608,
+        2508
+      ],
+      "zIndex": 33,
+      "src": "./assets/psd-mid-autumn-seaview-portrait/mid_autumn_33.png",
+      "size": [
+        40,
+        40
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "mid_autumn_34",
+      "name": "权益栏_右花纹",
+      "x": 71.2890625,
+      "y": 80.98958333333334,
+      "w": 1.953125,
+      "h": 1.3020833333333335,
+      "bbox": [
+        1440,
+        2468,
+        1480,
+        2508
+      ],
+      "zIndex": 34,
+      "src": "./assets/psd-mid-autumn-seaview-portrait/mid_autumn_34.png",
+      "size": [
+        40,
+        40
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "mid_autumn_35",
+      "name": "图标_地址定位",
+      "x": 12.841796875,
+      "y": 88.623046875,
+      "w": 2.44140625,
+      "h": 2.376302083333333,
+      "bbox": [
+        238,
+        2686,
+        288,
+        2759
+      ],
+      "zIndex": 35,
+      "src": "./assets/psd-mid-autumn-seaview-portrait/mid_autumn_35.png",
+      "size": [
+        50,
+        73
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "mid_autumn_36",
+      "name": "图标_预订电话",
+      "x": 57.8125,
+      "y": 88.57421875,
+      "w": 2.63671875,
+      "h": 1.7578125,
+      "bbox": [
+        1157,
+        2694,
+        1211,
+        2748
+      ],
+      "zIndex": 36,
+      "src": "./assets/psd-mid-autumn-seaview-portrait/mid_autumn_36.png",
+      "size": [
+        54,
+        54
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "mid_autumn_37",
+      "name": "地址电话_竖分隔线",
+      "x": 53.125,
+      "y": 88.57421875,
+      "w": 0.09765625,
+      "h": 1.7578125,
+      "bbox": [
+        1087,
+        2694,
+        1089,
+        2748
+      ],
+      "zIndex": 37,
+      "src": "./assets/psd-mid-autumn-seaview-portrait/mid_autumn_37.png",
+      "size": [
+        2,
+        54
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "mid_autumn_38",
+      "name": "底部口号_左短线",
+      "x": 30.517578125,
+      "y": 95.76822916666666,
+      "w": 2.05078125,
+      "h": 0.06510416666666666,
+      "bbox": [
+        604,
+        2941,
+        646,
+        2943
+      ],
+      "zIndex": 38,
+      "src": "./assets/psd-mid-autumn-seaview-portrait/mid_autumn_38.png",
+      "size": [
+        42,
+        2
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "mid_autumn_39",
+      "name": "底部口号_右短线",
+      "x": 69.3359375,
+      "y": 95.8984375,
+      "w": 1.953125,
+      "h": 0.06510416666666666,
+      "bbox": [
+        1400,
+        2945,
+        1440,
+        2947
+      ],
+      "zIndex": 39,
+      "src": "./assets/psd-mid-autumn-seaview-portrait/mid_autumn_39.png",
+      "size": [
+        40,
+        2
+      ],
+      "kind": "pixel"
+    }
+  ],
+  "text": [
+    {
+      "key": "mid_autumn_40",
+      "name": "主标题_第一行_月",
+      "x": 32.3486328125,
+      "y": 13.509114583333334,
+      "w": 10.888671875,
+      "h": 8.463541666666668,
+      "bbox": [
+        551,
+        285,
+        774,
+        545
+      ],
+      "zIndex": 40,
+      "value": "月",
+      "pointText": true,
+      "fontSize": 256.0,
+      "lineHeight": 1.2,
+      "color": "#F2D796",
+      "fontName": "'NotoSerifCJKsc-SemiBold'",
+      "kind": "serif",
+      "fontStyle": "normal",
+      "weight": 600,
+      "letterSpacing": "0.000em"
+    },
+    {
+      "key": "mid_autumn_41",
+      "name": "主标题_第一行_满",
+      "x": 43.115234375,
+      "y": 13.395182291666666,
+      "w": 10.546875,
+      "h": 7.12890625,
+      "bbox": [
+        775,
+        302,
+        991,
+        521
+      ],
+      "zIndex": 41,
+      "value": "满",
+      "pointText": true,
+      "fontSize": 256.0,
+      "lineHeight": 1.2,
+      "color": "#F2D796",
+      "fontName": "'NotoSerifCJKsc-SemiBold'",
+      "kind": "serif",
+      "fontStyle": "normal",
+      "weight": 600,
+      "letterSpacing": "0.000em"
+    },
+    {
+      "key": "mid_autumn_42",
+      "name": "主标题_第一行_中",
+      "x": 54.345703125,
+      "y": 12.434895833333332,
+      "w": 10.05859375,
+      "h": 8.0078125,
+      "bbox": [
+        1010,
+        259,
+        1216,
+        505
+      ],
+      "zIndex": 42,
+      "value": "中",
+      "pointText": true,
+      "fontSize": 256.0,
+      "lineHeight": 1.2,
+      "color": "#F2D796",
+      "fontName": "'NotoSerifCJKsc-SemiBold'",
+      "kind": "serif",
+      "fontStyle": "normal",
+      "weight": 600,
+      "letterSpacing": "0.000em"
+    },
+    {
+      "key": "mid_autumn_43",
+      "name": "主标题_第一行_秋",
+      "x": 64.892578125,
+      "y": 12.760416666666666,
+      "w": 10.15625,
+      "h": 7.8125,
+      "bbox": [
+        1225,
+        272,
+        1433,
+        512
+      ],
+      "zIndex": 43,
+      "value": "秋",
+      "pointText": true,
+      "fontSize": 256.0,
+      "lineHeight": 1.2,
+      "color": "#F2D796",
+      "fontName": "'NotoSerifCJKsc-SemiBold'",
+      "kind": "serif",
+      "fontStyle": "normal",
+      "weight": 600,
+      "letterSpacing": "0.000em"
+    },
+    {
+      "key": "mid_autumn_44",
+      "name": "主标题_第二行_悦",
+      "x": 37.3779296875,
+      "y": 21.728515625,
+      "w": 9.619140625,
+      "h": 7.12890625,
+      "bbox": [
+        667,
+        558,
+        864,
+        777
+      ],
+      "zIndex": 44,
+      "value": "悦",
+      "pointText": true,
+      "fontSize": 240.0,
+      "lineHeight": 1.2,
+      "color": "#F4DDA0",
+      "fontName": "'NotoSerifCJKsc-SemiBold'",
+      "kind": "serif",
+      "fontStyle": "normal",
+      "weight": 600,
+      "letterSpacing": "0.000em"
+    },
+    {
+      "key": "mid_autumn_45",
+      "name": "主标题_第二行_享",
+      "x": 47.8271484375,
+      "y": 21.419270833333336,
+      "w": 9.326171875,
+      "h": 6.640625,
+      "bbox": [
+        884,
+        556,
+        1075,
+        760
+      ],
+      "zIndex": 45,
+      "value": "享",
+      "pointText": true,
+      "fontSize": 240.0,
+      "lineHeight": 1.2,
+      "color": "#F4DDA0",
+      "fontName": "'NotoSerifCJKsc-SemiBold'",
+      "kind": "serif",
+      "fontStyle": "normal",
+      "weight": 600,
+      "letterSpacing": "0.000em"
+    },
+    {
+      "key": "mid_autumn_46",
+      "name": "主标题_第二行_海",
+      "x": 57.71484375,
+      "y": 21.012369791666664,
+      "w": 9.08203125,
+      "h": 6.73828125,
+      "bbox": [
+        1089,
+        542,
+        1275,
+        749
+      ],
+      "zIndex": 46,
+      "value": "海",
+      "pointText": true,
+      "fontSize": 240.0,
+      "lineHeight": 1.2,
+      "color": "#F4DDA0",
+      "fontName": "'NotoSerifCJKsc-SemiBold'",
+      "kind": "serif",
+      "fontStyle": "normal",
+      "weight": 600,
+      "letterSpacing": "0.000em"
+    },
+    {
+      "key": "mid_autumn_47",
+      "name": "主标题_第二行_景",
+      "x": 67.529296875,
+      "y": 20.621744791666664,
+      "w": 9.765625,
+      "h": 6.868489583333333,
+      "bbox": [
+        1283,
+        528,
+        1483,
+        739
+      ],
+      "zIndex": 47,
+      "value": "景",
+      "pointText": true,
+      "fontSize": 240.0,
+      "lineHeight": 1.2,
+      "color": "#F4DDA0",
+      "fontName": "'NotoSerifCJKsc-SemiBold'",
+      "kind": "serif",
+      "fontStyle": "normal",
+      "weight": 600,
+      "letterSpacing": "0.000em"
+    },
+    {
+      "key": "mid_autumn_48",
+      "name": "副标题_团圆佳节",
+      "x": 50.439453125,
+      "y": 27.571614583333332,
+      "w": 33.88671875,
+      "h": 1.8229166666666667,
+      "bbox": [
+        686,
+        819,
+        1380,
+        875
+      ],
+      "zIndex": 48,
+      "value": "团圆佳节 · 臻享品质假期",
+      "pointText": true,
+      "fontSize": 58.0,
+      "lineHeight": 1.2,
+      "color": "#F2DDA3",
+      "fontName": "'NotoSerifCJKsc-Regular'",
+      "kind": "serif",
+      "fontStyle": "normal",
+      "weight": 400,
+      "letterSpacing": "0.000em"
+    },
+    {
+      "key": "mid_autumn_49",
+      "name": "英文_MID-AUTUMN",
+      "x": 12.1826171875,
+      "y": 8.854166666666668,
+      "w": 13.037109375,
+      "h": 0.7161458333333333,
+      "bbox": [
+        116,
+        261,
+        383,
+        283
+      ],
+      "zIndex": 49,
+      "value": "M I D - A U T U M N",
+      "pointText": true,
+      "fontSize": 24.0,
+      "lineHeight": 1.2,
+      "color": "#D2C8A4",
+      "fontName": "'NimbusRoman-Regular'",
+      "kind": "roman-italic",
+      "fontStyle": "normal",
+      "weight": 400,
+      "letterSpacing": "0.000em"
+    },
+    {
+      "key": "mid_autumn_50",
+      "name": "英文_FESTIVAL",
+      "x": 11.1083984375,
+      "y": 10.221354166666668,
+      "w": 10.888671875,
+      "h": 0.5859375,
+      "bbox": [
+        116,
+        305,
+        339,
+        323
+      ],
+      "zIndex": 50,
+      "value": "F E S T I V A L",
+      "pointText": true,
+      "fontSize": 22.0,
+      "lineHeight": 1.2,
+      "color": "#D2C8A4",
+      "fontName": "'NimbusRoman-Regular'",
+      "kind": "roman-italic",
+      "fontStyle": "normal",
+      "weight": 400,
+      "letterSpacing": "0.000em"
+    },
+    {
+      "key": "mid_autumn_51",
+      "name": "左侧文案_月光所至",
+      "x": 9.912109375,
+      "y": 13.4765625,
+      "w": 8.3984375,
+      "h": 0.9765625,
+      "bbox": [
+        117,
+        399,
+        289,
+        429
+      ],
+      "zIndex": 51,
+      "value": "月 光 所 至",
+      "pointText": true,
+      "fontSize": 30.0,
+      "lineHeight": 1.2,
+      "color": "#E4D7AD",
+      "fontName": "'NotoSerifCJKsc-Regular'",
+      "kind": "serif",
+      "fontStyle": "normal",
+      "weight": 400,
+      "letterSpacing": "0.000em"
+    },
+    {
+      "key": "mid_autumn_52",
+      "name": "左侧文案_皆是美好",
+      "x": 9.9365234375,
+      "y": 15.0390625,
+      "w": 8.544921875,
+      "h": 0.9765625,
+      "bbox": [
+        116,
+        447,
+        291,
+        477
+      ],
+      "zIndex": 52,
+      "value": "皆 是 美 好",
+      "pointText": true,
+      "fontSize": 30.0,
+      "lineHeight": 1.2,
+      "color": "#E4D7AD",
+      "fontName": "'NotoSerifCJKsc-Regular'",
+      "kind": "serif",
+      "fontStyle": "normal",
+      "weight": 400,
+      "letterSpacing": "0.000em"
+    },
+    {
+      "key": "mid_autumn_53",
+      "name": "中秋印章_01_中",
+      "x": 74.169921875,
+      "y": 14.599609375,
+      "w": 1.66015625,
+      "h": 1.1393229166666665,
+      "bbox": [
+        1502,
+        431,
+        1536,
+        466
+      ],
+      "zIndex": 53,
+      "value": "中",
+      "pointText": true,
+      "fontSize": 36.0,
+      "lineHeight": 1.2,
+      "color": "#FFF1C3",
+      "fontName": "'NotoSerifCJKsc-Regular'",
+      "kind": "serif",
+      "fontStyle": "normal",
+      "weight": 400,
+      "letterSpacing": "0.000em"
+    },
+    {
+      "key": "mid_autumn_54",
+      "name": "中秋印章_02_秋",
+      "x": 74.1455078125,
+      "y": 16.178385416666664,
+      "w": 1.708984375,
+      "h": 1.1067708333333335,
+      "bbox": [
+        1501,
+        480,
+        1536,
+        514
+      ],
+      "zIndex": 54,
+      "value": "秋",
+      "pointText": true,
+      "fontSize": 36.0,
+      "lineHeight": 1.2,
+      "color": "#FFF1C3",
+      "fontName": "'NotoSerifCJKsc-Regular'",
+      "kind": "serif",
+      "fontStyle": "normal",
+      "weight": 400,
+      "letterSpacing": "0.000em"
+    },
+    {
+      "key": "mid_autumn_55",
+      "name": "右侧诗句_海上生明月_01_海",
+      "x": 93.8720703125,
+      "y": 16.569010416666664,
+      "w": 1.318359375,
+      "h": 0.9114583333333334,
+      "bbox": [
+        1909,
+        495,
+        1936,
+        523
+      ],
+      "zIndex": 55,
+      "value": "海",
+      "pointText": true,
+      "fontSize": 28.0,
+      "lineHeight": 1.2,
+      "color": "#E3D3A5",
+      "fontName": "'NotoSerifCJKsc-Regular'",
+      "kind": "serif",
+      "fontStyle": "normal",
+      "weight": 400,
+      "letterSpacing": "0.000em"
+    },
+    {
+      "key": "mid_autumn_56",
+      "name": "右侧诗句_海上生明月_02_上",
+      "x": 93.84765625,
+      "y": 18.082682291666664,
+      "w": 1.26953125,
+      "h": 0.9440104166666666,
+      "bbox": [
+        1909,
+        541,
+        1935,
+        570
+      ],
+      "zIndex": 56,
+      "value": "上",
+      "pointText": true,
+      "fontSize": 28.0,
+      "lineHeight": 1.2,
+      "color": "#E3D3A5",
+      "fontName": "'NotoSerifCJKsc-Regular'",
+      "kind": "serif",
+      "fontStyle": "normal",
+      "weight": 400,
+      "letterSpacing": "0.000em"
+    },
+    {
+      "key": "mid_autumn_57",
+      "name": "右侧诗句_海上生明月_03_生",
+      "x": 93.84765625,
+      "y": 19.563802083333336,
+      "w": 1.26953125,
+      "h": 0.78125,
+      "bbox": [
+        1909,
+        589,
+        1935,
+        613
+      ],
+      "zIndex": 57,
+      "value": "生",
+      "pointText": true,
+      "fontSize": 28.0,
+      "lineHeight": 1.2,
+      "color": "#E3D3A5",
+      "fontName": "'NotoSerifCJKsc-Regular'",
+      "kind": "serif",
+      "fontStyle": "normal",
+      "weight": 400,
+      "letterSpacing": "0.000em"
+    },
+    {
+      "key": "mid_autumn_58",
+      "name": "右侧诗句_海上生明月_04_明",
+      "x": 93.8232421875,
+      "y": 21.044921875,
+      "w": 1.318359375,
+      "h": 0.8138020833333334,
+      "bbox": [
+        1908,
+        634,
+        1935,
+        659
+      ],
+      "zIndex": 58,
+      "value": "明",
+      "pointText": true,
+      "fontSize": 28.0,
+      "lineHeight": 1.2,
+      "color": "#E3D3A5",
+      "fontName": "'NotoSerifCJKsc-Regular'",
+      "kind": "serif",
+      "fontStyle": "normal",
+      "weight": 400,
+      "letterSpacing": "0.000em"
+    },
+    {
+      "key": "mid_autumn_59",
+      "name": "右侧诗句_海上生明月_05_月",
+      "x": 93.84765625,
+      "y": 22.574869791666664,
+      "w": 1.26953125,
+      "h": 0.87890625,
+      "bbox": [
+        1909,
+        680,
+        1935,
+        707
+      ],
+      "zIndex": 59,
+      "value": "月",
+      "pointText": true,
+      "fontSize": 28.0,
+      "lineHeight": 1.2,
+      "color": "#E3D3A5",
+      "fontName": "'NotoSerifCJKsc-Regular'",
+      "kind": "serif",
+      "fontStyle": "normal",
+      "weight": 400,
+      "letterSpacing": "0.000em"
+    },
+    {
+      "key": "mid_autumn_60",
+      "name": "右侧诗句_天涯共此时_01_天",
+      "x": 91.6259765625,
+      "y": 19.384765625,
+      "w": 1.318359375,
+      "h": 0.87890625,
+      "bbox": [
+        1863,
+        582,
+        1890,
+        609
+      ],
+      "zIndex": 60,
+      "value": "天",
+      "pointText": true,
+      "fontSize": 28.0,
+      "lineHeight": 1.2,
+      "color": "#E3D3A5",
+      "fontName": "'NotoSerifCJKsc-Regular'",
+      "kind": "serif",
+      "fontStyle": "normal",
+      "weight": 400,
+      "letterSpacing": "0.000em"
+    },
+    {
+      "key": "mid_autumn_61",
+      "name": "右侧诗句_天涯共此时_02_涯",
+      "x": 91.6015625,
+      "y": 20.882161458333336,
+      "w": 1.26953125,
+      "h": 0.87890625,
+      "bbox": [
+        1863,
+        628,
+        1889,
+        655
+      ],
+      "zIndex": 61,
+      "value": "涯",
+      "pointText": true,
+      "fontSize": 28.0,
+      "lineHeight": 1.2,
+      "color": "#E3D3A5",
+      "fontName": "'NotoSerifCJKsc-Regular'",
+      "kind": "serif",
+      "fontStyle": "normal",
+      "weight": 400,
+      "letterSpacing": "0.000em"
+    },
+    {
+      "key": "mid_autumn_62",
+      "name": "右侧诗句_天涯共此时_03_共",
+      "x": 91.6015625,
+      "y": 22.330729166666664,
+      "w": 1.26953125,
+      "h": 0.8463541666666666,
+      "bbox": [
+        1863,
+        673,
+        1889,
+        699
+      ],
+      "zIndex": 62,
+      "value": "共",
+      "pointText": true,
+      "fontSize": 28.0,
+      "lineHeight": 1.2,
+      "color": "#E3D3A5",
+      "fontName": "'NotoSerifCJKsc-Regular'",
+      "kind": "serif",
+      "fontStyle": "normal",
+      "weight": 400,
+      "letterSpacing": "0.000em"
+    },
+    {
+      "key": "mid_autumn_63",
+      "name": "右侧诗句_天涯共此时_04_此",
+      "x": 91.6015625,
+      "y": 23.828125,
+      "w": 1.26953125,
+      "h": 0.8463541666666666,
+      "bbox": [
+        1863,
+        719,
+        1889,
+        745
+      ],
+      "zIndex": 63,
+      "value": "此",
+      "pointText": true,
+      "fontSize": 28.0,
+      "lineHeight": 1.2,
+      "color": "#E3D3A5",
+      "fontName": "'NotoSerifCJKsc-Regular'",
+      "kind": "serif",
+      "fontStyle": "normal",
+      "weight": 400,
+      "letterSpacing": "0.000em"
+    },
+    {
+      "key": "mid_autumn_64",
+      "name": "右侧诗句_天涯共此时_05_时",
+      "x": 91.5771484375,
+      "y": 25.358072916666668,
+      "w": 1.318359375,
+      "h": 0.9114583333333334,
+      "bbox": [
+        1862,
+        765,
+        1889,
+        793
+      ],
+      "zIndex": 64,
+      "value": "时",
+      "pointText": true,
+      "fontSize": 28.0,
+      "lineHeight": 1.2,
+      "color": "#E3D3A5",
+      "fontName": "'NotoSerifCJKsc-Regular'",
+      "kind": "serif",
+      "fontStyle": "normal",
+      "weight": 400,
+      "letterSpacing": "0.000em"
+    },
+    {
+      "key": "mid_autumn_65",
+      "name": "小方印_团圆",
+      "x": 91.3330078125,
+      "y": 27.115885416666668,
+      "w": 1.123046875,
+      "h": 0.7161458333333333,
+      "bbox": [
+        1859,
+        822,
+        1882,
+        844
+      ],
+      "zIndex": 65,
+      "value": "团圆",
+      "pointText": true,
+      "fontSize": 20.0,
+      "lineHeight": 1.2,
+      "color": "#B53123",
+      "fontName": "'NotoSerifCJKsc-Regular'",
+      "kind": "serif",
+      "fontStyle": "normal",
+      "weight": 400,
+      "letterSpacing": "0.000em"
+    },
+    {
+      "key": "mid_autumn_66",
+      "name": "价格标签_限时",
+      "x": 34.5458984375,
+      "y": 73.681640625,
+      "w": 5.615234375,
+      "h": 1.66015625,
+      "bbox": [
+        650,
+        2238,
+        765,
+        2289
+      ],
+      "zIndex": 66,
+      "value": "限时",
+      "pointText": true,
+      "fontSize": 56.0,
+      "lineHeight": 1.2,
+      "color": "#65320E",
+      "fontName": "'NotoSerifCJKsc-Regular'",
+      "kind": "serif",
+      "fontStyle": "normal",
+      "weight": 400,
+      "letterSpacing": "0.000em"
+    },
+    {
+      "key": "mid_autumn_67",
+      "name": "价格标签_特惠",
+      "x": 34.4970703125,
+      "y": 76.00911458333334,
+      "w": 5.419921875,
+      "h": 1.6927083333333333,
+      "bbox": [
+        651,
+        2309,
+        762,
+        2361
+      ],
+      "zIndex": 67,
+      "value": "特惠",
+      "pointText": true,
+      "fontSize": 56.0,
+      "lineHeight": 1.2,
+      "color": "#65320E",
+      "fontName": "'NotoSerifCJKsc-Regular'",
+      "kind": "serif",
+      "fontStyle": "normal",
+      "weight": 400,
+      "letterSpacing": "0.000em"
+    },
+    {
+      "key": "mid_autumn_68",
+      "name": "价格_人民币符号",
+      "x": 41.0400390625,
+      "y": 75.47200520833334,
+      "w": 3.076171875,
+      "h": 2.63671875,
+      "bbox": [
+        809,
+        2278,
+        872,
+        2359
+      ],
+      "zIndex": 68,
+      "value": "¥",
+      "pointText": true,
+      "fontSize": 86.0,
+      "lineHeight": 1.2,
+      "color": "#65320E",
+      "fontName": "'NimbusRoman-Regular'",
+      "kind": "roman-italic",
+      "fontStyle": "normal",
+      "weight": 400,
+      "letterSpacing": "0.000em"
+    },
+    {
+      "key": "mid_autumn_69",
+      "name": "价格_699",
+      "x": 51.26953125,
+      "y": 74.34895833333334,
+      "w": 16.11328125,
+      "h": 5.598958333333334,
+      "bbox": [
+        885,
+        2198,
+        1215,
+        2370
+      ],
+      "zIndex": 69,
+      "value": "699",
+      "pointText": true,
+      "fontSize": 224.0,
+      "lineHeight": 1.2,
+      "color": "#4D1F08",
+      "fontName": "'NimbusRoman-Regular'",
+      "kind": "roman-italic",
+      "fontStyle": "normal",
+      "weight": 400,
+      "letterSpacing": "0.000em"
+    },
+    {
+      "key": "mid_autumn_70",
+      "name": "价格_起每晚",
+      "x": 64.1357421875,
+      "y": 75.74869791666666,
+      "w": 7.958984375,
+      "h": 1.953125,
+      "bbox": [
+        1232,
+        2297,
+        1395,
+        2357
+      ],
+      "zIndex": 70,
+      "value": "起/晚",
+      "pointText": true,
+      "fontSize": 64.0,
+      "lineHeight": 1.2,
+      "color": "#4D1F08",
+      "fontName": "'NotoSerifCJKsc-Regular'",
+      "kind": "serif",
+      "fontStyle": "normal",
+      "weight": 400,
+      "letterSpacing": "0.000em"
+    },
+    {
+      "key": "mid_autumn_71",
+      "name": "权益_含双人早餐",
+      "x": 38.1103515625,
+      "y": 80.94075520833334,
+      "w": 12.548828125,
+      "h": 1.5950520833333333,
+      "bbox": [
+        652,
+        2462,
+        909,
+        2511
+      ],
+      "zIndex": 71,
+      "value": "含双人早餐",
+      "pointText": true,
+      "fontSize": 48.0,
+      "lineHeight": 1.2,
+      "color": "#F0DFB0",
+      "fontName": "'NotoSerifCJKsc-Regular'",
+      "kind": "serif",
+      "fontStyle": "normal",
+      "weight": 400,
+      "letterSpacing": "0.000em"
+    },
+    {
+      "key": "mid_autumn_72",
+      "name": "权益_入住即享欢迎水果",
+      "x": 57.8125,
+      "y": 80.92447916666666,
+      "w": 20.41015625,
+      "h": 1.5625,
+      "bbox": [
+        975,
+        2462,
+        1393,
+        2510
+      ],
+      "zIndex": 72,
+      "value": "入住即享欢迎水果",
+      "pointText": true,
+      "fontSize": 48.0,
+      "lineHeight": 1.2,
+      "color": "#F0DFB0",
+      "fontName": "'NotoSerifCJKsc-Regular'",
+      "kind": "serif",
+      "fontStyle": "normal",
+      "weight": 400,
+      "letterSpacing": "0.000em"
+    },
+    {
+      "key": "mid_autumn_73",
+      "name": "权益_分隔符",
+      "x": 45.947265625,
+      "y": 80.908203125,
+      "w": 0.29296875,
+      "h": 1.5299479166666665,
+      "bbox": [
+        938,
+        2462,
+        944,
+        2509
+      ],
+      "zIndex": 73,
+      "value": "｜",
+      "pointText": true,
+      "fontSize": 48.0,
+      "lineHeight": 1.2,
+      "color": "#F0DFB0",
+      "fontName": "'NotoSerifCJKsc-Regular'",
+      "kind": "serif",
+      "fontStyle": "normal",
+      "weight": 400,
+      "letterSpacing": "0.000em"
+    },
+    {
+      "key": "mid_autumn_74",
+      "name": "联系_酒店地址",
+      "x": 32.958984375,
+      "y": 88.50911458333334,
+      "w": 35.3515625,
+      "h": 1.2369791666666665,
+      "bbox": [
+        313,
+        2700,
+        1037,
+        2738
+      ],
+      "zIndex": 74,
+      "value": "酒店地址：滨海度假区海景大道88号",
+      "pointText": true,
+      "fontSize": 42.0,
+      "lineHeight": 1.2,
+      "color": "#EEE3C5",
+      "fontName": "'NotoSerifCJKsc-Regular'",
+      "kind": "serif",
+      "fontStyle": "normal",
+      "weight": 400,
+      "letterSpacing": "0.000em"
+    },
+    {
+      "key": "mid_autumn_75",
+      "name": "联系_预订电话",
+      "x": 72.94921875,
+      "y": 88.525390625,
+      "w": 25.390625,
+      "h": 1.26953125,
+      "bbox": [
+        1234,
+        2700,
+        1754,
+        2739
+      ],
+      "zIndex": 75,
+      "value": "预订电话：400-888-8888",
+      "pointText": true,
+      "fontSize": 42.0,
+      "lineHeight": 1.2,
+      "color": "#EEE3C5",
+      "fontName": "'NotoSerifCJKsc-Regular'",
+      "kind": "serif",
+      "fontStyle": "normal",
+      "weight": 400,
+      "letterSpacing": "0.000em"
+    },
+    {
+      "key": "mid_autumn_76",
+      "name": "底部口号_月下相聚海景同享",
+      "x": 49.9267578125,
+      "y": 95.83333333333334,
+      "w": 33.056640625,
+      "h": 1.3671875,
+      "bbox": [
+        684,
+        2923,
+        1361,
+        2965
+      ],
+      "zIndex": 76,
+      "value": "月 / 下 / 相 / 聚   ·   海 / 景 / 同 / 享",
+      "pointText": true,
+      "fontSize": 32.0,
+      "lineHeight": 1.2,
+      "color": "#D8CFAE",
+      "fontName": "'NotoSerifCJKsc-Regular'",
+      "kind": "serif",
+      "fontStyle": "normal",
+      "weight": 400,
+      "letterSpacing": "0.000em"
+    }
+  ]
+}

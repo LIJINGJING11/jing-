@@ -1,0 +1,411 @@
+{
+  "source": "/Users/sigurd/Downloads/行政景观套房_严格分层_1920x1080_72DPI.psd",
+  "width": 1920,
+  "height": 1080,
+  "dpi": 72,
+  "topLevelOrder": [
+    "BG_01_酒店套房实景_独立底层",
+    "GRP_01_UI信息面板"
+  ],
+  "leafLayerOrder": [
+    "BG_01_酒店套房实景_独立底层",
+    "UI_01_左侧深色半透明面板",
+    "LOGO_01_品牌占位标_ALPHA",
+    "DEC_02_标题分隔线_ALPHA",
+    "ICON_01_面积_ALPHA",
+    "ICON_02_独立客厅_ALPHA",
+    "ICON_03_全景落地窗_ALPHA",
+    "ICON_04_行政礼遇_ALPHA",
+    "ICON_05_欢迎水果_ALPHA",
+    "TXT_01_主标题_可编辑",
+    "TXT_02_副标题_可编辑",
+    "TXT_03_面积_可编辑",
+    "TXT_04_独立客厅_可编辑",
+    "TXT_05_全景落地窗_可编辑",
+    "TXT_06_行政礼遇_可编辑",
+    "TXT_07_欢迎水果_可编辑"
+  ],
+  "groups": [
+    {
+      "name": "GRP_01_UI信息面板",
+      "children": [
+        "UI_01_左侧深色半透明面板",
+        "LOGO_01_品牌占位标_ALPHA",
+        "DEC_02_标题分隔线_ALPHA",
+        "ICON_01_面积_ALPHA",
+        "ICON_02_独立客厅_ALPHA",
+        "ICON_03_全景落地窗_ALPHA",
+        "ICON_04_行政礼遇_ALPHA",
+        "ICON_05_欢迎水果_ALPHA",
+        "TXT_01_主标题_可编辑",
+        "TXT_02_副标题_可编辑",
+        "TXT_03_面积_可编辑",
+        "TXT_04_独立客厅_可编辑",
+        "TXT_05_全景落地窗_可编辑",
+        "TXT_06_行政礼遇_可编辑",
+        "TXT_07_欢迎水果_可编辑"
+      ]
+    }
+  ],
+  "assets": [
+    {
+      "key": "admin_suite_background",
+      "name": "BG_01_酒店套房实景_独立底层",
+      "src": "./assets/psd-admin-suite-landscape/admin_suite_background.png",
+      "x": 50.0,
+      "y": 50.0,
+      "w": 100.0,
+      "h": 100.0,
+      "zIndex": 1,
+      "bbox": [
+        0,
+        0,
+        1920,
+        1080
+      ],
+      "size": [
+        1920,
+        1080
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "admin_suite_panel",
+      "name": "UI_01_左侧深色半透明面板",
+      "src": "./assets/psd-admin-suite-landscape/admin_suite_panel.png",
+      "x": 26.822916666666668,
+      "y": 50.0,
+      "w": 43.75,
+      "h": 87.03703703703704,
+      "zIndex": 2,
+      "bbox": [
+        95,
+        70,
+        935,
+        1010
+      ],
+      "size": [
+        840,
+        940
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "admin_suite_logo_placeholder",
+      "name": "LOGO_01_品牌占位标_ALPHA",
+      "src": "./assets/psd-admin-suite-landscape/admin_suite_logo_placeholder.png",
+      "x": 27.239583333333332,
+      "y": 17.037037037037038,
+      "w": 5.208333333333334,
+      "h": 10.185185185185185,
+      "zIndex": 3,
+      "bbox": [
+        473,
+        129,
+        573,
+        239
+      ],
+      "size": [
+        100,
+        110
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "admin_suite_divider",
+      "name": "DEC_02_标题分隔线_ALPHA",
+      "src": "./assets/psd-admin-suite-landscape/admin_suite_divider.png",
+      "x": 26.822916666666668,
+      "y": 50.18518518518519,
+      "w": 30.729166666666668,
+      "h": 2.2222222222222223,
+      "zIndex": 4,
+      "bbox": [
+        220,
+        530,
+        810,
+        554
+      ],
+      "size": [
+        590,
+        24
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "admin_suite_icon_area",
+      "name": "ICON_01_面积_ALPHA",
+      "src": "./assets/psd-admin-suite-landscape/admin_suite_icon_area.png",
+      "x": 13.593749999999998,
+      "y": 59.25925925925925,
+      "w": 4.270833333333333,
+      "h": 7.592592592592593,
+      "zIndex": 5,
+      "bbox": [
+        220,
+        599,
+        302,
+        681
+      ],
+      "size": [
+        82,
+        82
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "admin_suite_icon_living",
+      "name": "ICON_02_独立客厅_ALPHA",
+      "src": "./assets/psd-admin-suite-landscape/admin_suite_icon_living.png",
+      "x": 30.78125,
+      "y": 59.25925925925925,
+      "w": 4.270833333333333,
+      "h": 7.592592592592593,
+      "zIndex": 6,
+      "bbox": [
+        550,
+        599,
+        632,
+        681
+      ],
+      "size": [
+        82,
+        82
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "admin_suite_icon_window",
+      "name": "ICON_03_全景落地窗_ALPHA",
+      "src": "./assets/psd-admin-suite-landscape/admin_suite_icon_window.png",
+      "x": 13.593749999999998,
+      "y": 69.9074074074074,
+      "w": 4.270833333333333,
+      "h": 7.592592592592593,
+      "zIndex": 7,
+      "bbox": [
+        220,
+        714,
+        302,
+        796
+      ],
+      "size": [
+        82,
+        82
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "admin_suite_icon_benefits",
+      "name": "ICON_04_行政礼遇_ALPHA",
+      "src": "./assets/psd-admin-suite-landscape/admin_suite_icon_benefits.png",
+      "x": 30.78125,
+      "y": 69.9074074074074,
+      "w": 4.270833333333333,
+      "h": 7.592592592592593,
+      "zIndex": 8,
+      "bbox": [
+        550,
+        714,
+        632,
+        796
+      ],
+      "size": [
+        82,
+        82
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "admin_suite_icon_fruit",
+      "name": "ICON_05_欢迎水果_ALPHA",
+      "src": "./assets/psd-admin-suite-landscape/admin_suite_icon_fruit.png",
+      "x": 13.593749999999998,
+      "y": 80.55555555555556,
+      "w": 4.270833333333333,
+      "h": 7.592592592592593,
+      "zIndex": 9,
+      "bbox": [
+        220,
+        829,
+        302,
+        911
+      ],
+      "size": [
+        82,
+        82
+      ],
+      "kind": "pixel"
+    }
+  ],
+  "text": [
+    {
+      "key": "admin_suite_title",
+      "name": "TXT_01_主标题_可编辑",
+      "value": "行政景观套房",
+      "x": 27.213541666666668,
+      "y": 30.324074074074076,
+      "w": 26.510416666666664,
+      "h": 7.5,
+      "fontSize": 86.0,
+      "lineHeight": 1.2,
+      "color": "#F8F5EE",
+      "font": 0,
+      "kind": "source-han-sans",
+      "weight": 500,
+      "letterSpacing": "0",
+      "pointText": true,
+      "zIndex": 10,
+      "bbox": [
+        268,
+        287,
+        777,
+        368
+      ]
+    },
+    {
+      "key": "admin_suite_subtitle",
+      "name": "TXT_02_副标题_可编辑",
+      "value": "宽境之上，尽享从容",
+      "x": 26.822916666666668,
+      "y": 40.60185185185185,
+      "w": 18.958333333333332,
+      "h": 3.981481481481482,
+      "fontSize": 43.0,
+      "lineHeight": 1.2,
+      "color": "#D3A66F",
+      "font": 0,
+      "kind": "source-han-sans",
+      "weight": 500,
+      "letterSpacing": "0",
+      "pointText": true,
+      "zIndex": 11,
+      "bbox": [
+        333,
+        417,
+        697,
+        460
+      ]
+    },
+    {
+      "key": "admin_suite_area",
+      "name": "TXT_03_面积_可编辑",
+      "value": "面积 68㎡",
+      "x": 19.947916666666668,
+      "y": 59.44444444444444,
+      "w": 6.979166666666667,
+      "h": 2.7777777777777777,
+      "fontSize": 31.0,
+      "lineHeight": 1.2,
+      "color": "#F8F5EE",
+      "font": 0,
+      "kind": "source-han-sans",
+      "weight": 500,
+      "letterSpacing": "0",
+      "pointText": true,
+      "zIndex": 12,
+      "bbox": [
+        316,
+        627,
+        450,
+        657
+      ]
+    },
+    {
+      "key": "admin_suite_living",
+      "name": "TXT_04_独立客厅_可编辑",
+      "value": "独立客厅",
+      "x": 36.796875,
+      "y": 59.44444444444444,
+      "w": 6.406249999999999,
+      "h": 2.7777777777777777,
+      "fontSize": 31.0,
+      "lineHeight": 1.2,
+      "color": "#F8F5EE",
+      "font": 0,
+      "kind": "source-han-sans",
+      "weight": 500,
+      "letterSpacing": "0",
+      "pointText": true,
+      "zIndex": 13,
+      "bbox": [
+        645,
+        627,
+        768,
+        657
+      ]
+    },
+    {
+      "key": "admin_suite_window",
+      "name": "TXT_05_全景落地窗_可编辑",
+      "value": "全景落地窗",
+      "x": 20.390625,
+      "y": 70.0925925925926,
+      "w": 7.968749999999999,
+      "h": 2.7777777777777777,
+      "fontSize": 31.0,
+      "lineHeight": 1.2,
+      "color": "#F8F5EE",
+      "font": 0,
+      "kind": "source-han-sans",
+      "weight": 500,
+      "letterSpacing": "0",
+      "pointText": true,
+      "zIndex": 14,
+      "bbox": [
+        315,
+        742,
+        468,
+        772
+      ]
+    },
+    {
+      "key": "admin_suite_benefits",
+      "name": "TXT_06_行政礼遇_可编辑",
+      "value": "行政礼遇",
+      "x": 36.822916666666664,
+      "y": 70.13888888888889,
+      "w": 6.354166666666666,
+      "h": 2.8703703703703702,
+      "fontSize": 31.0,
+      "lineHeight": 1.2,
+      "color": "#F8F5EE",
+      "font": 0,
+      "kind": "source-han-sans",
+      "weight": 500,
+      "letterSpacing": "0",
+      "pointText": true,
+      "zIndex": 15,
+      "bbox": [
+        646,
+        742,
+        768,
+        773
+      ]
+    },
+    {
+      "key": "admin_suite_fruit",
+      "name": "TXT_07_欢迎水果_可编辑",
+      "value": "欢迎水果",
+      "x": 19.609375,
+      "y": 80.74074074074075,
+      "w": 6.406249999999999,
+      "h": 2.7777777777777777,
+      "fontSize": 31.0,
+      "lineHeight": 1.2,
+      "color": "#F8F5EE",
+      "font": 0,
+      "kind": "source-han-sans",
+      "weight": 500,
+      "letterSpacing": "0",
+      "pointText": true,
+      "zIndex": 16,
+      "bbox": [
+        315,
+        857,
+        438,
+        887
+      ]
+    }
+  ]
+}

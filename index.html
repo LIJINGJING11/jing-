@@ -1,0 +1,572 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>
+    // The file:// preview cannot reliably call the local model proxy.
+    // Route it through the already-running local app origin instead.
+    if (location.protocol === 'file:') location.replace('http://localhost:4174/');
+  </script>
+  <title>酒店素材工坊｜本地酒店内容工具</title>
+  <link rel="stylesheet" href="./styles.css?v=local-demo-20260924-01" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="app-sidebar" aria-label="主导航">
+      <div class="sidebar-brand">
+        <img src="./assets/hotel-material-logo.png" alt="酒店素材工坊 Logo" />
+        <span>素材工坊</span>
+      </div>
+      <nav class="sidebar-nav">
+        <button class="sidebar-nav-item active" type="button" data-workspace-view="tools" aria-current="page" title="图片、视频处理工具">
+          <span class="sidebar-nav-icon icon-tools" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          <span>工具</span>
+        </button>
+        <button class="sidebar-nav-item" type="button" data-workspace-view="templates" title="酒店运营图模板库">
+          <span class="sidebar-nav-icon icon-templates" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span>模板运营图</span>
+        </button>
+        <button class="sidebar-nav-item" type="button" data-workspace-view="ai-video" title="AI 自动成片">
+          <span class="sidebar-nav-icon icon-ai-video" aria-hidden="true"><i></i><b>✦</b></span>
+          <span>AI 自动成片</span>
+        </button>
+      </nav>
+      <div class="sidebar-footer"><span class="sidebar-status-dot"></span><small>离线运行</small></div>
+    </aside>
+
+    <div class="app-main">
+      <header class="topbar">
+        <div class="topbar-context"><strong id="workspaceTitle">图片 / 视频工具</strong></div>
+        <div class="top-actions"><button id="templateAdminButton" class="admin-button hidden" type="button" title="仅管理员可进入模板调整模式" aria-pressed="false">管理员 · 模板调整</button><button id="apiConfigButton" class="api-config-button" type="button" aria-haspopup="dialog" aria-controls="apiConfigModal"><span class="api-config-dot" aria-hidden="true"></span><span>配置 API</span><small id="apiConfigStatus">未配置</small></button><span class="offline-dot"></span><span id="privacyStatus">本地处理 · 素材不上传</span></div>
+      </header>
+
+      <div id="apiConfigModal" class="api-modal" hidden aria-hidden="true">
+        <div class="api-modal-backdrop" data-api-close></div>
+        <section class="api-modal-card" role="dialog" aria-modal="true" aria-labelledby="apiConfigTitle">
+          <div class="api-modal-head">
+            <div><span class="api-modal-eyebrow">MODEL CONNECTION</span><h2 id="apiConfigTitle">配置图片 / 视频 / 音频 API</h2><p>图片、视频和自动剪辑配音共用同一个 API Key；接口地址和模型按各自服务调用。</p></div>
+            <button id="apiConfigClose" class="api-modal-close" type="button" aria-label="关闭配置窗口">×</button>
+          </div>
+          <div class="api-company-callout"><span class="api-company-icon">◎</span><div><strong>图片、视频和音频共用一把 Key</strong><p>自动剪辑的配音会调用 Turing 音频模型；素材默认留在本机，镜头标签会自动识别，也可以手动修正。</p></div></div>
+          <div class="api-form-grid">
+            <label class="api-field api-field-wide"><span>图片服务商</span><select id="apiProviderInput"><option value="company">公司 GPT‑Image（公司会员）</option><option value="doubao">豆包 Seedream</option></select></label>
+            <label class="api-field api-field-wide"><span>图片 / 视频 / 音频共用 API Key <em>保存到本机钥匙串</em></span><div class="api-key-wrap"><input id="apiKeyInput" type="password" autocomplete="new-password" spellcheck="false" placeholder="粘贴公司平台发放的 API Key，不要包含 Bearer" /><button id="apiKeyToggle" type="button" aria-label="显示或隐藏 API Key">显示</button></div></label>
+            <label class="api-field"><span>图片模型 ID</span><input id="apiModelInput" type="text" spellcheck="false" placeholder="gpt-image-2" /></label>
+            <label class="api-field"><span>图片 API 地址 <em>高级配置</em></span><input id="apiBaseUrlInput" type="url" spellcheck="false" placeholder="https://coding.efficient.center/api/v1" /></label>
+            <label class="api-field"><span>视频模型 ID</span><input id="apiVideoModelInput" type="text" spellcheck="false" placeholder="doubao-seedance-2-5-260628" /></label>
+            <label class="api-field"><span>视频 / 音频 API 基地址 <em>高级配置</em></span><input id="apiVideoBaseUrlInput" type="url" spellcheck="false" placeholder="https://live-turing.cn.llm.tcljd.com/api/v1" /></label>
+            <label class="api-field"><span>音频模型 ID</span><input id="apiAudioModelInput" type="text" spellcheck="false" placeholder="turing/tts-1" /></label>
+            <label class="api-field"><span>智能剪辑 / 自动标签视觉模型 ID</span><input id="apiEditModelInput" type="text" spellcheck="false" placeholder="turing/gpt-4o-mini" /></label>
+            <label class="api-field"><span>旁白时间轴 ASR 模型 ID <em>可选</em></span><input id="apiAsrModelInput" type="text" spellcheck="false" placeholder="支持 word timestamps 的转录模型" /></label>
+            <label id="apiActorField" class="api-field api-field-wide"><span>公司网关权限标识 <em>公司 GPT‑Image 使用</em></span><input id="apiActorInput" type="text" spellcheck="false" placeholder="image-generation" /></label>
+          </div>
+          <div class="api-security-note"><span>本地安全提示</span><p>Key 不会写入项目代码或浏览器 localStorage；保存后优先保存在本机 macOS 钥匙串，服务重启会自动恢复。快速模式只把文案发送到音频模型；智能模式会把缩略图和旁白时间轴发送到剪辑 / 视觉模型，原视频文件仍留在本机。</p></div>
+          <p id="apiConfigMessage" class="api-config-message" role="status" aria-live="polite"></p>
+          <div class="api-modal-actions"><button id="apiClearButton" class="api-clear-button" type="button">清除当前配置</button><div><button id="apiCancelButton" class="api-cancel-button" type="button">取消</button><button id="apiSaveButton" class="api-save-button" type="button">保存并连接</button></div></div>
+        </section>
+      </div>
+
+    <main>
+      <section id="toolsView" class="view tools-view">
+        <div class="tools-hero">
+          <h1>选择你要使用的工具</h1>
+          <p>常用处理随手可用，进阶创作按需展开。选择一个功能，上传素材，即可得到符合要求的文件。</p>
+        </div>
+        <div class="tool-toolbar" role="toolbar" aria-label="工具分类">
+          <div class="tool-filter-group" role="group" aria-label="筛选工具">
+            <button class="tool-filter is-active" type="button" data-tool-filter="all" aria-pressed="true">全部工具 <span>12</span></button>
+            <button class="tool-filter" type="button" data-tool-filter="basic" aria-pressed="false">基础功能 <span>5</span></button>
+            <button class="tool-filter" type="button" data-tool-filter="advanced" aria-pressed="false">高级功能 <span>7</span></button>
+          </div>
+          <div class="tool-toolbar-note"><span class="tool-toolbar-dot"></span><span>本地运行 · 文件不上传</span></div>
+        </div>
+        <div id="toolGrid" class="tool-grid">
+          <section class="tool-group" data-tool-group="basic" aria-labelledby="basicToolsHeading">
+            <div class="tool-group-head">
+              <div><span class="tool-group-kicker">START HERE</span><h2 id="basicToolsHeading">基础功能</h2><p>日常酒店素材处理，打开就能用。</p></div>
+              <span class="tool-group-count">05 项</span>
+            </div>
+            <div class="tool-grid-inner">
+          <article class="tool-card tone-blue">
+            <div class="tool-icon image-tool-icon" aria-hidden="true"><span class="sun"></span><span class="mountain one"></span><span class="mountain two"></span></div>
+            <h2>开机三件套</h2>
+            <p>整张封面图满铺输出，单一 Logo 可居中生成 1920×1080 三种格式。</p>
+            <div class="tool-divider"></div>
+            <ul><li>可选择封面或 Logo 模式</li><li>非 16:9 图片铺满裁切</li><li>智能匹配背景色</li></ul>
+            <button class="tool-use-button" type="button" data-tool="boot-kit">使用图片工具</button>
+          </article>
+          <article class="tool-card tone-orange">
+            <div class="tool-icon video-tool-icon" aria-hidden="true"><span class="play"></span><i class="frame top"></i><i class="frame bottom"></i></div>
+            <h2>开机视频转换</h2>
+            <p>将 MP4 转换为电视开机规范的 Full HD TS 视频。</p>
+            <div class="tool-divider"></div>
+            <ul><li>MPEG-2 视频编码</li><li>AC3 音频编码</li><li>自动补黑边并控制在 50MB</li></ul>
+            <button class="tool-use-button" type="button" data-tool="boot-video">使用视频工具</button>
+          </article>
+          <article class="tool-card tone-green">
+            <div class="tool-icon logo-tool-icon" aria-hidden="true"><span class="letter">B</span><i></i></div>
+            <h2>Logo 黑白扣取</h2>
+            <p>去除图片背景，生成原色、黑色和白色三张透明 PNG。</p>
+            <div class="tool-divider"></div>
+            <ul><li>自动识别纯色背景</li><li>完整保留 Logo 原始颜色</li><li>紧致裁切透明边界</li></ul>
+            <button class="tool-use-button" type="button" data-tool="logo-cutout">使用 Logo 工具</button>
+          </article>
+          <article class="tool-card tone-teal">
+            <div class="tool-icon crop-tool-icon" aria-hidden="true"><svg viewBox="0 0 48 48" focusable="false"><path d="M13 8v25a5 5 0 0 0 5 5h22" /><path d="M8 13h25a5 5 0 0 1 5 5v22" /></svg></div>
+            <h2>图片裁剪压缩</h2>
+            <p>批量铺满裁切为 1920×1080，保持上传格式并压缩体积。</p>
+            <div class="tool-divider"></div>
+            <ul><li>支持 JPG、PNG 原格式输出</li><li>一次批量处理最多 10 张</li><li>每张图片严格小于 2MB</li></ul>
+            <button class="tool-use-button" type="button" data-tool="image-compress">使用裁剪压缩工具</button>
+          </article>
+          <article class="tool-card tone-purple">
+            <div class="tool-icon compress-tool-icon" aria-hidden="true"><svg viewBox="0 0 48 48" focusable="false"><path class="compress-play-shape" d="M21 15 32 24 21 33Z" /><path class="compress-arrow-shape" d="M5 24h10m-5-5 5 5-5 5M43 24h-8m5-5-5 5 5 5" /></svg></div>
+            <h2>视频压缩</h2>
+            <p>保持 MP4 原始画面尺寸和分辨率，将文件压缩至规定大小。</p>
+            <div class="tool-divider"></div>
+            <ul><li>不缩放、不裁剪视频画面</li><li>保持原始视频分辨率</li><li>单个文件严格小于 200MB</li></ul>
+            <button class="tool-use-button" type="button" data-tool="video-compress">使用视频压缩工具</button>
+          </article>
+            </div>
+          </section>
+          <section class="tool-group tool-group-advanced" data-tool-group="advanced" aria-labelledby="advancedToolsHeading">
+            <div class="tool-group-head">
+              <div><span class="tool-group-kicker">HOTEL GROWTH STUDIO</span><h2 id="advancedToolsHeading">酒店运营加速器</h2><p>从一张客房实景，到可发布、可转化的酒店内容。</p></div>
+              <span class="tool-group-count">07 项</span>
+            </div>
+            <div class="tool-grid-inner">
+          <article class="tool-card paid-tool-card tone-watermark">
+            <span class="paid-badge">付费功能</span>
+            <div class="tool-card-visual tool-compare-visual" style="--card-image:url('./assets/hotel-room-ai.jpg');--compare-image:url('./assets/hotel-room-ai.jpg')"><span class="compare-half compare-before"><i>原图</i></span><span class="compare-half compare-after"><i>净图</i></span></div>
+            <div class="tool-icon watermark-tool-icon" aria-hidden="true"><span class="watermark-ring"></span><span class="watermark-stroke"></span><i>✦</i></div>
+            <h2>去水印</h2>
+            <p>去掉水印与角标，让客房、餐饮和活动素材恢复干净质感。</p>
+            <div class="tool-divider"></div>
+            <ul><li>局部角标一键清除</li><li>保留墙面、床品与玻璃纹理</li><li>适合客房图与活动海报</li></ul>
+            <button class="tool-use-button" type="button" data-tool="watermark-removal"><span>立即使用</span></button>
+          </article>
+          <article class="tool-card paid-tool-card tone-retouch">
+            <span class="paid-badge">付费功能</span>
+            <div class="tool-card-visual tool-compare-visual" style="--card-image:url('./assets/scene-warm-luxury.png');--compare-image:url('./assets/scene-warm-luxury.png')"><span class="compare-half compare-before"><i>精修前</i></span><span class="compare-half compare-after"><i>质感升级</i></span></div>
+            <div class="tool-icon retouch-tool-icon" aria-hidden="true"><svg viewBox="0 0 48 48" focusable="false"><path class="retouch-frame" d="M9 16V11a2 2 0 0 1 2-2h5M32 9h5a2 2 0 0 1 2 2v5M39 32v5a2 2 0 0 1-2 2h-5M16 39h-5a2 2 0 0 1-2-2v-5"/><path class="retouch-spark" d="m24 13 2.3 6.7L33 22l-6.7 2.3L24 31l-2.3-6.7L15 22l6.7-2.3Z"/><path class="retouch-dot" d="m34 13 .8 2.2L37 16l-2.2.8L34 19l-.8-2.2L31 16l2.2-.8Z"/></svg></div>
+            <h2>客房精修</h2>
+            <p>清理水渍、脏点与褶皱，让好房间一眼更显高级。</p>
+            <div class="tool-divider"></div>
+            <ul><li>修复卫浴水渍与玻璃脏点</li><li>平滑床品褶皱与手机噪点</li><li>增强光线，保留空间真实感</li></ul>
+            <button class="tool-use-button" type="button" data-tool="scene-retouch"><span>立即使用</span></button>
+          </article>
+          <article class="tool-card paid-tool-card tone-cutout">
+            <span class="paid-badge">付费功能</span>
+            <div class="tool-card-visual tool-compare-visual" style="--card-image:url('./assets/scene-warm-luxury.png');--compare-image:url('./assets/hotel-bed-cutout-solid-bg.png')"><span class="compare-half compare-before"><i>原图</i></span><span class="compare-half compare-after"><i>抠出主体</i></span></div>
+            <div class="tool-icon paid-image-icon cutout-tool-icon" aria-hidden="true"><span class="checker"></span><span class="cutout-object"></span><i>✦</i></div>
+            <h2>酒店好物抠图</h2>
+            <p>早餐、伴手礼、客房用品，一键抠出主体做运营图。</p>
+            <div class="tool-divider"></div>
+            <ul><li>主体边缘自动识别</li><li>保留餐盘、织物等细节</li><li>输出透明 PNG 图片</li></ul>
+            <button class="tool-use-button" type="button" data-tool="ai-cutout"><span>立即使用</span></button>
+          </article>
+          <article class="tool-card paid-tool-card tone-erase">
+            <span class="paid-badge">付费功能</span>
+            <div class="tool-card-visual tool-compare-visual" style="--card-image:url('./assets/psd-room-service-landscape/room_service_background.png');--compare-image:url('./assets/psd-room-service-landscape/room_service_background.png')"><span class="compare-half compare-before"><i>修改前</i></span><span class="compare-half compare-after"><i>杂物消失</i></span></div>
+            <div class="tool-icon paid-image-icon erase-tool-icon" aria-hidden="true"><span class="erase-surface"></span><span class="erase-stroke"></span><i>⌫</i></div>
+            <h2>杂物擦除</h2>
+            <p>擦掉客房杂物与污渍，让酒店照片更利落、更好卖。</p>
+            <div class="tool-divider"></div>
+            <ul><li>画笔圈选要擦除的区域</li><li>自动补全周围空间纹理</li><li>适合客房、餐厅与大堂</li></ul>
+            <button class="tool-use-button" type="button" data-tool="erase"><span>立即使用</span></button>
+          </article>
+          <article class="tool-card paid-tool-card tone-mark-edit">
+            <span class="paid-badge">付费功能</span>
+            <div class="tool-card-visual tool-compare-visual" style="--card-image:url('./assets/scene-art-room-v3.jpg');--compare-image:url('./assets/scene-art-room-v3.jpg')"><span class="compare-half compare-before"><i>原图</i></span><span class="compare-half compare-after"><i>改图后</i></span></div>
+            <div class="tool-icon paid-image-icon mark-edit-tool-icon" aria-hidden="true"><span class="mark-photo"></span><span class="mark-pen"></span><i>✎</i></div>
+            <h2>圈选改图</h2>
+            <p>圈出想调整的区域，再告诉 AI 你的想法，改图更高效。</p>
+            <div class="tool-divider"></div>
+            <ul><li>画笔圈选修改区域</li><li>自然语言描述修改意图</li><li>适合快速沟通与反复打磨</li></ul>
+            <button class="tool-use-button" type="button" data-tool="mark-edit"><span>立即使用</span></button>
+          </article>
+          <article class="tool-card paid-tool-card tone-expand">
+            <span class="paid-badge">付费功能</span>
+            <div class="tool-card-visual tool-compare-visual" style="--card-image:url('./assets/scene-business-room.png');--compare-image:url('./assets/scene-business-room.png')"><span class="compare-half compare-before"><i>原尺寸</i></span><span class="compare-half compare-after"><i>扩图后</i></span></div>
+            <div class="tool-icon paid-image-icon expand-tool-icon" aria-hidden="true"><span></span><i>↔</i><b>↕</b></div>
+            <h2>一图多版</h2>
+            <p>横版、竖版、方版自由延展，一张图覆盖更多渠道。</p>
+            <div class="tool-divider"></div>
+            <ul><li>支持 16:9、3:4、1:1</li><li>智能延展墙面与窗景</li><li>适配小红书、OTA 与大屏</li></ul>
+            <button class="tool-use-button" type="button" data-tool="expand"><span>立即使用</span></button>
+          </article>
+          <article class="tool-card paid-tool-card tone-enhance">
+            <span class="paid-badge">付费功能</span>
+            <div class="tool-card-visual tool-compare-visual" style="--card-image:url('./assets/scene-night-bath.png');--compare-image:url('./assets/scene-night-bath.png')"><span class="compare-half compare-before"><i>原图</i></span><span class="compare-half compare-after"><i>清晰升级</i></span></div>
+            <div class="tool-icon paid-image-icon enhance-tool-icon" aria-hidden="true"><span class="enhance-photo"></span><i>✦</i><b>+</b></div>
+            <h2>照片变清晰</h2>
+            <p>提升客房、餐饮和夜景照片的清晰度，保留专业质感。</p>
+            <div class="tool-divider"></div>
+            <ul><li>增强边缘与局部细节</li><li>改善曝光与白平衡</li><li>保留真实空间质感</li></ul>
+            <button class="tool-use-button" type="button" data-tool="enhance"><span>立即使用</span></button>
+          </article>
+            </div>
+          </section>
+        </div>
+        <div id="toolSelectionStatus" class="tool-selection-status" aria-live="polite"><span class="status-check">✓</span><strong>离线运行</strong><span>无需注册，无需联网，所有文件只在你的电脑上处理。</span></div>
+      </section>
+
+      <section id="libraryView" class="view library-view hidden">
+        <h1>酒店运营图<br /><em>选风格，做同款</em></h1>
+        <p class="intro">选择本地模板快速编辑，也可以切换到 AI制作海报，通过对话生成酒店运营素材。</p>
+
+        <div class="template-mode-row">
+          <div class="template-mode-switcher" role="tablist" aria-label="模板类型">
+            <button type="button" class="template-mode-tab is-active" data-template-mode="local" role="tab" aria-selected="true" aria-controls="localTemplatePanel">本地模板</button>
+            <button type="button" class="template-mode-tab" data-template-mode="ai" role="tab" aria-selected="false" aria-controls="aiPosterStudio"><span class="template-mode-icon" aria-hidden="true">✦</span>AI制作海报</button>
+          </div>
+        </div>
+
+        <section id="aiPosterStudio" class="ai-poster-studio hidden" aria-labelledby="aiPosterTitle" role="tabpanel" aria-hidden="true">
+          <div class="ai-poster-studio-head">
+            <div>
+              <div class="ai-poster-eyebrow">AI POSTER LAB <span>CONVERSATIONAL</span></div>
+              <h2 id="aiPosterTitle">和 AI 对话，做一张酒店海报</h2>
+              <p>把你的想法、可选的酒店实景和喜欢的风格交给 AI，先说清楚，再一次生成可发布的运营图。</p>
+            </div>
+            <div class="ai-poster-status"><span class="ai-status-dot"></span><strong>图片模型按需调用</strong><small>素材只在生成时发送</small></div>
+          </div>
+
+          <div class="ai-poster-workspace">
+            <div class="ai-poster-chat-card">
+              <div class="ai-chat-card-head"><div><span>对话创作</span><small>像和设计师沟通一样描述你的需求</small></div><span class="ai-avatar">AI</span></div>
+              <div id="aiPosterMessages" class="ai-poster-messages" aria-live="polite">
+                <div class="ai-chat-message assistant"><span class="ai-message-avatar">AI</span><div><strong>先告诉我，你想做什么？</strong><p>比如：做一张秋季下午茶海报，突出落地窗、暖光和双人套餐，文案要克制高级。</p></div></div>
+              </div>
+              <form id="aiPosterForm" class="ai-poster-compose">
+                <label class="ai-poster-prompt-label" for="aiPosterPrompt">创作指令 <span>可直接说画面、氛围、文案和重点</span></label>
+                <div class="ai-prompt-box">
+                  <textarea id="aiPosterPrompt" rows="3" maxlength="600" placeholder="例如：做一张秋季下午茶海报，暖米色、留白多，突出落地窗和双人套餐，标题写“午后好时光”。"></textarea>
+                  <label class="ai-inline-upload ai-scene-chip" for="aiPosterSceneInput" title="上传一张参考图片（可选）">
+                    <span class="ai-inline-upload-mark"><span>＋</span></span>
+                    <span class="ai-inline-upload-copy"><b id="aiPosterSceneName">上传图片</b><small id="aiPosterSceneMeta">可选 · JPG / PNG</small></span>
+                    <img id="aiPosterSceneThumb" class="ai-inline-upload-thumb hidden" alt="已上传的参考图片" />
+                    <input id="aiPosterSceneInput" type="file" accept="image/png,image/jpeg" />
+                  </label>
+                </div>
+                <div class="ai-poster-asset-row">
+                  <div class="ai-asset-chip ai-style-chip"><span id="aiPosterStyleThumb" class="ai-style-swatch" aria-label="当前风格参考"><img src="./assets/style-warm-luxury-reference.png" alt="当前风格参考" /></span><span><b>参考风格</b><small id="aiPosterStyleName">智能推荐</small></span></div>
+                </div>
+                <div id="aiStyleOptions" class="ai-style-options" role="group" aria-label="选择参考风格"></div>
+                <div class="ai-poster-compose-footer">
+                  <div class="ai-ratio-options" role="group" aria-label="海报画幅">
+                    <button type="button" class="is-active" data-ai-ratio="landscape" aria-pressed="true">横版 16:9</button>
+                    <button type="button" data-ai-ratio="portrait" aria-pressed="false">竖版 3:4</button>
+                    <button type="button" data-ai-ratio="square" aria-pressed="false">方版 1:1</button>
+                  </div>
+                  <button id="aiPosterGenerateButton" class="ai-generate-button" type="submit"><span>生成海报</span><b>⌘↵</b></button>
+                </div>
+              </form>
+            </div>
+
+            <div class="ai-poster-preview-card">
+              <div class="ai-preview-card-head"><div><span>画布预览</span><small id="aiPosterPreviewMeta">等待你的第一张海报</small></div><button id="aiPosterDownloadButton" class="ai-download-button" type="button" hidden>下载 PNG</button></div>
+              <div id="aiPosterPreviewStage" class="ai-poster-preview-stage">
+                <div id="aiPosterPreviewEmpty" class="ai-poster-preview-empty"><span class="ai-empty-mark">✦</span><strong>你的海报会出现在这里</strong><small>可上传酒店实景增强参考，也可以直接描述你想要的氛围</small></div>
+                <div id="aiPosterLoading" class="ai-poster-loading hidden"><span class="ai-loading-orbit"></span><strong>AI 正在整理画面</strong><small>正在理解你的描述并生成版式…</small></div>
+                <img id="aiPosterResult" class="ai-poster-result hidden" alt="AI 生成的酒店海报" />
+              </div>
+              <div class="ai-preview-card-foot"><span><i class="ai-foot-dot"></i>可继续对话调整</span><small>输出为单张扁平 PNG · 适合直接发布</small></div>
+            </div>
+          </div>
+        </section>
+
+        <div id="localTemplatePanel" class="local-template-panel" role="tabpanel" aria-label="本地模板">
+          <div class="legacy-library-heading"><span>本地模板</span><small>选择喜欢的画面，点击“本地编辑”替换素材和文字</small></div>
+          <nav class="filter-row" aria-label="本地模板筛选">
+            <button class="filter-chip active" data-category="daily">日常运营素材 <span>13</span></button>
+          <button class="filter-chip" data-category="festival">节日运营素材 <span>04</span></button>
+            <div class="filter-separator"></div>
+            <button class="filter-chip format-chip active" data-format="landscape">横版 16:9</button>
+            <button class="filter-chip format-chip" data-format="portrait">竖版 3:4</button>
+          </nav>
+
+          <div id="templateGrid" class="template-grid"></div>
+        </div>
+      </section>
+
+      <section id="editorView" class="view editor-view hidden">
+        <div class="editor-head">
+          <button id="backButton" class="back-button" title="返回模板库">← 返回上一步</button>
+          <div class="crumbs">模板库 <span>/</span> <b id="editorTemplateName">舒适客房介绍</b> <span>/</span> <b id="editorFlowLabel">模板编辑</b></div>
+          <div class="editor-head-actions"><button id="resetButton" class="quiet-button">恢复默认</button><button id="saveTemplateDefaultsButton" class="save-template-button hidden" type="button">保存为模板默认</button><button id="exportButton" class="export-button">导出 PNG</button></div>
+        </div>
+
+        <div class="editor-layout">
+          <section class="preview-column">
+            <div class="preview-toolbar"><div><span class="live-dot"></span><span id="previewModeLabel">实时预览 · 可编辑图层</span> <span id="dragHint">蒙层可拖动；文字重叠或编辑时出现小手，优先移动文字</span></div><span id="previewSize">1600 × 900 px</span></div>
+            <div id="generatorBanner" class="generator-banner hidden"><img id="styleRefThumb" src="./assets/daily-warm-luxury.png" alt="参考风格图"/><div><span>当前参考风格</span><strong id="styleRefName">暖棕轻奢</strong><small id="styleRefMeta">参考图决定视觉方向，正式版由模型直接输出一张成品</small></div></div>
+            <div class="canvas-wrap"><div id="posterCanvas" class="poster-canvas landscape"></div><img id="templatePreviewStage" class="template-preview-stage hidden" src="./assets/daily-warm-luxury.png" alt="当前模板预览图"/><canvas id="flatPreview" class="flat-preview hidden" aria-label="AI 自动生成的扁平海报预览"></canvas><div id="flatPreviewEmpty" class="flat-preview-empty hidden"><span>AI 合成结果会显示在这里</span><small>上传场景图、填写文案后，点击右侧「AI 生成海报」</small></div></div>
+            <div id="layerLegend" class="layer-legend hidden" aria-label="模板图层结构"><span class="legend-scene">01 纯实景 · 最底层</span><span class="legend-overlay">02 蒙层 · 可拖动</span><span class="legend-decor">03 图标/装饰 · 独立图层</span><span class="legend-text">04 文字 · 可编辑</span></div>
+            <div id="layerToolbar" class="layer-toolbar"><span id="selectedLayerLabel" class="hidden">点击预览中的元素进行选择</span><button id="deleteLayerButton" disabled>删除选中元素</button><button id="restoreLayersButton" title="撤销最近一次编辑" disabled>返回上一步</button></div>
+            <p id="previewTip" class="preview-tip hidden">点击文字即可在画布上编辑，插入光标会落在点击位置；拖动文字可移动，蓝色控制点可调整文本框大小，文字字号保持不变，只会按文本框宽度自动换行。</p>
+          </section>
+
+          <aside class="control-panel">
+            <div id="panelTabs" class="panel-tabs"><button class="panel-tab active">整体编辑</button><button class="panel-tab">使用说明</button></div>
+            <div id="generatorSteps" class="generator-steps hidden" aria-label="做同款步骤"><span class="step-done">1 选风格</span><i>→</i><span>2 上传场景</span><i>→</i><span>3 写文案</span><i>→</i><span>4 发送生成</span></div>
+            <div id="generatorPromptCard" class="generator-prompt-card hidden">
+              <div class="prompt-card-heading"><div><strong>本次生成</strong><small>已加载模板默认风格规则 · 素材和文案一次交给模型</small></div><span class="prompt-status">未发送</span></div>
+              <div class="prompt-attachments">
+                <div class="prompt-attachment"><img id="promptStyleThumb" src="./assets/daily-warm-luxury.png" alt="参考风格图"/><span>参考风格</span></div>
+                <div id="promptSceneAttachment" class="prompt-attachment scene-attachment"><span id="promptScenePlaceholder" class="attachment-plus">＋</span><img id="promptSceneThumb" class="hidden" alt="用户上传的酒店实景图"/><span id="promptSceneLabel">待上传酒店实景</span></div>
+              </div>
+              <div class="prompt-card-tip">选中模板时只加载默认提示词，不会自动调用接口；点击「AI 生成海报」后，模型会参考模板风格和布局，将你的实景图与文案合成为一张完整海报。</div>
+            </div>
+            <div class="panel-scroll">
+              <div class="panel-section">
+                <div class="section-heading"><span>01</span><div><strong id="mediaSectionTitle">画面素材</strong><small id="mediaSectionSub">替换后会自动套用模板构图</small></div></div>
+                <label class="field-label">酒店场景图 <span>纯实景照片 · 不含文字和装饰</span></label>
+                <div class="asset-upload image-upload"><span id="roomUploadPlaceholder" class="room-upload-placeholder hidden">＋</span><img id="roomThumb" src="./assets/room-clean.png" alt="酒店纯实景场景图" /><div><strong>点击更换场景图</strong><small>JPG / PNG · 自动裁切</small></div><input id="roomInput" type="file" accept="image/png,image/jpeg" /></div>
+                <div id="logoUploadGroup" class="logo-upload-group hidden">
+                  <label class="field-label">品牌 Logo <span>识别到品牌 Logo 图层</span></label>
+                  <div id="logoUploadCard" class="asset-upload logo-upload">
+                    <span id="logoUploadPlaceholder" class="logo-upload-placeholder">LOGO</span>
+                    <img id="logoThumb" class="hidden" alt="透明背景品牌 Logo" />
+                    <div><strong id="logoUploadTitle">点击更换 Logo</strong><small id="logoUploadMeta">PNG / JPG · 自动抠取透明背景</small></div>
+                    <input id="logoInput" type="file" accept="image/png,image/jpeg" />
+                  </div>
+                  <button id="logoResetButton" class="logo-reset-button hidden" type="button">恢复内置 Logo</button>
+                </div>
+                <p id="assetNote" class="asset-note">模板预览只用于模板库展示；编辑区底层始终使用纯实景图，文字、蒙层和装饰会独立叠加。</p>
+                <div id="advancedImageControls">
+                  <div class="adjust-grid">
+                    <label class="range-field">图片亮度 <span id="brightnessValue">100%</span><input id="brightnessInput" type="range" min="50" max="150" value="100" /></label>
+                    <label class="range-field">图片饱和度 <span id="saturationValue">100%</span><input id="saturationInput" type="range" min="0" max="180" value="100" /></label>
+                  </div>
+                  <label id="overlayLabel" class="field-label">元素透明度 <span id="overlayValue">—</span></label><input id="overlayInput" class="full-range" type="range" min="0" max="100" value="0" disabled />
+                </div>
+              </div>
+
+              <div id="textAdjustPanel" class="text-adjust-panel is-disabled">
+                <div class="text-adjust-heading"><strong>文字样式</strong><span id="selectedTextLabel">先点击预览中的文字</span></div>
+                <label class="range-field">字号 <span id="fontSizeValue">—</span><input id="fontSizeInput" type="range" min="12" max="100" value="58" disabled /></label>
+                <label class="range-field">行高 <span id="lineHeightValue">—</span><input id="lineHeightInput" type="range" min="0.8" max="2.4" step="0.05" value="1.1" disabled /></label>
+                <p class="text-adjust-tip">默认文本框会贴合当前文字宽度；拖动蓝色控制点后保留自定义宽度。</p>
+              </div>
+
+              <section id="adminAssetSection" class="admin-template-panel hidden" aria-labelledby="adminAssetTitle">
+                <div class="admin-template-heading">
+                  <div><strong id="adminAssetTitle">管理员模板素材</strong><small id="adminAssetStatus">仅当前管理员账号可见 · 调整会自动保存</small></div>
+                  <div class="admin-template-heading-actions"><span>ADMIN</span><button id="deleteTemplateButton" class="delete-template-button" type="button" title="删除当前模板（仅当前账号和设备）">删除模板</button></div>
+                </div>
+                <div id="adminAssetList" class="admin-asset-list"></div>
+                <p class="admin-template-tip">支持替换场景底图、蒙层和装饰 PNG。管理员调整的布局、素材和默认文案会自动保存；客户临时上传的 Logo、二维码不会写入模板默认值。</p>
+                <div id="adminHistory" class="admin-history hidden" aria-live="polite"><strong>最近修改记录</strong><ol id="adminHistoryList"></ol></div>
+              </section>
+
+              <div id="copySection" class="panel-section copy-section">
+                <div class="section-heading"><span>02</span><div><strong id="copySectionTitle">替换文案</strong><small id="copySectionSub">字体、字号、颜色由模板统一控制</small></div></div>
+                <div id="psdCopyFields" class="psd-copy-fields hidden" aria-live="polite"></div>
+                <div id="genericCopyFields">
+                <label id="brandField" class="field-label hidden">品牌名 <span>可选 · 默认 T Hotel</span></label>
+                <input id="brandInput" class="text-input hidden" value="T Hotel" maxlength="24" />
+                <label id="kickerField" class="field-label">顶部小标题 <span>可选 · 最多 28 字</span></label>
+                <input id="kickerInput" class="text-input" value="HOTEL STAY  /  ROOM NOTES" maxlength="28" />
+                <label class="field-label">主标题 <span>最多 18 字</span></label>
+                <textarea id="titleInput" class="text-input title-input" aria-label="主标题" placeholder="例如：住进一场好好休息" rows="2" maxlength="18">治愈感拉满的
+舒适客房</textarea>
+                <label id="subtitleField" class="field-label hidden">副标题 <span>可选 · 最多 32 字</span></label>
+                <input id="subtitleInput" class="text-input hidden" value="高效办公｜城市视野｜舒适睡眠" maxlength="32" />
+                <label id="feature1Field" class="field-label hidden">卖点一 <span>可选 · 最多 10 字</span></label>
+                <input id="feature1Input" class="text-input hidden" value="高效办公" maxlength="10" />
+                <label id="feature2Field" class="field-label hidden">卖点二 <span>可选 · 最多 10 字</span></label>
+                <input id="feature2Input" class="text-input hidden" value="城市视野" maxlength="10" />
+                <label id="feature3Field" class="field-label hidden">卖点三 <span>可选 · 最多 10 字</span></label>
+                <input id="feature3Input" class="text-input hidden" value="舒适睡眠" maxlength="10" />
+                <label class="field-label">介绍文案 <span id="bodyCount">0 / 100</span></label>
+                <textarea id="bodyInput" class="text-input body-input" aria-label="介绍文案" placeholder="介绍酒店空间、设施和入住体验，模型会自动整理成适合海报的排版。">色调柔和高级，整体干净又通透
+超大软床躺上去瞬间卸下赶路的疲惫
+窗边摆放休闲桌椅，闲坐喝茶发呆刚刚好
+暖调壁灯氛围感十足，细节处处用心
+出差旅行住这里，睡个好觉就是最大的幸福感</textarea>
+                <label id="taglineField" class="field-label">底部标语 <span>可选 · 最多 20 字</span></label>
+                <input id="taglineInput" class="text-input" value="舒适 · 安静 · 好好休息" maxlength="20" />
+                </div>
+              </div>
+            </div>
+            <div class="panel-footer"><span id="generationStatus">本地 Demo · 不会上传素材</span><button id="applyButton" class="apply-button">应用修改</button></div>
+          </aside>
+        </div>
+      </section>
+      <!-- Original standalone processors, migrated from the desktop build. -->
+      <section id="toolWorkspaceView" class="view tool-workspace hidden" aria-label="本地工具处理区">
+        <section class="tool-page" id="tool-image" data-kind="image" hidden>
+          <button class="back-home" type="button">← 返回全部工具</button>
+          <div class="tool-heading"><div class="mini-icon image-mini" aria-hidden="true"><span class="mini-sun"></span><span class="mini-mountain mini-mountain-back"></span><span class="mini-mountain mini-mountain-front"></span></div><h1>制作 1920×1080 开机图片</h1><p>普通图片等比放大、居中裁切并铺满画布；Logo 保持完整比例居中。</p></div>
+          <div class="upload-panel" data-accept="image"><button class="upload-button" type="button">选择图片文件</button><p>或将文件拖放到这里</p><small>支持 JPG、PNG、SVG、AI、EPS、CDR</small><div class="selected-file" hidden><span class="file-check">✓</span><b></b><button class="replace-file" type="button">更换文件</button></div></div>
+          <div class="options-card material-card"><div class="option-copy"><b>素材类型</b><span>上传完整画面选“整张开机封面”，上传单独标识选“单一 Logo”</span></div><div class="mode-toggle" role="radiogroup" aria-label="素材类型"><button class="mode-option selected" type="button" data-material-mode="cover" role="radio" aria-checked="true"><b>整张开机封面</b><span>铺满裁切</span></button><button class="mode-option" type="button" data-material-mode="logo" role="radio" aria-checked="false"><b>单一 Logo</b><span>居中排版</span></button></div></div>
+          <div class="options-card background-card"><div class="option-copy"><b>背景颜色</b><span>选择“智能匹配”会根据 Logo 明暗自动配色</span></div><div class="swatches" role="radiogroup" aria-label="背景颜色"><button class="swatch auto selected" type="button" data-color="auto"><i></i>智能匹配</button><button class="swatch light" type="button" data-color="#FFFFFF"><i></i>纯白</button><button class="swatch gray" type="button" data-color="#777873"><i></i>中灰</button><button class="swatch dark" type="button" data-color="#181A18"><i></i>深黑</button><button class="swatch custom" type="button" id="custom-background-button" data-color="#5A8FF1" title="使用吸管或系统颜色面板选择任意颜色"><i></i>自定义</button><input id="custom-background-color" class="native-color-input" type="color" value="#5A8FF1" aria-label="自定义背景颜色" /></div></div>
+          <div class="spec-strip"><span><b>PNG</b> 小于 800KB</span><span><b>JPG</b> 小于 1MB</span><span><b>BMP</b> 小于 8MB</span><span><b>画布</b> 1920×1080</span></div>
+          <div class="tool-actions"><button class="output-picker" type="button"><svg class="folder-glyph" viewBox="0 0 32 28" aria-hidden="true"><path d="M3.5 7.5A3.5 3.5 0 0 1 7 4h6l3 3h9A3.5 3.5 0 0 1 28.5 10.5v11A3.5 3.5 0 0 1 25 25H7a3.5 3.5 0 0 1-3.5-3.5z" /></svg><span class="output-copy"><em>保存位置</em><b>点击选择输出文件夹</b></span><strong>选择文件夹 →</strong></button><button class="run-button" type="button" disabled><span>生成 3 张图片</span></button></div>
+        </section>
+        <section class="tool-page" id="tool-video" data-kind="video" hidden>
+          <button class="back-home" type="button">← 返回全部工具</button>
+          <div class="tool-heading"><div class="mini-icon video-mini" aria-hidden="true">▶</div><h1>将 MP4 转换为开机 TS 视频</h1><p>保持画面比例并自动添加黑边，输出 MPEG-2 / AC3 标准文件。</p></div>
+          <div class="upload-panel" data-accept="video"><button class="upload-button" type="button">选择 MP4 视频</button><p>或将视频拖放到这里</p><small>输入格式：MP4　·　输出格式：TS</small><div class="selected-file" hidden><span class="file-check">✓</span><b></b><button class="replace-file" type="button">更换文件</button></div></div>
+          <div class="spec-strip video-specs"><span><b>画面</b> 1920×1080</span><span><b>视频编码</b> MPEG-2</span><span><b>音频编码</b> AC3 / 192k</span><span><b>文件大小</b> 小于 50MB</span></div>
+          <div class="tool-actions"><button class="output-picker" type="button"><svg class="folder-glyph" viewBox="0 0 32 28" aria-hidden="true"><path d="M3.5 7.5A3.5 3.5 0 0 1 7 4h6l3 3h9A3.5 3.5 0 0 1 28.5 10.5v11A3.5 3.5 0 0 1 25 25H7a3.5 3.5 0 0 1-3.5-3.5z" /></svg><span class="output-copy"><em>保存位置</em><b>点击选择输出文件夹</b></span><strong>选择文件夹 →</strong></button><button class="run-button" type="button" disabled><span>开始转换视频</span></button></div>
+        </section>
+        <section class="tool-page" id="tool-logo" data-kind="logo" hidden>
+          <button class="back-home" type="button">← 返回全部工具</button>
+          <div class="tool-heading"><div class="mini-icon logo-mini" aria-hidden="true">B</div><h1>扣取原色与黑白透明 Logo</h1><p>去掉素材背景，同时生成原色、黑色和白色三张透明 PNG。</p></div>
+          <div class="upload-panel" data-accept="image"><button class="upload-button" type="button">选择 Logo 图片</button><p>或将文件拖放到这里</p><small>纯色或透明背景效果最佳</small><div class="selected-file" hidden><span class="file-check">✓</span><b></b><button class="replace-file" type="button">更换文件</button></div></div>
+          <div class="options-card sensitivity-card"><div class="option-copy"><b>背景去除强度</b><span>背景复杂时可提高强度；细线较多时建议降低</span></div><div class="range-control"><span>保留更多</span><input id="sensitivity" type="range" min="10" max="100" value="68" /><output id="sensitivity-output">68</output><span>去除更多</span></div></div>
+          <div class="spec-strip logo-specs"><span><b>输出 1</b> 原色透明 PNG</span><span><b>输出 2</b> 黑色透明 PNG</span><span><b>输出 3</b> 白色透明 PNG</span><span><b>边界</b> 自动紧致裁切</span></div>
+          <div class="tool-actions"><button class="output-picker" type="button"><svg class="folder-glyph" viewBox="0 0 32 28" aria-hidden="true"><path d="M3.5 7.5A3.5 3.5 0 0 1 7 4h6l3 3h9A3.5 3.5 0 0 1 28.5 10.5v11A3.5 3.5 0 0 1 25 25H7a3.5 3.5 0 0 1-3.5-3.5z" /></svg><span class="output-copy"><em>保存位置</em><b>点击选择输出文件夹</b></span><strong>选择文件夹 →</strong></button><button class="run-button" type="button" disabled><span>生成 3 张 Logo</span></button></div>
+        </section>
+        <section class="tool-page" id="tool-image-crop" data-kind="image-crop" hidden>
+          <button class="back-home" type="button">← 返回全部工具</button>
+          <div class="tool-heading"><div class="mini-icon crop-mini" aria-hidden="true"><svg viewBox="0 0 48 48" focusable="false"><path d="M13 8v25a5 5 0 0 0 5 5h22" /><path d="M8 13h25a5 5 0 0 1 5 5v22" /></svg></div><h1>批量裁剪并压缩图片</h1><p>图片等比放大、居中铺满并裁切为 1920×1080；保持 JPG 或 PNG 原格式。</p></div>
+          <div class="upload-panel" data-accept="basic-image" data-multiple="true"><button class="upload-button" type="button">选择 JPG / PNG 图片</button><p>或将多张图片拖放到这里</p><small>一次可选择 1–10 张，每张输出均小于 2MB</small><div class="selected-file batch-selected" hidden><span class="file-check">✓</span><span class="batch-copy"><b></b><small class="batch-names"></small></span><button class="replace-file" type="button">重新选择</button></div></div>
+          <div class="spec-strip crop-specs"><span><b>画布</b> 1920×1080</span><span><b>构图</b> 铺满居中裁切</span><span><b>格式</b> 与原文件一致</span><span><b>文件大小</b> 每张小于 2MB</span></div>
+          <div class="tool-actions"><button class="output-picker" type="button"><svg class="folder-glyph" viewBox="0 0 32 28" aria-hidden="true"><path d="M3.5 7.5A3.5 3.5 0 0 1 7 4h6l3 3h9A3.5 3.5 0 0 1 28.5 10.5v11A3.5 3.5 0 0 1 25 25H7a3.5 3.5 0 0 1-3.5-3.5z" /></svg><span class="output-copy"><em>保存位置</em><b>点击选择输出文件夹</b></span><strong>选择文件夹 →</strong></button><button class="run-button" type="button" disabled><span>开始批量处理</span></button></div>
+        </section>
+        <section class="tool-page" id="tool-video-compress" data-kind="video-compress" hidden>
+          <button class="back-home" type="button">← 返回全部工具</button>
+          <div class="tool-heading"><div class="mini-icon compress-mini" aria-hidden="true"><svg viewBox="0 0 48 48" focusable="false"><path class="compress-play-shape" d="M21 15 32 24 21 33Z" /><path class="compress-arrow-shape" d="M5 24h10m-5-5 5 5-5 5M43 24h-8m5-5-5 5 5 5" /></svg></div><h1>压缩 MP4 视频</h1><p>保持原始画面尺寸和分辨率，不缩放、不裁剪，将文件压缩至 200MB 以内。</p></div>
+          <div class="upload-panel" data-accept="video"><button class="upload-button" type="button">选择 MP4 视频</button><p>或将视频拖放到这里</p><small>一次仅处理 1 个 MP4 文件</small><div class="selected-file" hidden><span class="file-check">✓</span><b></b><button class="replace-file" type="button">更换文件</button></div></div>
+          <div class="spec-strip compress-specs"><span><b>输入格式</b> MP4</span><span><b>输出格式</b> MP4</span><span><b>画面尺寸</b> 保持原始分辨率</span><span><b>文件大小</b> 小于 200MB</span></div>
+          <div class="tool-actions"><button class="output-picker" type="button"><svg class="folder-glyph" viewBox="0 0 32 28" aria-hidden="true"><path d="M3.5 7.5A3.5 3.5 0 0 1 7 4h6l3 3h9A3.5 3.5 0 0 1 28.5 10.5v11A3.5 3.5 0 0 1 25 25H7a3.5 3.5 0 0 1-3.5-3.5z" /></svg><span class="output-copy"><em>保存位置</em><b>点击选择输出文件夹</b></span><strong>选择文件夹 →</strong></button><button class="run-button" type="button" disabled><span>开始压缩视频</span></button></div>
+        </section>
+        <section class="tool-page paid-tool-page" id="tool-watermark-removal" data-kind="watermark-removal" data-paid="true" hidden>
+          <button class="back-home" type="button">← 返回全部工具</button>
+          <div class="tool-heading"><div class="mini-icon watermark-mini" aria-hidden="true"><span></span><i>✦</i></div><div class="paid-page-badge">付费功能</div><h1>一键去水印</h1><p>局部水印可框选修复；满屏重复文字、Logo、斜线和网格请选择“满屏水印”，支持自动识别并拖动涂抹残留标记。</p></div>
+          <div class="upload-panel" data-accept="basic-image"><button class="upload-button" type="button">选择 JPG / PNG 图片</button><p>或将图片拖放到这里</p><small>支持酒店照片、宣传图 · 单次处理 1 张</small><div class="selected-file" hidden><span class="file-check">✓</span><b></b><button class="replace-file" type="button">更换文件</button></div></div>
+          <div class="watermark-editor" id="watermark-editor" hidden>
+            <div class="watermark-editor-heading"><b>框选水印区域</b><span>局部模式框选；满屏模式自动识别重复图案，也可沿水印拖动涂抹</span></div>
+            <div class="watermark-canvas-shell"><canvas id="watermarkCanvas" aria-label="水印区域选择预览"></canvas><canvas id="watermarkBrushCanvas" aria-hidden="true"></canvas><div id="watermarkSelection" class="watermark-selection" hidden></div></div>
+            <div id="watermarkSelectionMeta" class="watermark-selection-meta">尚未选择区域，请在图片上拖动框选水印</div>
+          </div>
+          <div class="options-card paid-option-card watermark-mode-card"><div class="option-copy"><b>水印类型</b><span>单个角标用局部框选；重复斜线或网格用满屏清理，正常标题、价格、日期和 Logo 会保留</span></div><div class="mode-toggle watermark-mode-toggle"><button class="mode-option watermark-mode-option selected" type="button" data-watermark-mode="local" aria-checked="true"><b>局部水印</b><span>拖动框选区域</span></button><button class="mode-option watermark-mode-option" type="button" data-watermark-mode="full" aria-checked="false"><b>满屏水印</b><span>安全识别 + 涂抹标记</span></button></div></div>
+          <div class="spec-strip paid-specs"><span><b>输入</b> JPG / PNG</span><span><b>识别</b> 局部 / 满屏水印</span><span><b>输出</b> 原尺寸图片</span><span><b>状态</b> 测试可用</span></div>
+          <div class="tool-actions"><button class="output-picker" type="button"><svg class="folder-glyph" viewBox="0 0 32 28" aria-hidden="true"><path d="M3.5 7.5A3.5 3.5 0 0 1 7 4h6l3 3h9A3.5 3.5 0 0 1 28.5 10.5v11A3.5 3.5 0 0 1 25 25H7a3.5 3.5 0 0 1-3.5-3.5z" /></svg><span class="output-copy"><em>保存位置</em><b>点击选择输出文件夹</b></span><strong>选择文件夹 →</strong></button><button class="run-button paid-run-button" type="button" disabled><span>开始去水印</span></button></div>
+        </section>
+        <section class="tool-page paid-tool-page" id="tool-scene-retouch" data-kind="scene-retouch" data-paid="true" hidden>
+          <button class="back-home" type="button">← 返回全部工具</button>
+          <div class="tool-heading"><div class="mini-icon retouch-mini" aria-hidden="true"><svg viewBox="0 0 48 48" focusable="false"><path d="M9 16V11a2 2 0 0 1 2-2h5M32 9h5a2 2 0 0 1 2 2v5M39 32v5a2 2 0 0 1-2 2h-5M16 39h-5a2 2 0 0 1-2-2v-5"/><path d="m24 13 2.3 6.7L33 22l-6.7 2.3L24 31l-2.3-6.7L15 22l6.7-2.3Z"/></svg></div><div class="paid-page-badge">测试可用</div><h1>一键精修场景图</h1><p>自动清理洗手台水渍、玻璃脏点、床品细碎褶皱与手机噪点，并提升照片清晰度。</p></div>
+          <div class="upload-panel" data-accept="basic-image"><button class="upload-button" type="button">选择酒店场景图</button><p>或将图片拖放到这里</p><small>支持 JPG、PNG · 单次处理 1 张</small><div class="selected-file" hidden><span class="file-check">✓</span><b></b><button class="replace-file" type="button">更换文件</button></div></div>
+          <div class="options-card paid-option-card"><div class="option-copy"><b>精修项目</b><span>清洁水渍、玻璃脏点和床品细碎褶皱，自动校正光线、色彩并增强细节</span></div><strong class="paid-option-value">公司 GPT‑Image</strong></div>
+          <div class="spec-strip paid-specs"><span><b>输入</b> JPG / PNG</span><span><b>清洁</b> 水渍 / 脏点 / 细碎褶皱</span><span><b>增强</b> 清晰度与通透感</span><span><b>状态</b> 测试可用</span></div>
+          <div class="tool-actions"><button class="output-picker" type="button"><svg class="folder-glyph" viewBox="0 0 32 28" aria-hidden="true"><path d="M3.5 7.5A3.5 3.5 0 0 1 7 4h6l3 3h9A3.5 3.5 0 0 1 28.5 10.5v11A3.5 3.5 0 0 1 25 25H7a3.5 3.5 0 0 1-3.5-3.5z" /></svg><span class="output-copy"><em>保存位置</em><b>点击选择输出文件夹</b></span><strong>选择文件夹 →</strong></button><button class="run-button paid-run-button" type="button" disabled><span>开始精修场景图</span></button></div>
+        </section>
+        <section class="tool-page paid-tool-page paid-utility-page" id="tool-ai-cutout" data-kind="ai-cutout" data-paid="true" hidden>
+          <button class="back-home" type="button">← 返回全部工具</button>
+          <div class="tool-heading"><div class="mini-icon cutout-mini" aria-hidden="true"><span></span><i>✦</i></div><div class="paid-page-badge">付费功能</div><h1>AI 抠图</h1><p>自动识别主体并移除背景，适合商品、家具、人物和酒店标识素材。</p></div>
+          <div class="upload-panel" data-accept="basic-image"><button class="upload-button" type="button">选择要抠图的图片</button><p>或将图片拖放到这里</p><small>支持 JPG、PNG · 单次处理 1 张</small><div class="selected-file" hidden><span class="file-check">✓</span><b></b><button class="replace-file" type="button">更换文件</button></div></div>
+          <div class="options-card paid-option-card"><div class="option-copy"><b>输出设置</b><span>自动保留主体边缘和透明通道</span></div><strong class="paid-option-value">透明 PNG</strong></div>
+          <div class="spec-strip paid-specs"><span><b>输入</b> JPG / PNG</span><span><b>识别</b> 自动主体</span><span><b>输出</b> 透明 PNG</span><span><b>状态</b> 测试可用</span></div>
+          <div class="tool-actions"><button class="output-picker" type="button"><svg class="folder-glyph" viewBox="0 0 32 28" aria-hidden="true"><path d="M3.5 7.5A3.5 3.5 0 0 1 7 4h6l3 3h9A3.5 3.5 0 0 1 28.5 10.5v11A3.5 3.5 0 0 1 25 25H7a3.5 3.5 0 0 1-3.5-3.5z" /></svg><span class="output-copy"><em>保存位置</em><b>点击选择输出文件夹</b></span><strong>选择文件夹 →</strong></button><button class="run-button paid-run-button" type="button" disabled><span>开始 AI 抠图</span></button></div>
+        </section>
+        <section class="tool-page paid-tool-page paid-utility-page" id="tool-erase" data-kind="erase" data-paid="true" hidden>
+          <button class="back-home" type="button">← 返回全部工具</button>
+          <div class="tool-heading"><div class="mini-icon erase-mini" aria-hidden="true"><span></span><i>⌫</i></div><div class="paid-page-badge">付费功能</div><h1>擦除</h1><p>在图片上涂抹不需要的元素，生成干净的场景照片。</p></div>
+          <div class="upload-panel" data-accept="basic-image"><button class="upload-button" type="button">选择需要擦除的图片</button><p>或将图片拖放到这里</p><small>支持 JPG、PNG · 单次处理 1 张</small><div class="selected-file" hidden><span class="file-check">✓</span><b></b><button class="replace-file" type="button">更换文件</button></div></div>
+          <div class="paid-paint-editor" data-paid-editor="erase" hidden><div class="paid-paint-heading"><b>涂抹要擦除的区域</b><span>按住鼠标拖动 · 可重复涂抹</span></div><div class="paid-paint-shell"><canvas id="paidPreview-erase" aria-label="擦除区域预览"></canvas><canvas id="paidBrush-erase" aria-hidden="true"></canvas></div><p id="paidPaintMeta-erase">上传图片后，在预览图上涂抹需要擦除的区域。</p></div>
+          <div class="spec-strip paid-specs"><span><b>输入</b> JPG / PNG</span><span><b>方式</b> 画笔标记</span><span><b>修复</b> 周围纹理</span><span><b>状态</b> 测试可用</span></div>
+          <div class="tool-actions"><button class="output-picker" type="button"><svg class="folder-glyph" viewBox="0 0 32 28" aria-hidden="true"><path d="M3.5 7.5A3.5 3.5 0 0 1 7 4h6l3 3h9A3.5 3.5 0 0 1 28.5 10.5v11A3.5 3.5 0 0 1 25 25H7a3.5 3.5 0 0 1-3.5-3.5z" /></svg><span class="output-copy"><em>保存位置</em><b>点击选择输出文件夹</b></span><strong>选择文件夹 →</strong></button><button class="run-button paid-run-button" type="button" disabled><span>开始擦除</span></button></div>
+        </section>
+        <section class="tool-page paid-tool-page paid-utility-page" id="tool-mark-edit" data-kind="mark-edit" data-paid="true" hidden>
+          <button class="back-home" type="button">← 返回全部工具</button>
+          <div class="tool-heading"><div class="mini-icon mark-edit-mini" aria-hidden="true"><span></span><i>✎</i></div><div class="paid-page-badge">付费功能</div><h1>标记改图</h1><p>用画笔标出修改区域，再用自然语言说明想要的效果。</p></div>
+          <div class="upload-panel" data-accept="basic-image"><button class="upload-button" type="button">选择要修改的图片</button><p>或将图片拖放到这里</p><small>支持 JPG、PNG · 单次处理 1 张</small><div class="selected-file" hidden><span class="file-check">✓</span><b></b><button class="replace-file" type="button">更换文件</button></div></div>
+          <div class="paid-paint-editor" data-paid-editor="mark-edit" hidden><div class="paid-paint-heading"><b>标记需要修改的区域</b><span>按住鼠标拖动 · 可标记多个区域</span></div><div class="paid-paint-shell"><canvas id="paidPreview-mark-edit" aria-label="标记修改区域预览"></canvas><canvas id="paidBrush-mark-edit" aria-hidden="true"></canvas></div><p id="paidPaintMeta-mark-edit">上传图片后，在预览图上标记需要修改的区域。</p></div>
+          <label class="field-label paid-prompt-label">修改说明 <span>例如：去掉桌面上的杂物</span></label><textarea id="paidPrompt-mark-edit" class="text-input paid-prompt-input" rows="2" maxlength="120" placeholder="告诉工具你希望如何修改标记区域"></textarea>
+          <div class="spec-strip paid-specs"><span><b>输入</b> JPG / PNG</span><span><b>方式</b> 画笔 + 文案</span><span><b>修复</b> 局部纹理</span><span><b>状态</b> 测试可用</span></div>
+          <div class="tool-actions"><button class="output-picker" type="button"><svg class="folder-glyph" viewBox="0 0 32 28" aria-hidden="true"><path d="M3.5 7.5A3.5 3.5 0 0 1 7 4h6l3 3h9A3.5 3.5 0 0 1 28.5 10.5v11A3.5 3.5 0 0 1 25 25H7a3.5 3.5 0 0 1-3.5-3.5z" /></svg><span class="output-copy"><em>保存位置</em><b>点击选择输出文件夹</b></span><strong>选择文件夹 →</strong></button><button class="run-button paid-run-button" type="button" disabled><span>开始标记改图</span></button></div>
+        </section>
+        <section class="tool-page paid-tool-page paid-utility-page" id="tool-expand" data-kind="expand" data-paid="true" hidden>
+          <button class="back-home" type="button">← 返回全部工具</button>
+          <div class="tool-heading"><div class="mini-icon expand-mini" aria-hidden="true"><span></span><i>↔</i></div><div class="paid-page-badge">付费功能</div><h1>扩图</h1><p>扩展画布比例，为酒店运营图补足自然留白和空间。</p></div>
+          <div class="upload-panel" data-accept="basic-image"><button class="upload-button" type="button">选择要扩展的图片</button><p>或将图片拖放到这里</p><small>支持 JPG、PNG · 单次处理 1 张</small><div class="selected-file" hidden><span class="file-check">✓</span><b></b><button class="replace-file" type="button">更换文件</button></div></div>
+          <div class="options-card paid-option-card expand-ratio-card"><div class="option-copy"><b>目标比例</b><span>选择输出画布，主体会尽量完整保留</span></div><div class="expand-ratio-toggle" role="radiogroup" aria-label="扩图目标比例"><button class="expand-ratio-option selected" type="button" data-expand-ratio="landscape" aria-checked="true"><b>16:9</b><span>横版</span></button><button class="expand-ratio-option" type="button" data-expand-ratio="portrait" aria-checked="false"><b>3:4</b><span>竖版</span></button><button class="expand-ratio-option" type="button" data-expand-ratio="square" aria-checked="false"><b>1:1</b><span>方版</span></button></div></div>
+          <div class="spec-strip paid-specs"><span><b>输入</b> JPG / PNG</span><span><b>比例</b> 16:9 / 3:4 / 1:1</span><span><b>方式</b> 边缘延展</span><span><b>状态</b> 测试可用</span></div>
+          <div class="tool-actions"><button class="output-picker" type="button"><svg class="folder-glyph" viewBox="0 0 32 28" aria-hidden="true"><path d="M3.5 7.5A3.5 3.5 0 0 1 7 4h6l3 3h9A3.5 3.5 0 0 1 28.5 10.5v11A3.5 3.5 0 0 1 25 25H7a3.5 3.5 0 0 1-3.5-3.5z" /></svg><span class="output-copy"><em>保存位置</em><b>点击选择输出文件夹</b></span><strong>选择文件夹 →</strong></button><button class="run-button paid-run-button" type="button" disabled><span>开始扩图</span></button></div>
+        </section>
+        <section class="tool-page paid-tool-page paid-utility-page" id="tool-enhance" data-kind="enhance" data-paid="true" hidden>
+          <button class="back-home" type="button">← 返回全部工具</button>
+          <div class="tool-heading"><div class="mini-icon enhance-mini" aria-hidden="true"><span></span><i>✦</i></div><div class="paid-page-badge">付费功能</div><h1>变清晰</h1><p>增强酒店照片细节和通透度，改善手机拍摄的模糊与噪点。</p></div>
+          <div class="upload-panel" data-accept="basic-image"><button class="upload-button" type="button">选择要变清晰的图片</button><p>或将图片拖放到这里</p><small>支持 JPG、PNG · 单次处理 1 张</small><div class="selected-file" hidden><span class="file-check">✓</span><b></b><button class="replace-file" type="button">更换文件</button></div></div>
+          <div class="options-card paid-option-card"><div class="option-copy"><b>增强强度</b><span>建议从标准开始，避免过度锐化</span></div><label class="paid-range-wrap"><span>轻</span><input id="enhanceStrength" type="range" min="1" max="3" value="2" /><span>强</span></label></div>
+          <div class="spec-strip paid-specs"><span><b>输入</b> JPG / PNG</span><span><b>增强</b> 细节与清晰度</span><span><b>保留</b> 原始尺寸</span><span><b>状态</b> 测试可用</span></div>
+          <div class="tool-actions"><button class="output-picker" type="button"><svg class="folder-glyph" viewBox="0 0 32 28" aria-hidden="true"><path d="M3.5 7.5A3.5 3.5 0 0 1 7 4h6l3 3h9A3.5 3.5 0 0 1 28.5 10.5v11A3.5 3.5 0 0 1 25 25H7a3.5 3.5 0 0 1-3.5-3.5z" /></svg><span class="output-copy"><em>保存位置</em><b>点击选择输出文件夹</b></span><strong>选择文件夹 →</strong></button><button class="run-button paid-run-button" type="button" disabled><span>开始变清晰</span></button></div>
+        </section>
+        <section class="tool-page ai-video-page" id="tool-ai-video" data-kind="ai-video" hidden>
+          <button class="back-home" type="button">← 返回全部工具</button>
+          <div class="ai-video-head">
+            <div><span class="ai-video-eyebrow">AI VIDEO STUDIO <em>BETA</em></span><h1>AI 自动成片</h1><p>上传图片或视频，生成酒店文案和 Turing 配音，再由智能剪辑引擎根据素材内容与旁白时间轴自动匹配画面；字幕和文字动效可继续编辑。</p></div>
+            <div class="ai-video-flow"><span class="is-active">01 素材</span><i>→</i><span>02 文案</span><i>→</i><span>03 生成</span><i>→</i><span>04 导出</span></div>
+          </div>
+          <div class="ai-video-layout">
+            <div class="ai-video-config">
+              <section class="ai-video-section">
+                <div class="ai-video-section-title"><span>01</span><div><strong>添加素材</strong><small>支持图片和 MP4 视频，最多 30 个 · 镜头标签选填</small></div><b id="aiVideoAssetCount">0 / 30</b></div>
+                <label class="ai-video-upload" for="aiVideoAssetInput"><input id="aiVideoAssetInput" type="file" accept="image/jpeg,image/png,image/webp,video/mp4,video/quicktime" multiple /><span class="ai-upload-plus">＋</span><strong>点击上传图片或视频</strong><small>原片留在本机 · 智能模式仅发送缩略图与时间轴</small></label>
+                <div class="ai-video-scene-guide" aria-label="镜头标签使用说明"><div><strong>镜头标签（选填）</strong><small>上传后自动识别，可手动修正</small></div><div class="ai-video-scene-chip-list" aria-hidden="true"><span class="ai-video-scene-chip scene-room">⌂ 客房</span><span class="ai-video-scene-chip scene-pool">≈ 泳池</span><span class="ai-video-scene-chip scene-dining">✦ 餐饮</span><span class="ai-video-scene-chip scene-lobby">◎ 大堂</span><span class="ai-video-scene-chip scene-exterior">⌖ 周边</span><span class="ai-video-scene-chip scene-other">＋ 其他</span></div><p>上传后会用视觉模型自动推荐标签；低置信度结果会标为“待确认”，你也可以在每个素材下方直接修改。</p></div>
+                <div id="aiVideoAssetGrid" class="ai-video-asset-grid"><div class="ai-video-asset-empty"><span>⌁</span><p>还没有素材</p><small>导入素材后会自动识别镜头标签</small></div></div>
+              </section>
+              <section class="ai-video-section">
+                <div class="ai-video-section-title"><span>02</span><div><strong>视频文案</strong><small>默认生成 5 条，选择一条后进入自动剪辑</small></div></div>
+                <div class="ai-video-mode-tabs" role="tablist" aria-label="视频文案方式"><button class="is-active" type="button" data-ai-copy-mode="ai" role="tab" aria-selected="true">AI 写文案 <em>Beta</em></button><button type="button" data-ai-copy-mode="manual" role="tab" aria-selected="false">手动输入</button></div>
+                <div id="aiVideoAiFields" class="ai-video-fields">
+                  <label>视频主题 <span>*</span><input id="aiVideoTopic" maxlength="40" placeholder="例如：城市精品客房 / 周末亲子套餐" /></label>
+                  <label>酒店亮点 <span>*</span><textarea id="aiVideoHighlights" maxlength="160" rows="2" placeholder="例如：地理位置优越、双床房、干湿分离、泳池、含双早"></textarea></label>
+                  <div class="ai-video-field-row"><label>适用人群 <small>选填</small><input id="aiVideoAudience" maxlength="40" placeholder="例如：亲子家庭、商务出行" /></label><label>优惠活动 <small>选填</small><input id="aiVideoOffer" maxlength="60" placeholder="例如：周末套餐 / 限时立减" /></label></div>
+                </div>
+                <div id="aiVideoManualField" class="ai-video-fields" hidden><label>输入文案 <span>*</span><textarea id="aiVideoManualCopy" maxlength="400" rows="5" placeholder="可以手动输入一段口播文案"></textarea><small class="ai-video-count"><b id="aiVideoManualCount">0</b> / 400</small></label></div>
+                <div class="ai-video-copy-tip"><span>i</span><p>豆包文本模型会先检查语病，并尽量生成每条约 150 字的口播文案。价格、日期、电话和酒店权益请在生成前确认。</p></div>
+                <button id="aiVideoGenerateCopy" class="ai-video-secondary-button" type="button" disabled><span>✦</span> 生成文案</button>
+              </section>
+              <section class="ai-video-section ai-video-settings-section">
+                <div class="ai-video-section-title"><span>03</span><div><strong>视频设置</strong><small>AI 写文案和手动输入都需要设置</small></div></div>
+                <div class="ai-video-setting-group"><b>视频尺寸</b><div class="ai-video-choice-row" role="radiogroup" aria-label="视频尺寸"><button class="is-active" type="button" data-ai-ratio="9:16" aria-checked="true"><span class="ratio-portrait"></span><strong>9:16</strong><small>抖音 / 视频号</small></button><button type="button" data-ai-ratio="16:9" aria-checked="false"><span class="ratio-landscape"></span><strong>16:9</strong><small>横版展示</small></button></div></div>
+                <div class="ai-video-setting-group"><b>视频时长</b><div class="ai-video-duration-row" role="radiogroup" aria-label="视频时长"><button class="is-active" type="button" data-ai-duration="15" aria-checked="true">目标成片 · 15 秒</button></div></div>
+                <div class="ai-video-setting-group"><b>剪辑引擎</b><div class="ai-video-choice-row ai-video-engine-row" role="radiogroup" aria-label="剪辑引擎"><button class="is-active" type="button" data-ai-edit-mode="smart" aria-checked="true"><strong>智能 EDL</strong><small>TTS 配音 · 匹配上传素材 · 自动验片</small></button><button type="button" data-ai-edit-mode="local" aria-checked="false"><strong>快速本地</strong><small>旧版 Canvas / Seedance 流程</small></button></div><p class="ai-video-engine-note">智能 EDL 默认选中：先生成 TTS，再生成 ASR 时间轴，并根据缩略图、镜头标签和旁白段落排 EDL；模型不可用时明确回退到本地 EDL。快速本地继续保留旧版 Canvas / Seedance 流程。</p></div>
+                <div class="ai-video-voice-settings"><div class="ai-video-voice-field"><label for="aiVideoVoice">Turing 音频模型音色</label><select id="aiVideoVoice"><option value="verse">Verse · 自然叙述（推荐）</option><option value="coral">Coral · 温和女声</option><option value="shimmer">Shimmer · 明亮女声</option><option value="sage">Sage · 稳重女声</option><option value="alloy">Alloy · 清晰中性</option><option value="ash">Ash · 沉稳男声</option><option value="echo">Echo · 低沉男声</option><option value="ballad">Ballad · 温和叙述</option></select></div><div class="ai-video-voice-field ai-video-volume-field"><div><label for="aiVideoVolume">配音音量</label><output id="aiVideoVolumeValue">85%</output></div><input id="aiVideoVolume" type="range" min="0" max="100" step="5" value="85" aria-label="配音音量" /></div></div>
+                <div class="ai-video-copy-tip"><span>♪</span><p>配音由 Turing 音频模型生成；智能 EDL 会让旁白、画面和字幕共用一条时间轴，原片和字幕仍由本机剪辑。</p></div>
+                <div class="ai-video-finishing-settings">
+                  <div class="ai-video-finish-card">
+                    <div class="ai-video-finish-head"><div><strong>添加字幕</strong><small>自动匹配口播文案和画面时段</small></div><label class="ai-video-switch"><input id="aiVideoSubtitles" type="checkbox" checked aria-label="添加字幕" /><span aria-hidden="true"></span></label></div>
+                    <label class="ai-video-finish-select" for="aiVideoSubtitleStyle"><span>字幕风格</span><select id="aiVideoSubtitleStyle"><option value="clean-white">白字阴影</option><option value="soft-blue">浅蓝卡片</option><option value="warm-label">暖色标签</option></select></label>
+                    <div class="ai-video-subtitle-style-previews" role="radiogroup" aria-label="字幕风格预览"><button type="button" class="is-active" data-ai-subtitle-style-preview="clean-white" role="radio" aria-checked="true"><span class="ai-video-style-sample style-clean-white"><em>住得</em><b>舒服</b><em>也要好看</em></span><small>白字科技</small></button><button type="button" data-ai-subtitle-style-preview="soft-blue" role="radio" aria-checked="false"><span class="ai-video-style-sample style-soft-blue"><em>住得</em><b>舒服</b><em>也要好看</em></span><small>浅蓝科技</small></button><button type="button" data-ai-subtitle-style-preview="warm-label" role="radio" aria-checked="false"><span class="ai-video-style-sample style-warm-label"><em>住得</em><b>舒服</b><em>也要好看</em></span><small>暖金科技</small></button></div>
+                  </div>
+                  <div class="ai-video-finish-card">
+                    <div class="ai-video-finish-head"><div><strong>添加背景音乐</strong><small>为酒店画面补充氛围音乐</small></div><label class="ai-video-switch"><input id="aiVideoBackgroundMusic" type="checkbox" aria-label="添加背景音乐" /><span aria-hidden="true"></span></label></div>
+                    <label class="ai-video-finish-select" for="aiVideoMusicTrack"><span>音乐风格</span><select id="aiVideoMusicTrack" disabled><option value="soft-piano">轻柔钢琴</option><option value="city-light">城市轻快</option><option value="hotel-ambient">高级氛围</option></select></label>
+                  </div>
+                </div>
+              </section>
+              <button id="aiVideoGenerateVideo" class="ai-video-primary-button" type="button" disabled><span>✦</span> 生成自动成片</button>
+              <p id="aiVideoStatus" class="ai-video-status" aria-live="polite">添加素材后，开始生成你的第一版酒店视频。</p>
+            </div>
+            <aside class="ai-video-copy-panel">
+              <div class="ai-video-panel-head"><div><span>视频文案列表</span><small id="aiVideoCopyMeta">生成后可直接修改</small></div><b id="aiVideoCopyCount">未生成</b></div>
+              <div id="aiVideoCopyList" class="ai-video-copy-list"><div class="ai-video-copy-empty"><span>✦</span><strong>你的文案会出现在这里</strong><p>填写主题和亮点，点击左侧「生成文案」</p></div></div>
+              <div class="ai-video-panel-foot"><span>默认生成 5 条文案，选择一条后使用</span><button id="aiVideoUseCopy" class="ai-video-use-copy" type="button" disabled>采用并生成成片 <b>→</b></button></div>
+            </aside>
+          </div>
+          <section id="aiVideoResultPanel" class="ai-video-result-panel" hidden>
+            <div class="ai-video-result-head"><div><span class="ai-video-eyebrow">DRAFT READY</span><h2>视频初稿已生成</h2><p>可以先预览，也可以进入视频编辑器修改文字、时长、音色和配音参数。</p></div><div class="ai-video-result-actions"><button id="aiVideoEditButton" class="ai-video-secondary-button" type="button">✎ 进入视频编辑器</button><button id="aiVideoExportButton" class="ai-video-primary-button" type="button">↓ 导出视频</button></div></div>
+            <div class="ai-video-result-layout"><div class="ai-video-preview-shell"><div class="ai-video-preview-frame"><img id="aiVideoPreviewImage" alt="AI 视频预览" /><video id="aiVideoPreviewVideo" playsinline controls hidden></video><div id="aiVideoPreviewFallback" class="ai-video-preview-fallback" hidden>画面素材无法读取，请重新上传</div><div class="ai-video-preview-emphasis" id="aiVideoPreviewEmphasis" aria-hidden="true"></div><div class="ai-video-preview-caption" id="aiVideoPreviewCaption"><span id="aiVideoPreviewCaptionText">酒店好住，也要好看</span></div><button id="aiVideoPreviewPlay" class="ai-video-play-button" type="button" aria-label="播放预览">▶</button></div><div class="ai-video-preview-meta"><span id="aiVideoPreviewTime">00:00 / 00:15</span><input id="aiVideoPreviewProgress" type="range" min="0" max="100" value="0" aria-label="预览进度" /></div></div><div id="aiVideoTimeline" class="ai-video-timeline"><div class="ai-video-timeline-head"><span>自动剪辑时间线</span><small>每段画面与字幕可单独裁剪 · 拖动画面边界即可</small></div><div id="aiVideoTimelineTracks" class="ai-video-timeline-tracks"></div><div id="aiVideoTrimEditor" class="ai-video-trim-editor"></div><div id="aiVideoEditorControls" class="ai-video-editor-controls" hidden><label>修改画面字幕<textarea id="aiVideoEditCopy" rows="3"></textarea></label><label>视频时长<select id="aiVideoEditDuration"><option value="15">本模板当前设置 · 15 秒</option></select></label><button id="aiVideoApplyEdit" class="ai-video-secondary-button" type="button">应用修改</button></div></div></div>
+          </section>
+        </section>
+        <div id="progress-overlay" class="tool-overlay" hidden><div class="progress-card"><div class="spinner"><i></i></div><h2 id="progress-stage">准备处理中</h2><p id="progress-detail">正在读取文件…</p><div class="progress-track"><i id="progress-bar"></i></div><b id="progress-percent">0%</b><small>去水印会调用当前配置的公司图片模型，服务异常时会提示，不会输出本机误修复结果</small></div></div>
+        <div id="result-overlay" class="tool-overlay" hidden><div class="result-card"><button class="close-result" type="button" aria-label="关闭">×</button><div class="result-badge">✓</div><h2>处理完成</h2><p id="result-summary"></p><div id="result-files" class="result-files"></div><button id="show-result" class="primary-result" type="button">在文件夹中查看</button><button id="process-another" class="text-result" type="button">继续处理另一个文件</button></div></div>
+        <div id="tool-toast" class="tool-toast" role="status" hidden></div>
+      </section>
+    </main>
+    </div>
+  </div>
+  <script src="./psd-mid-autumn.js?v=mid-autumn-20260916"></script>
+  <script src="./psd-new-year.js?v=new-year-20260923"></script>
+  <script src="./app.js?v=local-demo-20260924-01"></script>
+  <script src="./tools-runtime.js?v=watermark-company-model-20260907-01"></script>
+  <script src="./ai-video-runtime.js?v=smart-edl-20260923-16"></script>
+</body>
+</html>

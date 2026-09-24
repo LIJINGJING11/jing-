@@ -1,0 +1,339 @@
+{
+  "source": "/Users/sigurd/Downloads/客房服务_1920x1080_72DPI.psd",
+  "width": 1920,
+  "height": 1080,
+  "dpi": 72,
+  "topLevelOrder": [
+    "BG_01_客房实景_独立底层",
+    "GRP_01_版面元素_严格分层"
+  ],
+  "leafLayerOrder": [
+    "BG_01_客房实景_独立底层",
+    "UI_01_右侧弧形米白面板_ALPHA",
+    "LOGO_01_右上品牌占位标_ALPHA",
+    "DEC_01_标题分隔线_ALPHA",
+    "DEC_02_服务竖分隔线1_ALPHA",
+    "DEC_03_服务竖分隔线2_ALPHA",
+    "送物服务图标_原图提取_透明底",
+    "前台服务图标_原图提取_透明底",
+    "客房清洁图标_原图提取_透明底",
+    "TXT_01_主标题_可编辑",
+    "TXT_02_副标题_可编辑",
+    "TXT_03_客房清洁_可编辑",
+    "TXT_04_前台电话_可编辑",
+    "TXT_05_送物服务_可编辑"
+  ],
+  "assets": [
+    {
+      "key": "room_service_background",
+      "name": "BG_01_客房实景_独立底层",
+      "src": "./assets/psd-room-service-landscape/room_service_background.png",
+      "x": 50.0,
+      "y": 50.0,
+      "w": 100.0,
+      "h": 100.0,
+      "zIndex": 1,
+      "bbox": [
+        0,
+        0,
+        1920,
+        1080
+      ],
+      "size": [
+        1920,
+        1080
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "room_service_panel",
+      "name": "UI_01_右侧弧形米白面板_ALPHA",
+      "src": "./assets/psd-room-service-landscape/room_service_panel.png",
+      "x": 68.48958333333334,
+      "y": 49.81481481481482,
+      "w": 63.020833333333336,
+      "h": 100.0,
+      "zIndex": 2,
+      "bbox": [
+        710,
+        -2,
+        1920,
+        1078
+      ],
+      "size": [
+        1210,
+        1080
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "room_service_logo_placeholder",
+      "name": "LOGO_01_右上品牌占位标_ALPHA",
+      "src": "./assets/psd-room-service-landscape/room_service_logo_placeholder.png",
+      "x": 89.71354166666666,
+      "y": 9.49074074074074,
+      "w": 12.760416666666666,
+      "h": 8.796296296296296,
+      "zIndex": 3,
+      "bbox": [
+        1600,
+        55,
+        1845,
+        150
+      ],
+      "size": [
+        245,
+        95
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "room_service_divider",
+      "name": "DEC_01_标题分隔线_ALPHA",
+      "src": "./assets/psd-room-service-landscape/room_service_divider.png",
+      "x": 73.95833333333334,
+      "y": 41.11111111111111,
+      "w": 33.33333333333333,
+      "h": 2.4074074074074074,
+      "zIndex": 4,
+      "bbox": [
+        1100,
+        431,
+        1740,
+        457
+      ],
+      "size": [
+        640,
+        26
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "room_service_divider_service_1",
+      "name": "DEC_02_服务竖分隔线1_ALPHA",
+      "src": "./assets/psd-room-service-landscape/room_service_divider_service_1.png",
+      "x": 66.19791666666667,
+      "y": 70.0,
+      "w": 0.10416666666666667,
+      "h": 23.14814814814815,
+      "zIndex": 5,
+      "bbox": [
+        1270,
+        631,
+        1272,
+        881
+      ],
+      "size": [
+        2,
+        250
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "room_service_divider_service_2",
+      "name": "DEC_03_服务竖分隔线2_ALPHA",
+      "src": "./assets/psd-room-service-landscape/room_service_divider_service_2.png",
+      "x": 81.82291666666667,
+      "y": 70.0,
+      "w": 0.10416666666666667,
+      "h": 23.14814814814815,
+      "zIndex": 6,
+      "bbox": [
+        1570,
+        631,
+        1572,
+        881
+      ],
+      "size": [
+        2,
+        250
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "room_service_icon_delivery",
+      "name": "送物服务图标_原图提取_透明底",
+      "src": "./assets/psd-room-service-landscape/room_service_icon_delivery.png",
+      "x": 88.984375,
+      "y": 64.9074074074074,
+      "w": 7.239583333333334,
+      "h": 12.962962962962962,
+      "zIndex": 7,
+      "bbox": [
+        1639,
+        631,
+        1778,
+        771
+      ],
+      "size": [
+        139,
+        140
+      ],
+      "kind": "smartobject"
+    },
+    {
+      "key": "room_service_icon_frontdesk",
+      "name": "前台服务图标_原图提取_透明底",
+      "src": "./assets/psd-room-service-landscape/room_service_icon_frontdesk.png",
+      "x": 73.33333333333333,
+      "y": 64.9074074074074,
+      "w": 7.187499999999999,
+      "h": 12.962962962962962,
+      "zIndex": 8,
+      "bbox": [
+        1339,
+        631,
+        1477,
+        771
+      ],
+      "size": [
+        138,
+        140
+      ],
+      "kind": "smartobject"
+    },
+    {
+      "key": "room_service_icon_cleaning",
+      "name": "客房清洁图标_原图提取_透明底",
+      "src": "./assets/psd-room-service-landscape/room_service_icon_cleaning.png",
+      "x": 57.70833333333333,
+      "y": 64.9074074074074,
+      "w": 7.187499999999999,
+      "h": 12.962962962962962,
+      "zIndex": 9,
+      "bbox": [
+        1039,
+        631,
+        1177,
+        771
+      ],
+      "size": [
+        138,
+        140
+      ],
+      "kind": "smartobject"
+    }
+  ],
+  "text": [
+    {
+      "key": "room_service_title",
+      "name": "TXT_01_主标题_可编辑",
+      "value": "客房服务",
+      "x": 73.95833333333334,
+      "y": 31.203703703703706,
+      "w": 21.5625,
+      "h": 9.25925925925926,
+      "fontSize": 105.0,
+      "lineHeight": 1.2,
+      "color": "#313131",
+      "font": 0,
+      "kind": "source-han-sans",
+      "weight": 500,
+      "letterSpacing": "0",
+      "pointText": true,
+      "zIndex": 10,
+      "bbox": [
+        1213,
+        287,
+        1627,
+        387
+      ]
+    },
+    {
+      "key": "room_service_subtitle",
+      "name": "TXT_02_副标题_可编辑",
+      "value": "让每一次停留都更从容",
+      "x": 70.46875,
+      "y": 47.73148148148148,
+      "w": 22.291666666666668,
+      "h": 3.7962962962962963,
+      "fontSize": 43.0,
+      "lineHeight": 1.2,
+      "color": "#B98D56",
+      "font": 0,
+      "kind": "source-han-sans",
+      "weight": 500,
+      "letterSpacing": "0",
+      "pointText": true,
+      "zIndex": 11,
+      "bbox": [
+        1139,
+        495,
+        1567,
+        536
+      ]
+    },
+    {
+      "key": "room_service_cleaning",
+      "name": "TXT_03_客房清洁_可编辑",
+      "value": "客房清洁\r08:00—18:00",
+      "x": 57.70833333333333,
+      "y": 77.77777777777779,
+      "w": 9.6875,
+      "h": 5.9259259259259265,
+      "fontSize": 31.0,
+      "lineHeight": 1.2,
+      "color": "#343434",
+      "font": 0,
+      "kind": "source-han-sans",
+      "weight": 500,
+      "letterSpacing": "0",
+      "pointText": true,
+      "zIndex": 12,
+      "bbox": [
+        1015,
+        808,
+        1201,
+        872
+      ]
+    },
+    {
+      "key": "room_service_frontdesk",
+      "name": "TXT_04_前台电话_可编辑",
+      "value": "前台请拨 0",
+      "x": 73.41145833333333,
+      "y": 77.77777777777779,
+      "w": 7.656250000000001,
+      "h": 2.7777777777777777,
+      "fontSize": 31.0,
+      "lineHeight": 1.2,
+      "color": "#343434",
+      "font": 0,
+      "kind": "source-han-sans",
+      "weight": 500,
+      "letterSpacing": "0",
+      "pointText": true,
+      "zIndex": 13,
+      "bbox": [
+        1336,
+        825,
+        1483,
+        855
+      ]
+    },
+    {
+      "key": "room_service_delivery",
+      "name": "TXT_05_送物服务_可编辑",
+      "value": "送物服务\r24小时",
+      "x": 88.93229166666666,
+      "y": 78.56481481481481,
+      "w": 6.406249999999999,
+      "h": 6.203703703703703,
+      "fontSize": 31.0,
+      "lineHeight": 1.2,
+      "color": "#343434",
+      "font": 0,
+      "kind": "source-han-sans",
+      "weight": 500,
+      "letterSpacing": "0",
+      "pointText": true,
+      "zIndex": 14,
+      "bbox": [
+        1646,
+        815,
+        1769,
+        882
+      ]
+    }
+  ]
+}

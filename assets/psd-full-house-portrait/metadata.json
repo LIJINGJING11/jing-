@@ -1,0 +1,172 @@
+{
+  "source": "/Users/sigurd/Downloads/满房海报.psd",
+  "width": 1152,
+  "height": 2048,
+  "dpi": 72,
+  "topLevelOrder": [
+    "01_背景_无字酒店客房",
+    "02_装饰_金色短横线_透明位图",
+    "03_主标题_满房_可编辑文字",
+    "04_英文标题_Full_House_可编辑文字",
+    "05_说明_感谢厚爱今日满房_可编辑文字",
+    "06_说明_期待下一次与您相遇_可编辑文字"
+  ],
+  "leafLayerOrder": [
+    "01_背景_无字酒店客房",
+    "02_装饰_金色短横线_透明位图",
+    "03_主标题_满房_可编辑文字",
+    "04_英文标题_Full_House_可编辑文字",
+    "05_说明_感谢厚爱今日满房_可编辑文字",
+    "06_说明_期待下一次与您相遇_可编辑文字"
+  ],
+  "assets": [
+    {
+      "key": "full_house_background",
+      "name": "01_背景_无字酒店客房",
+      "src": "./assets/psd-full-house-portrait/full_house_background.png",
+      "x": 50.0,
+      "y": 50.0,
+      "w": 100.0,
+      "h": 100.0,
+      "zIndex": 1,
+      "bbox": [
+        0,
+        0,
+        1152,
+        2048
+      ],
+      "size": [
+        1152,
+        2048
+      ],
+      "kind": "pixel"
+    },
+    {
+      "key": "full_house_rule",
+      "name": "02_装饰_金色短横线_透明位图",
+      "src": "./assets/psd-full-house-portrait/full_house_rule.png",
+      "x": 50.04340277777778,
+      "y": 31.005859375,
+      "w": 8.940972222222223,
+      "h": 0.390625,
+      "zIndex": 2,
+      "bbox": [
+        525,
+        631,
+        628,
+        639
+      ],
+      "size": [
+        103,
+        8
+      ],
+      "kind": "pixel"
+    }
+  ],
+  "text": [
+    {
+      "key": "full_house_title",
+      "name": "03_主标题_满房_可编辑文字",
+      "value": "满房",
+      "x": 50.0,
+      "y": 17.4072265625,
+      "w": 100.0,
+      "h": 22.314453125,
+      "fontSize": 253.41552,
+      "lineHeight": 1.2,
+      "color": "#FFF6E4",
+      "font": 1,
+      "fontName": "'SourceHanSerifSC-Regular'",
+      "kind": "serif",
+      "fontStyle": "normal",
+      "weight": 400,
+      "letterSpacing": "0.035em",
+      "pointText": true,
+      "zIndex": 3,
+      "bbox": [
+        0,
+        128,
+        1152,
+        585
+      ]
+    },
+    {
+      "key": "full_house_english_title",
+      "name": "04_英文标题_Full_House_可编辑文字",
+      "value": "Full House",
+      "x": 50.0,
+      "y": 26.025390625,
+      "w": 100.0,
+      "h": 10.15625,
+      "fontSize": 115.07758,
+      "lineHeight": 1.2,
+      "color": "#FFF6E4",
+      "font": 1,
+      "fontName": "'NimbusRoman-Italic'",
+      "kind": "roman-italic",
+      "fontStyle": "italic",
+      "weight": 400,
+      "letterSpacing": "0.020em",
+      "pointText": true,
+      "zIndex": 4,
+      "bbox": [
+        0,
+        429,
+        1152,
+        637
+      ]
+    },
+    {
+      "key": "full_house_note",
+      "name": "05_说明_感谢厚爱今日满房_可编辑文字",
+      "value": "感谢厚爱 · 今日满房",
+      "x": 50.0,
+      "y": 34.6435546875,
+      "w": 100.0,
+      "h": 3.271484375,
+      "fontSize": 36.72689,
+      "lineHeight": 1.2,
+      "color": "#FFF6E4",
+      "font": 1,
+      "fontName": "'SourceHanSerifSC-Regular'",
+      "kind": "serif",
+      "fontStyle": "normal",
+      "weight": 400,
+      "letterSpacing": "0.120em",
+      "pointText": true,
+      "zIndex": 5,
+      "bbox": [
+        0,
+        676,
+        1152,
+        743
+      ]
+    },
+    {
+      "key": "full_house_next_note",
+      "name": "06_说明_期待下一次与您相遇_可编辑文字",
+      "value": "期待下一次，与您相遇",
+      "x": 50.0,
+      "y": 37.8662109375,
+      "w": 100.0,
+      "h": 3.271484375,
+      "fontSize": 36.72689,
+      "lineHeight": 1.2,
+      "color": "#FFF6E4",
+      "font": 1,
+      "fontName": "'SourceHanSerifSC-Regular'",
+      "kind": "serif",
+      "fontStyle": "normal",
+      "weight": 400,
+      "letterSpacing": "0.100em",
+      "pointText": true,
+      "zIndex": 6,
+      "bbox": [
+        0,
+        742,
+        1152,
+        809
+      ]
+    }
+  ]
+}
